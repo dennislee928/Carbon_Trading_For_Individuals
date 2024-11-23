@@ -28,21 +28,20 @@ export interface UnitType {
   description: string;
   symbol: string;
 }
-/
 
 //
 export interface DataVersion {
-    version: string;
-    released_on: string;
-    supported_until: string;
-  }
+  version: string;
+  released_on: string;
+  supported_until: string;
+}
 //
 export interface ManagementData {
-    usage: {
-      current_month: {
-        requests: number;
-        emissions_estimates: number;
-      };
-      // Add other relevant fields
+  usage: {
+    current_month: {
+      requests: number;
+      emissions_estimates: number;
     };
-  }
+    // Add other relevant fields
+  };
+}

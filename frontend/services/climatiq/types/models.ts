@@ -67,3 +67,31 @@ export interface EstimationResponse {
     n2o?: number;
   };
 }
+
+//
+// types/models.ts
+export interface UnitTypesResponse {
+  results: Array<{
+    name: string;
+    description: string;
+    symbol: string;
+  }>;
+}
+
+export interface DataVersionsResponse {
+  results: Array<{
+    version: string;
+    released_on: string;
+    supported_until: string;
+  }>;
+}
+
+export interface ManagementResponse {
+  usage: {
+    current_month: {
+      requests: number;
+      emissions_estimates: number;
+    };
+    // Add other relevant fields based on the API response
+  };
+}

@@ -5,8 +5,10 @@ import {
   EstimationModel,
   EmissionFactorResponse,
   EstimationResponse,
+  UnitTypesResponse,
+  DataVersionsResponse,
+  ManagementResponse,
 } from "../types/models";
-import { CLIMATIQ_API } from "../constants";
 
 export class ClimatiqAPI {
   private static readonly BASE_URL = process.env.NEXT_PUBLIC_CLIMATIQ_API_URL;
@@ -53,5 +55,20 @@ export class ClimatiqAPI {
     params: EstimationModel
   ): Promise<EstimationResponse> {
     return this.fetchAPI("/estimate", "POST", params);
+  }
+
+  // Unit Types API
+  static async getUnitTypes(): Promise<UnitTypesResponse> {
+    return this.fetchAPI("/unit-types");
+  }
+
+  // Data Versions API
+  static async getDataVersions(): Promise<DataVersionsResponse> {
+    return this.fetchAPI("/data-versions");
+  }
+
+  // Management API
+  static async getManagementData(): Promise<ManagementResponse> {
+    return this.fetchAPI("/management");
   }
 }

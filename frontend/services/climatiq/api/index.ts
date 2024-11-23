@@ -14,6 +14,17 @@ export class ClimatiqAPI {
   private static readonly BASE_URL = process.env.NEXT_PUBLIC_CLIMATIQ_API_URL;
   private static readonly API_KEY = process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY;
 
+  //Base URL:https://api.climatiq.io
+  //Search:https://api.climatiq.io/data/v1/search
+  //get Unit Types:https://api.climatiq.io/data/v1/unit-types
+  //get dataversions:https://api.climatiq.io/data/v1/data-versions
+  //get https://preview.api.climatiq.io/management/v1-preview1/project
+  //post https://preview.api.climatiq.io/management/v1-preview1/project
+  //patch https://preview.api.climatiq.io/management/v1-preview1/project/:project_id
+  //delete https://preview.api.climatiq.io/management/v1-preview1/project/:project_id
+
+  //Estimate:https://preview.api.climatiq.io/freight/v2-preview1/intermodal
+
   private static async fetchAPI<T>(
     endpoint: string,
     method: "GET" | "POST" = "GET",

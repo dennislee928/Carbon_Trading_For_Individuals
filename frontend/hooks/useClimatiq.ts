@@ -1,23 +1,56 @@
 // hooks/useClimatiq.ts
 import { useState } from "react";
-import { getEmissionFactors } from "@/services/climatiq";
+import { ClimatiqAPI } from "@/services/climatiq/api";
 import type {
-  EmissionFactorParams,
+  SelectorModel,
+  ParametersModel,
+  EstimationModel,
   EmissionFactorResponse,
-} from "@/services/climatiq/types";
+  EstimationResponse,
+} from "@/services/climatiq/types/models";
 
 export function useClimatiq() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  async function fetchEmissionFactors(params: EmissionFactorParams) {
+  // Selector Hook
+  async function searchEmissionFactors(params: SelectorModel) {
     try {
       setLoading(true);
       setError(null);
-      const data = await getEmissionFactors(params);
-      return data;
+      return await ClimatiqAPI.searchEmissionFactors(params);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error("Unknown error"));
+      setError(err instanceof Error ? err : new Error("Search failed"));
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Parameters Hook
+  async function getEmissionFactors(params: ParametersModel) {
+    try {
+      setLoading(true);
+      setError(null);
+      return await ClimatiqAPI.getEmissionFactors(params);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err : new Error("Failed to get emission factors")
+      );
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Estimation Hook
+  async function calculateEmissions(params: EstimationModel) {
+    try {
+      setLoading(true);
+      setError(null);
+      return await ClimatiqAPI.calculateEmissions(params);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("Calculation failed"));
       throw err;
     } finally {
       setLoading(false);
@@ -27,6 +60,8 @@ export function useClimatiq() {
   return {
     loading,
     error,
-    fetchEmissionFactors,
+    searchEmissionFactors,
+    getEmissionFactors,
+    calculateEmissions,
   };
 }

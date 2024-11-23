@@ -92,6 +92,20 @@ frontend/
 ├── services/ # API and external services
 │ ├── api/
 │ └── stripe/
+│ └── climatiq/
+│ ├── index.ts # Main export file
+│ ├── types/ # Type definitions
+│ │ ├── index.ts # Export all types
+│ │ ├── parameters.ts # API parameters types
+│ │ ├── responses.ts # API response types
+│ │ └── models.ts # Data models
+│ ├── api/
+│ │ ├── index.ts # Export all API functions
+│ │ ├── emission.ts # Emission-related API calls
+│ │ └── factors.ts # Factors-related API calls
+│ ├── constants.ts # API endpoints, constants
+│ └── utils.ts # Helper functions
+
 ├── styles/ # Global styles
 │ ├── theme/
 │ └── globals/

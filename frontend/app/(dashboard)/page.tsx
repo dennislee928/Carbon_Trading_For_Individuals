@@ -5,8 +5,10 @@ import { Terminal } from "./terminal";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import type { SearchParams, EmissionFactor } from "@/types/climatiq";
-
+import { useClimatiq } from "@/hooks/useClimatiq";
+//
 export default function HomePage() {
+  const { loading, error, fetchEmissionFactors } = useClimatiq();
   const [searchParams, setSearchParams] = useState<SearchParams>({
     data_version: "",
     activity_id: "",

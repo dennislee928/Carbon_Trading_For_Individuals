@@ -1,10 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Terminal } from "./terminal";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader } from "lucide-react";
+
 import { useState } from "react";
 import { useClimatiq } from "@/hooks/useClimatiq";
-import { Results } from "@/components/Results";
+import { Results } from "@/components/results";
+
 import type {
   SelectorModel,
   ParametersModel,
@@ -101,6 +103,7 @@ export default function HomePage() {
                       key={model}
                       onClick={() => setActiveModel(model as any)}
                       variant={activeModel === model ? "default" : "outline"}
+                      size="default" // Add size prop
                     >
                       {model.charAt(0).toUpperCase() + model.slice(1)}
                     </Button>
@@ -193,35 +196,23 @@ export default function HomePage() {
 
                 {/* Search Button */}
                 <Button
-                  onClick={handleSearch}
-                  disabled={isLoading}
-                  className="w-full flex items-center justify-center"
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Searching...
-                    </>
-                  ) : (
-                    <>
-                      <Search className="mr-2 h-4 w-4" />
-                      Search
-                    </>
-                  )}
-                </Button>
-
-                {/* Results Section */}
-                {results.length > 0 && <Results factors={results} />}
-
-                {/* Error Message */}
-                {error && (
-                  <div className="mt-4 p-4 bg-red-50 text-red-600 rounded-md">
-                    {error.message}
-                  </div>
-                )}
-              </div>
-            </div>
-
+        onClick={handleSearch}
+        disabled={isLoading}
+        variant="default"  // Add variant prop
+        className="w-full flex items-center justify-center"
+      >
+        {isLoading ? (
+          <>
+            <Loader className="mr-2 h-4 w-4 animate-spin" />
+            Searching...
+          </>
+        ) : (
+          <>
+            <Search className="mr-2 h-4 w-4" />
+            Search
+          </>
+        )}
+      </Button>
             {/* Terminal Section */}
             <div className="mt-12 relative lg:mt-0 lg:col-span-6">
               <Terminal />

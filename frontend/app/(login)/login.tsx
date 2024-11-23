@@ -6,10 +6,47 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CircleDot, Loader2 } from "lucide-react";
 import { signIn, signUp } from "./actions";
 import { ActionState } from "@/lib/auth/middleware";
+//
+// Add these icon components at the top of your file
+const CircleIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    className="h-12 w-12 text-orange-500"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
 
+const LoaderIcon = () => (
+  <svg
+    className="animate-spin mr-2 h-4 w-4"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    />
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    />
+  </svg>
+);
+
+//
 export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
@@ -24,7 +61,7 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
     <div className="min-h-[100dvh] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <Icons.CircleDot className="h-12 w-12 text-orange-500" />
+          <CircleIcon />
         </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           {mode === "signin"
@@ -95,7 +132,7 @@ export function Login({ mode = "signin" }: { mode?: "signin" | "signup" }) {
             >
               {pending ? (
                 <>
-                  <Icons.Loader2 className="animate-spin mr-2 h-4 w-4" />
+                  <LoaderIcon />
                   Loading...
                 </>
               ) : mode === "signin" ? (

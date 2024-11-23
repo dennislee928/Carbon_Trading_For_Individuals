@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Terminal } from "./terminal";
 import { Search } from "lucide-react";
 
+import { ClimatiqData } from "@/components/ui/ClimatiqData";
 // Update the import
 import * as Icons from "lucide-react";
 
@@ -54,6 +55,8 @@ export default function HomePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-4">
+        <h1>Climate Impact Dashboard</h1>
+        <ClimatiqData />
         <label className="block mb-2">Search Type</label>
         <select
           value={searchType}

@@ -1,5 +1,6 @@
 // hooks/useClimatiq.ts
 import { useState } from "react";
+import { useEffect } from 'react';
 import type {
   SelectorModel,
   ParametersModel,
@@ -7,7 +8,59 @@ import type {
   EmissionFactorResponse,
   EstimationResponse,
 } from "@/services/climatiq/types/models";
+//
+const CLIMATIQ_API_KEY = process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY || 'NKFZH0Y8Q15KKFS84BQZ3MXC0G';
 
+//default fetch
+export const useClimatiq = () => {
+  const [data, setData] = useState<ClimatiqResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.climatiq.io/data/v1/search?data_version=6', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${CLIMATIQ_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            emission_factor: {
+              data_version: "3",
+              activity_id: "electricity-supply_grid-source_production_mix",
+              source: "MfE",
+              region: "NZ",
+              year: 2020
+            },
+            parameters: {
+              energy: 4200,
+              energy_unit: "kWh"
+            }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        setData(result);
+      } catch (e) {
+        setError(e instanceof Error ? e : new Error('An error occurred'));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return { data, loading, error };
+};
+
+//
 export function useClimatiq() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);

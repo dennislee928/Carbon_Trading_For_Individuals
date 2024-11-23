@@ -1,10 +1,12 @@
-import type { Config } from 'drizzle-kit';
+import type { Config } from "drizzle-kit";
 
 export default {
-  schema: './lib/db/schema.ts',
-  out: './lib/db/migrations',
-  dialect: 'postgresql',
+  schema: "./db/schema.ts", // Adjust this path to match your schema location
+  out: "./drizzle",
+  driver: "pg", // or 'mysql2' or 'better-sqlite3'
   dbCredentials: {
-    url: process.env.POSTGRES_URL!,
+    connectionString:
+      process.env.DATABASE_URL ||
+      "postgresql://user:password@localhost:5432/db_name",
   },
 } satisfies Config;

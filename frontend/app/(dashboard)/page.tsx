@@ -1,46 +1,81 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Terminal } from "./terminal";
-import { Search, Loader2 } from "lucide-react"; // Added Loader2 for loading state
+import { Search, Loader2 } from "lucide-react";
 import { useState } from "react";
-import type { SearchParams, EmissionFactor } from "@/types/climatiq";
 import { useClimatiq } from "@/hooks/useClimatiq";
-//
 import { Results } from "@/components/Results";
-//
+import type {
+  SelectorModel,
+  ParametersModel,
+  EstimationModel,
+} from "@/services/climatiq/types/models";
 
 export default function HomePage() {
-  const { loading, error, fetchEmissionFactors } = useClimatiq();
-  const [searchParams, setSearchParams] = useState<SearchParams>({
+  const {
+    loading,
+    error,
+    searchEmissionFactors,
+    getEmissionFactors,
+    calculateEmissions,
+  } = useClimatiq();
+
+  // State for different models
+  const [selectorParams, setSelectorParams] = useState<SelectorModel>({
+    activity_id: "",
+    source: "",
+    region: "",
+    year: undefined,
+    lca_activity: "",
+  });
+
+  const [parametersParams, setParametersParams] = useState<ParametersModel>({
     data_version: "",
     activity_id: "",
+    source: "",
+    region: "",
+    year: undefined,
+    calculation_method: "ar5",
+    region_fallback: true,
+    year_fallback: true,
   });
-  const [results, setResults] = useState<EmissionFactor[]>([]);
+
+  const [estimationParams, setEstimationParams] = useState<EstimationModel>({
+    emission_factor: {
+      activity_id: "",
+      source: "",
+      region: "",
+      year: undefined,
+      data_version: "",
+    },
+    parameters: {},
+    metadata: {},
+  });
+
+  const [results, setResults] = useState<any[]>([]);
+  const [activeModel, setActiveModel] = useState<
+    "selector" | "parameters" | "estimation"
+  >("selector");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = async () => {
-    if (!searchParams.data_version || !searchParams.activity_id) {
-      alert("Data version and Activity ID are required");
-      return;
-    }
-
     setIsLoading(true);
     try {
-      const response = await fetch("/api/search-factors", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(searchParams),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to fetch results");
+      let data;
+      switch (activeModel) {
+        case "selector":
+          data = await searchEmissionFactors(selectorParams);
+          break;
+        case "parameters":
+          data = await getEmissionFactors(parametersParams);
+          break;
+        case "estimation":
+          data = await calculateEmissions(estimationParams);
+          break;
       }
-      setResults(data);
+      setResults(Array.isArray(data) ? data : [data]);
     } catch (error) {
-      console.error("Error fetching emission factors:", error);
+      console.error("Error:", error);
       alert("Failed to fetch results. Please try again.");
     } finally {
       setIsLoading(false);
@@ -58,56 +93,103 @@ export default function HomePage() {
                 <span className="block text-orange-500">Calculator</span>
               </h1>
 
-              {/* Search Form */}
+              {/* Model Selector */}
+              <div className="mt-8 mb-4">
+                <div className="flex space-x-4">
+                  {["selector", "parameters", "estimation"].map((model) => (
+                    <Button
+                      key={model}
+                      onClick={() => setActiveModel(model as any)}
+                      variant={activeModel === model ? "default" : "outline"}
+                    >
+                      {model.charAt(0).toUpperCase() + model.slice(1)}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Dynamic Form Based on Active Model */}
               <div className="mt-8 space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="data-version"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Data Version*
-                    </label>
+                {activeModel === "selector" && (
+                  <div className="grid grid-cols-2 gap-4">
                     <input
-                      id="data-version"
                       type="text"
-                      value={searchParams.data_version}
+                      placeholder="Activity ID"
+                      value={selectorParams.activity_id}
                       onChange={(e) =>
-                        setSearchParams({
-                          ...searchParams,
-                          data_version: e.target.value,
-                        })
-                      }
-                      className="mt-1 w-full p-2 border rounded-md"
-                      required
-                      aria-label="Data Version"
-                      placeholder="Enter data version"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="activity-id"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Activity ID*
-                    </label>
-                    <input
-                      id="activity-id"
-                      type="text"
-                      value={searchParams.activity_id}
-                      onChange={(e) =>
-                        setSearchParams({
-                          ...searchParams,
+                        setSelectorParams({
+                          ...selectorParams,
                           activity_id: e.target.value,
                         })
                       }
                       className="mt-1 w-full p-2 border rounded-md"
-                      required
-                      aria-label="Activity ID"
-                      placeholder="Enter activity ID"
                     />
+                    <input
+                      type="text"
+                      placeholder="Source"
+                      value={selectorParams.source}
+                      onChange={(e) =>
+                        setSelectorParams({
+                          ...selectorParams,
+                          source: e.target.value,
+                        })
+                      }
+                      className="mt-1 w-full p-2 border rounded-md"
+                    />
+                    {/* Add other selector fields */}
                   </div>
-                </div>
+                )}
+
+                {activeModel === "parameters" && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      placeholder="Data Version"
+                      value={parametersParams.data_version}
+                      onChange={(e) =>
+                        setParametersParams({
+                          ...parametersParams,
+                          data_version: e.target.value,
+                        })
+                      }
+                      className="mt-1 w-full p-2 border rounded-md"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Activity ID"
+                      value={parametersParams.activity_id}
+                      onChange={(e) =>
+                        setParametersParams({
+                          ...parametersParams,
+                          activity_id: e.target.value,
+                        })
+                      }
+                      className="mt-1 w-full p-2 border rounded-md"
+                    />
+                    {/* Add other parameters fields */}
+                  </div>
+                )}
+
+                {activeModel === "estimation" && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      placeholder="Activity ID"
+                      value={estimationParams.emission_factor.activity_id}
+                      onChange={(e) =>
+                        setEstimationParams({
+                          ...estimationParams,
+                          emission_factor: {
+                            ...estimationParams.emission_factor,
+                            activity_id: e.target.value,
+                          },
+                        })
+                      }
+                      className="mt-1 w-full p-2 border rounded-md"
+                    />
+                    {/* Add other estimation fields */}
+                  </div>
+                )}
 
                 {/* Search Button */}
                 <Button
@@ -129,28 +211,7 @@ export default function HomePage() {
                 </Button>
 
                 {/* Results Section */}
-                {results.length > 0 && (
-                  <div className="mt-6">
-                    <h2 className="text-lg font-semibold mb-4">Results</h2>
-                    <div className="space-y-4">
-                      {results.map((factor, index) => (
-                        <div
-                          key={index}
-                          className="p-4 border rounded-lg bg-white shadow-sm"
-                        >
-                          <h3 className="font-medium">{factor.activity_id}</h3>
-                          <p className="text-sm text-gray-600">
-                            Source: {factor.source}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Region: {factor.region}
-                          </p>
-                          {/* Add more factor details as needed */}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                {results.length > 0 && <Results factors={results} />}
 
                 {/* Error Message */}
                 {error && (

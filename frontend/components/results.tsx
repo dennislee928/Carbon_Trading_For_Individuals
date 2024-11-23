@@ -1,3 +1,5 @@
+import { EmissionFactor } from "@/types/climatiq";
+
 // components/Results.tsx
 interface ResultsProps {
   factors: EmissionFactor[];

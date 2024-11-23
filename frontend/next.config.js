@@ -1,15 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Disable telemetry during build
+  // Disable telemetry
   typescript: {
-    // Handle TypeScript errors during build
+    // During development you can disable this
     ignoreBuildErrors: false,
   },
   eslint: {
-    // Handle ESLint errors during build
+    // During development you can disable this
     ignoreDuringBuilds: false,
   },
-  // Add any other necessary configurations
+  // Disable telemetry
+  telemetry: false,
   env: {
     NEXT_PUBLIC_CLIMATIQ_API_URL: process.env.NEXT_PUBLIC_CLIMATIQ_API_URL,
     NEXT_PUBLIC_CLIMATIQ_API_KEY: process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY,

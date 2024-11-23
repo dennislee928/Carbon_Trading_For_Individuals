@@ -1,10 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
-    "build": "next build",
-    "postbuild": "next-sitemap --config next-sitemap.config.js",
+    "build": "next telemetry disable && next build",
+    "dev": "next dev",
     "start": "next start",
+    
+    "postbuild": "next-sitemap --config next-sitemap.config.js",
+    
     "db:setup": "npx tsx lib/db/setup.ts",
     "db:seed": "npx tsx lib/db/seed.ts",
     "db:generate": "drizzle-kit generate",

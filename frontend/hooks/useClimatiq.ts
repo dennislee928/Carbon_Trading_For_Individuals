@@ -16,10 +16,10 @@ export function useClimatiq() {
   async function makeGetRequest(endpoint: string, params: any) {
     const queryString = new URLSearchParams();
 
-    // Convert all params to query string
+    // Add type checking for value
     Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== "") {
-        queryString.append(key, value.toString());
+      if (value !== undefined && value !== null && value !== "") {
+        queryString.append(key, String(value)); // Convert to string explicitly
       }
     });
 
@@ -40,7 +40,6 @@ export function useClimatiq() {
 
     return response.json();
   }
-
   // Parameters Hook (Main function)
   async function getEmissionFactors(params: ParametersModel) {
     try {

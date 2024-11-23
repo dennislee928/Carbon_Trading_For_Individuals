@@ -10,6 +10,8 @@ import * as Icons from "lucide-react";
 //import { Loader } from "lucide-react";
 
 //
+
+//
 import { useState } from "react";
 import { useClimatiq } from "@/hooks/useClimatiq";
 import { Results } from "@/components/Results";
@@ -169,7 +171,7 @@ export default function HomePage() {
                       className="w-full"
                     >
                       {isLoading ? (
-                        <Icons.Loader className="mr-2 h-4 w-4 animate-spin" />
+                        <LoadingSpinner />
                       ) : (
                         <Search className="mr-2 h-4 w-4" />
                       )}

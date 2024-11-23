@@ -14,18 +14,6 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
-
-    // Add these additional checks for better type safety
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "allowUnreachableCode": false,
-    "noImplicitOverride": true,
-
-    // Add sourceMap for better debugging
-    "sourceMap": true,
-
     "plugins": [
       {
         "name": "next"
@@ -33,21 +21,13 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@/components/*": ["./components/*"],
-      "@/lib/*": ["./lib/*"],
-      "@/types/*": ["./types/*"],
-      "@/services/*": ["./services/*"],
-      "@/utils/*": ["./utils/*"],
-      "@/styles/*": ["./styles/*"],
       "lucide-react": ["./node_modules/lucide-react"]
     },
     "types": [
-      "react",
-      "react-dom",
       "node",
-      // Add these if you're using them
-      "jest",
-      "cypress"
+      "react",
+      "react-dom"
+      // Remove jest and cypress if you're not using them
     ],
     "forceConsistentCasingInFileNames": true
   },
@@ -61,20 +41,7 @@
     "components/**/*.ts",
     "components/**/*.tsx",
     "types/**/*.ts",
-    "types/**/*.d.ts",
-    // Add these if you have them
-    "middleware.ts",
-    "global.d.ts",
-    "jest.setup.ts",
-    "jest.config.ts"
+    "types/**/*.d.ts"
   ],
-  "exclude": [
-    "node_modules",
-    ".next",
-    "out",
-    "build",
-    "coverage",
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+  "exclude": ["node_modules"]
 }

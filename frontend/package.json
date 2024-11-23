@@ -46,5 +46,9 @@
     "tailwindcss-react-aria-components": "1.1.6",
     "typescript": "^5.6.3",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cypress": "^1.1.6",
+    "@types/jest": "^29.5.14"
   }
 }

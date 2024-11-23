@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build": "next telemetry disable && next build",
+   "build": "next telemetry disable && next build",
+
     "dev": "next dev",
     "start": "next start",
     "postbuild": "next-sitemap --config next-sitemap.config.js",

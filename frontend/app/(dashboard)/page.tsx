@@ -62,9 +62,7 @@ export default function HomePage() {
   });
 
   const [results, setResults] = useState<any[]>([]);
-  const [activeModel, setActiveModel] = useState<
-    "selector" | "parameters" | "estimation"
-  >("selector");
+  const [activeModel, setActiveModel] = = useState<"selector" | "parameters" | "estimation">("parameters");  // Change this to "parameters"
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = async () => {

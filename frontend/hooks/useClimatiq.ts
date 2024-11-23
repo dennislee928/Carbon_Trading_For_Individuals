@@ -15,16 +15,29 @@ export function useClimatiq() {
 
   // Selector Hook
   async function searchEmissionFactors(params: SelectorModel) {
-    try {
-      setLoading(true);
-      setError(null);
-      return await ClimatiqAPI.searchEmissionFactors(params);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error("Search failed"));
-      throw err;
-    } finally {
-      setLoading(false);
+    const queryString = new URLSearchParams({
+      activity_id: params.activity_id || "",
+      source: params.source || "",
+      region: params.region || "",
+      year: params.year?.toString() || "",
+      lca_activity: params.lca_activity || "",
+    }).toString();
+
+    const response = await fetch(
+      `https://api.climatiq.io/search?${queryString}`,
+      {
+        method: "GET", // Use GET method
+        headers: {
+          Authorization: `Bearer YOUR_API_KEY`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
     }
+
+    return response.json();
   }
 
   // Parameters Hook

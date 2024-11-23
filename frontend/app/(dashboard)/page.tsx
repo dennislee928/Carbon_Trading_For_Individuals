@@ -1,8 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Terminal } from "./terminal";
-import { Search, Loader } from "lucide-react";
+import { Search } from "lucide-react";
 
+// Update the import
+import * as Icons from "lucide-react";
+// Update the import
+//import { Spinner } from "lucide-react";
+//import { Loader } from "lucide-react";
+
+//
 import { useState } from "react";
 import { useClimatiq } from "@/hooks/useClimatiq";
 import { Results } from "@/components/results";
@@ -86,33 +93,12 @@ export default function HomePage() {
 
   return (
     <main>
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-            <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
-              <h1 className="text-4xl font-bold text-gray-900 tracking-tight sm:text-5xl md:text-6xl">
-                Carbon Emission
-                <span className="block text-orange-500">Calculator</span>
-              </h1>
-
-              {/* Model Selector */}
-              <div className="mt-8 mb-4">
-                <div className="flex space-x-4">
-                  {["selector", "parameters", "estimation"].map((model) => (
-                    <Button
-                      key={model}
-                      onClick={() => setActiveModel(model as any)}
-                      variant={activeModel === model ? "default" : "outline"}
-                      size="default" // Add size prop
-                    >
-                      {model.charAt(0).toUpperCase() + model.slice(1)}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Dynamic Form Based on Active Model */}
-              <div className="mt-8 space-y-4">
+      <section>
+        <div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-6">
+              <div className="space-y-6">
+                {/* Selector Model */}
                 {activeModel === "selector" && (
                   <div className="grid grid-cols-2 gap-4">
                     <input
@@ -139,83 +125,47 @@ export default function HomePage() {
                       }
                       className="mt-1 w-full p-2 border rounded-md"
                     />
-                    {/* Add other selector fields */}
-                  </div>
-                )}
-
-                {activeModel === "parameters" && (
-                  <div className="grid grid-cols-2 gap-4">
                     <input
                       type="text"
-                      placeholder="Data Version"
-                      value={parametersParams.data_version}
+                      placeholder="Region"
+                      value={selectorParams.region}
                       onChange={(e) =>
-                        setParametersParams({
-                          ...parametersParams,
-                          data_version: e.target.value,
+                        setSelectorParams({
+                          ...selectorParams,
+                          region: e.target.value,
                         })
                       }
                       className="mt-1 w-full p-2 border rounded-md"
                     />
                     <input
                       type="text"
-                      placeholder="Activity ID"
-                      value={parametersParams.activity_id}
+                      placeholder="LCA Activity"
+                      value={selectorParams.lca_activity}
                       onChange={(e) =>
-                        setParametersParams({
-                          ...parametersParams,
-                          activity_id: e.target.value,
+                        setSelectorParams({
+                          ...selectorParams,
+                          lca_activity: e.target.value,
                         })
                       }
                       className="mt-1 w-full p-2 border rounded-md"
                     />
-                    {/* Add other parameters fields */}
-                  </div>
-                )}
-
-                {activeModel === "estimation" && (
-                  <div className="grid grid-cols-2 gap-4">
                     <input
-                      type="text"
-                      placeholder="Activity ID"
-                      value={estimationParams.emission_factor.activity_id}
+                      type="number"
+                      placeholder="Year"
+                      value={selectorParams.year || ""}
                       onChange={(e) =>
-                        setEstimationParams({
-                          ...estimationParams,
-                          emission_factor: {
-                            ...estimationParams.emission_factor,
-                            activity_id: e.target.value,
-                          },
+                        setSelectorParams({
+                          ...selectorParams,
+                          year: e.target.value
+                            ? Number(e.target.value)
+                            : undefined,
                         })
                       }
                       className="mt-1 w-full p-2 border rounded-md"
                     />
-                    {/* Add other estimation fields */}
                   </div>
                 )}
-
-                {/* Search Button */}
-                <Button
-        onClick={handleSearch}
-        disabled={isLoading}
-        variant="default"  // Add variant prop
-        className="w-full flex items-center justify-center"
-      >
-        {isLoading ? (
-          <>
-            <Loader className="mr-2 h-4 w-4 animate-spin" />
-            Searching...
-          </>
-        ) : (
-          <>
-            <Search className="mr-2 h-4 w-4" />
-            Search
-          </>
-        )}
-      </Button>
-            {/* Terminal Section */}
-            <div className="mt-12 relative lg:mt-0 lg:col-span-6">
-              <Terminal />
+              </div>
             </div>
           </div>
         </div>

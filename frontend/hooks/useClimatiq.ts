@@ -12,14 +12,16 @@ export function useClimatiq() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  // Base function for making GET requests
   async function makeGetRequest(endpoint: string, params: any) {
     const queryString = new URLSearchParams();
-
-    // Add type checking for value
+    
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
-        queryString.append(key, String(value)); // Convert to string explicitly
+        if (Array.isArray(value)) {
+          value.forEach(v => queryString.append(key + '[]', String(v)));
+        } else {
+          queryString.append(key, String(value));
+        }
       }
     });
 
@@ -28,7 +30,7 @@ export function useClimatiq() {
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer YOUR_API_KEY`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY}`,
           "Content-Type": "application/json",
         },
       }
@@ -40,12 +42,16 @@ export function useClimatiq() {
 
     return response.json();
   }
-  // Parameters Hook (Main function)
-  async function getEmissionFactors(params: ParametersModel) {
+
+  async function getEmissionFactors(params: SelectorModel) {
     try {
       setLoading(true);
       setError(null);
-      return await makeGetRequest("emission-factors", params);
+      
+      // Determine which endpoint to use based on params
+      const endpoint = 'id' in params ? 'emission-factors/id' : 'emission-factors';
+      
+      return await makeGetRequest(endpoint, params);
     } catch (err) {
       setError(
         err instanceof Error ? err : new Error("Failed to get emission factors")
@@ -56,6 +62,12 @@ export function useClimatiq() {
     }
   }
 
+  return {
+    loading,
+    error,
+    getEmissionFactors,
+  };
+}
   // Selector Hook (Alternative function)
   async function searchEmissionFactors(params: SelectorModel) {
     try {

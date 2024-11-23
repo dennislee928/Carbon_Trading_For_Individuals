@@ -1,13 +1,6 @@
 // services/climatiq/types/models.ts
 
 // Selector Model Types
-export interface SelectorModel {
-  activity_id?: string;
-  source?: string;
-  region?: string;
-  year?: number;
-  lca_activity?: string;
-}
 
 // Parameters Model Types
 export interface ParametersModel {
@@ -37,6 +30,27 @@ export interface EstimationModel {
     [key: string]: any;
   };
 }
+//
+export interface SelectorByActivityID {
+  data_version: string;
+  activity_id: string;
+  source?: string;
+  source_dataset?: string;
+  region?: string;
+  region_fallback?: boolean;
+  year_fallback?: boolean;
+  year?: number;
+  source_lca_activity?: string;
+  calculation_method?: "ar4" | "ar5" | "ar6";
+  allowed_data_quality_flags?: string[];
+}
+
+export interface SelectorByID {
+  id: string;
+  calculation_method?: "ar4" | "ar5" | "ar6";
+}
+
+export type SelectorModel = SelectorByActivityID | SelectorByID;
 
 // Response Types
 export interface EmissionFactorResponse {

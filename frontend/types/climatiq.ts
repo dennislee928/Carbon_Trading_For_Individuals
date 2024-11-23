@@ -22,3 +22,27 @@ export interface EmissionFactor {
   year: number;
   // Add other fields as needed
 }
+//Core resources
+export interface UnitType {
+  name: string;
+  description: string;
+  symbol: string;
+}
+/
+
+//
+export interface DataVersion {
+    version: string;
+    released_on: string;
+    supported_until: string;
+  }
+//
+export interface ManagementData {
+    usage: {
+      current_month: {
+        requests: number;
+        emissions_estimates: number;
+      };
+      // Add other relevant fields
+    };
+  }

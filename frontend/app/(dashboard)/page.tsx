@@ -163,6 +163,18 @@ export default function HomePage() {
                       }
                       className="mt-1 w-full p-2 border rounded-md"
                     />
+                    <Button
+                      onClick={handleSearch}
+                      disabled={isLoading}
+                      className="w-full"
+                    >
+                      {isLoading ? (
+                        <Icons.Loader className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Search className="mr-2 h-4 w-4" />
+                      )}
+                      Search
+                    </Button>
                   </div>
                 )}
               </div>

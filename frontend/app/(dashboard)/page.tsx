@@ -1,6 +1,15 @@
-import { Button } from '@/components/ui/button';
-import { ArrowRight, CreditCard, Database } from 'lucide-react';
-import { Terminal } from './terminal';
+"use client";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, CreditCard, Database } from "lucide-react";
+import { Terminal } from "./terminal";
+import { useState } from "react";
+
+interface EmissionFactor {
+  id: string;
+  name: string;
+  category: string;
+  // Add other relevant fields based on the API response
+}
 
 export default function HomePage() {
   return (

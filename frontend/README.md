@@ -70,3 +70,30 @@ frontend/
 styles/ # Global styles and theme
 theme/
 globals/
+
+// improved structure:
+frontend/
+├── app/ # Next.js app directory (keep as is)
+├── components/
+│ ├── auth/ # Authentication components
+│ ├── dashboard/ # Dashboard specific components
+│ ├── icons/ # Custom icons
+│ ├── layout/ # Layout components
+│ └── ui/ # Reusable UI components
+├── constants/ # App-wide constants
+│ ├── routes.ts
+│ ├── api.ts
+│ └── config.ts
+├── hooks/ # Custom React hooks
+│ ├── useAuth.ts
+│ ├── useForm.ts
+│ └── useApi.ts
+├── lib/ # Keep as is, but consider reorganizing
+├── services/ # API and external services
+│ ├── api/
+│ └── stripe/
+├── styles/ # Global styles
+│ ├── theme/
+│ └── globals/
+├── types/ # TypeScript types (keep as is)
+└── utils/ # Utility functions

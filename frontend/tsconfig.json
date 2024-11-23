@@ -20,7 +20,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "lucide-react": ["./node_modules/lucide-react"]
     },
     "types": ["react", "react-dom", "node"],
     "forceConsistentCasingInFileNames": true

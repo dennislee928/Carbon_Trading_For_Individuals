@@ -1,7 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CreditCard, Database, Search } from "lucide-react";
+//import { ArrowRight, CreditCard, Database, Search } from "lucide-react";
 import { Terminal } from "./terminal";
+import { Search } from "lucide-react";
 import { useState } from "react";
 import type { SearchParams, EmissionFactor } from "@/types/climatiq";
 
@@ -56,12 +57,17 @@ export default function HomePage() {
               {/* Search Form */}
               <div className="mt-8 space-y-4">
                 {/* Required Fields */}
+                {/* Required Fields */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="data-version"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Data Version*
                     </label>
                     <input
+                      id="data-version"
                       type="text"
                       value={searchParams.data_version}
                       onChange={(e) =>
@@ -72,13 +78,19 @@ export default function HomePage() {
                       }
                       className="mt-1 w-full p-2 border rounded-md"
                       required
+                      aria-label="Data Version"
+                      placeholder="Enter data version"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="activity-id"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Activity ID*
                     </label>
                     <input
+                      id="activity-id"
                       type="text"
                       value={searchParams.activity_id}
                       onChange={(e) =>
@@ -89,6 +101,8 @@ export default function HomePage() {
                       }
                       className="mt-1 w-full p-2 border rounded-md"
                       required
+                      aria-label="Activity ID"
+                      placeholder="Enter activity ID"
                     />
                   </div>
                 </div>
@@ -96,10 +110,14 @@ export default function HomePage() {
                 {/* Optional Fields */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="source"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Source
                     </label>
                     <input
+                      id="source"
                       type="text"
                       value={searchParams.source || ""}
                       onChange={(e) =>
@@ -109,13 +127,19 @@ export default function HomePage() {
                         })
                       }
                       className="mt-1 w-full p-2 border rounded-md"
+                      aria-label="Source"
+                      placeholder="Enter source"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="region"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Region
                     </label>
                     <input
+                      id="region"
                       type="text"
                       value={searchParams.region || ""}
                       onChange={(e) =>
@@ -125,6 +149,8 @@ export default function HomePage() {
                         })
                       }
                       className="mt-1 w-full p-2 border rounded-md"
+                      aria-label="Region"
+                      placeholder="Enter region"
                     />
                   </div>
                 </div>
@@ -132,10 +158,14 @@ export default function HomePage() {
                 {/* Year and Calculation Method */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="year"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Year
                     </label>
                     <input
+                      id="year"
                       type="number"
                       value={searchParams.year || ""}
                       onChange={(e) =>
@@ -147,13 +177,19 @@ export default function HomePage() {
                         })
                       }
                       className="mt-1 w-full p-2 border rounded-md"
+                      aria-label="Year"
+                      placeholder="Enter year"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="calculation-method"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Calculation Method
                     </label>
                     <select
+                      id="calculation-method"
                       value={searchParams.calculation_method || ""}
                       onChange={(e) =>
                         setSearchParams({
@@ -166,6 +202,7 @@ export default function HomePage() {
                         })
                       }
                       className="mt-1 w-full p-2 border rounded-md"
+                      aria-label="Calculation Method"
                     >
                       <option value="">Select method</option>
                       <option value="ar4">AR4</option>
@@ -180,6 +217,7 @@ export default function HomePage() {
                   <label className="flex items-center">
                     <input
                       type="checkbox"
+                      id="region-fallback"
                       checked={searchParams.region_fallback || false}
                       onChange={(e) =>
                         setSearchParams({
@@ -188,6 +226,7 @@ export default function HomePage() {
                         })
                       }
                       className="mr-2"
+                      aria-label="Region Fallback"
                     />
                     <span className="text-sm text-gray-700">
                       Region Fallback
@@ -196,6 +235,7 @@ export default function HomePage() {
                   <label className="flex items-center">
                     <input
                       type="checkbox"
+                      id="year-fallback"
                       checked={searchParams.year_fallback || false}
                       onChange={(e) =>
                         setSearchParams({
@@ -204,6 +244,7 @@ export default function HomePage() {
                         })
                       }
                       className="mr-2"
+                      aria-label="Year Fallback"
                     />
                     <span className="text-sm text-gray-700">Year Fallback</span>
                   </label>

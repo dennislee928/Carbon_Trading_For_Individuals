@@ -26,14 +26,14 @@ export interface EmissionSelector {
 }
 
 // Parameters for activity data input
-export interface EmissionParameters {
+export interface ActivityParameters {
   // Required parameter
   area: {
     value: number; // required
     unit: string; // e.g., "m2", "ft2"
   };
   // Optional parameters
-  money: {
+  money?: {
     value: number;
     unit: string; // e.g., "USD", "EUR"
   };
@@ -55,18 +55,29 @@ export interface EmissionParameters {
   };
 }
 
-// Estimation result structure
-export interface EmissionEstimation {
+// Parameters for API calls
+export interface EmissionParams {
+  data_version: string;
+  activity_id: string;
+  parameters: {
+    area?: {
+      value: number;
+      unit: string;
+    };
+    money?: {
+      value: number;
+      unit: string;
+    };
+    // Add other parameter types as needed
+  };
+}
+
+// Response from the API
+export interface ClimatiqResponse {
   co2e: number;
   co2e_unit: string;
   co2e_calculation_method: string;
   co2e_calculation_origin: string;
-  emission_factor: {
-    id: string;
-    source: string;
-    year: number;
-    region: string;
-  };
   constituent_gases: {
     co2e_total: number;
     co2: number;
@@ -77,5 +88,27 @@ export interface EmissionEstimation {
     activity_value: number;
     activity_unit: string;
   };
+}
+
+// Full emission estimation result
+export interface EmissionEstimation extends ClimatiqResponse {
+  emission_factor: {
+    id: string;
+    source: string;
+    year: number;
+    region: string;
+  };
   audit_trail: string;
+}
+
+// Component state parameters
+export interface EmissionParameters {
+  area: {
+    value: number;
+    unit: string;
+  };
+  money: {
+    value: number;
+    unit: string;
+  };
 }

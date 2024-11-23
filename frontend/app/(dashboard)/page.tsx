@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2 as LoaderCircle } from "lucide-react";
+//import { Loader2 as LoaderCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useClimatiq } from "@/hooks/useClimatiq";
 import {
@@ -9,6 +9,7 @@ import {
   EmissionSelector,
   EmissionParameters,
   EmissionEstimation,
+  EmissionParams,
 } from "@/types/climatiq";
 
 export default function DashboardPage() {
@@ -65,6 +66,16 @@ export default function DashboardPage() {
       setLoading(true);
       setError(null);
 
+      // Transform parameters for API
+      const apiParams: EmissionParams = {
+        data_version: searchParams.data_version,
+        activity_id: searchParams.activity_id,
+        parameters: {
+          area: emissionParams.area,
+          money: emissionParams.money,
+        },
+      };
+
       // First get emission factors
       const selector: EmissionSelector = {
         data_version: searchParams.data_version,
@@ -74,118 +85,136 @@ export default function DashboardPage() {
       };
 
       const emissionFactors = await getEmissionFactors(selector);
-      const result = await calculateEmissions(emissionParams);
-      setResult(result);
+      const response = await calculateEmissions(apiParams);
+      setResult(response);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      const errorMessage = err instanceof Error 
+        ? err.message 
+        : typeof err === 'string' 
+          ? err 
+          : 'An unexpected error occurred';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
-  };
 
   // renderSearchParams  helpers
 
   const renderEmissionParams = () => (
-    <div className="space-y-4">
-      <div>
-        <Label htmlFor="area_value">Area</Label>
-        <div className="flex gap-2">
-          <input
-            type="number"
-            id="area_value"
-            value={emissionParams.area.value}
-            onChange={(e) =>
-              handleEmissionParamsChange(
-                "area",
-                "value",
-                Number(e.target.value)
-              )
-            }
-            className="flex-1 p-2 border rounded-md"
-          />
-          <select
-            value={emissionParams.area.unit}
-            onChange={(e) =>
-              handleEmissionParamsChange("area", "unit", e.target.value)
-            }
-            className="w-24 p-2 border rounded-md"
-          >
-            <option value="m2">m²</option>
-            <option value="ft2">ft²</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Add other parameter inputs as needed */}
-    </div>
-  );
-
-  const renderResults = () => {
-    if (loading) {
-      return (
-        <div className="flex justify-center items-center py-4">
-          <LoaderCircle className="animate-spin" />
-        </div>
-      );
-    }
-
-    if (error) {
-      return (
-        <div className="text-red-500 p-4 border border-red-300 rounded-md">
-          {error}
-        </div>
-      );
-    }
-
-    if (result) {
-      return (
-        <div className="p-4 border rounded-md space-y-2">
-          <h3 className="font-bold">Results:</h3>
-          <p>
-            CO2e: {result.co2e} {result.co2e_unit}
-          </p>
-          <p>Method: {result.co2e_calculation_method}</p>
-          <p>Origin: {result.co2e_calculation_origin}</p>
-          <div>
-            <h4 className="font-semibold">Constituent Gases:</h4>
-            <p>CO2: {result.constituent_gases.co2}</p>
-            <p>CH4: {result.constituent_gases.ch4}</p>
-            <p>N2O: {result.constituent_gases.n2o}</p>
+    return (
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
+        <h1 className="text-2xl font-bold mb-6" id="page-title">
+          Carbon Emissions Calculator
+        </h1>
+    
+        <form 
+          role="form" 
+          aria-labelledby="page-title"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleCalculate();
+          }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <section aria-labelledby="search-params-title">
+              <h2 id="search-params-title" className="text-xl font-semibold mb-4">
+                Search Parameters
+              </h2>
+              <div className="space-y-4">
+                {/* Area Input Group */}
+                <div className="form-group">
+                  <Label htmlFor="area_value" className="block mb-2">
+                    Area
+                  </Label>
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      id="area_value"
+                      name="area_value"
+                      value={emissionParams.area.value}
+                      onChange={(e) => handleEmissionParamsChange("area", "value", Number(e.target.value))}
+                      className="flex-1 p-2 border rounded-md"
+                      placeholder="Enter area value"
+                      aria-label="Area value"
+                      min="0"
+                      step="0.01"
+                      required
+                    />
+                    <select
+                      id="area_unit"
+                      name="area_unit"
+                      value={emissionParams.area.unit}
+                      onChange={(e) => handleEmissionParamsChange("area", "unit", e.target.value)}
+                      className="w-24 p-2 border rounded-md"
+                      aria-label="Area unit"
+                      title="Select area unit"
+                    >
+                      <option value="m2">m²</option>
+                      <option value="ft2">ft²</option>
+                    </select>
+                  </div>
+                </div>
+    
+                {/* Money Input Group */}
+                <div className="form-group">
+                  <Label htmlFor="money_value" className="block mb-2">
+                    Money
+                  </Label>
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      id="money_value"
+                      name="money_value"
+                      value={emissionParams.money.value}
+                      onChange={(e) => handleEmissionParamsChange("money", "value", Number(e.target.value))}
+                      className="flex-1 p-2 border rounded-md"
+                      placeholder="Enter amount"
+                      aria-label="Money value"
+                      min="0"
+                      step="0.01"
+                    />
+                    <select
+                      id="money_unit"
+                      name="money_unit"
+                      value={emissionParams.money.unit}
+                      onChange={(e) => handleEmissionParamsChange("money", "unit", e.target.value)}
+                      className="w-24 p-2 border rounded-md"
+                      aria-label="Currency unit"
+                      title="Select currency"
+                    >
+                      <option value="USD">USD</option>
+                      <option value="EUR">EUR</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </section>
+    
+            <section aria-labelledby="results-title">
+              <h2 id="results-title" className="text-xl font-semibold mb-4">
+                Results
+              </h2>
+              {/* Results content */}
+            </section>
           </div>
-        </div>
-      );
-    }
-
-    return null;
-  };
-
-  return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold mb-6">Carbon Emissions Calculator</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <section>
-          <h2 className="text-xl font-semibold mb-4">Search Parameters</h2>
-          {renderSearchParams()}
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-4">Emission Parameters</h2>
-          {renderEmissionParams()}
-        </section>
+    
+          <button
+            type="submit"
+            disabled={loading || !searchParams.data_version || !searchParams.activity_id}
+            className="w-full mt-6 py-2 px-4 bg-blue-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
+            aria-busy={loading}
+          >
+            {loading ? 'Calculating...' : 'Calculate Emissions'}
+          </button>
+        </form>
+    
+        {error && (
+          <div 
+            role="alert" 
+            className="mt-4 p-4 border border-red-300 bg-red-50 text-red-700 rounded-md"
+          >
+            {error}
+          </div>
+        )}
       </div>
-
-      <button
-        onClick={handleCalculate}
-        disabled={
-          loading || !searchParams.data_version || !searchParams.activity_id
-        }
-        className="w-full py-2 px-4 bg-blue-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
-      >
-        {loading ? "Calculating..." : "Calculate Emissions"}
-      </button>
-
-      {renderResults()}
-    </div>
-  );
-}
+    )}}

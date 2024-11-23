@@ -1,142 +1,191 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Terminal } from "./terminal";
-import { Search } from "lucide-react";
-
-import { ClimatiqData } from "@/components/ui/ClimatiqData";
-// Update the import
-import * as Icons from "lucide-react";
 
 import { useState } from "react";
+import { Loader2 as LoaderCircle } from "lucide-react";
+import { Label } from "@/components/ui/label";
 import { useClimatiq } from "@/hooks/useClimatiq";
-import { Results } from "@/components/Results";
+import {
+  SearchParams,
+  EmissionSelector,
+  EmissionParameters,
+  EmissionEstimation,
+} from "@/types/climatiq";
 
-import type {
-  SelectorModel,
-  ParametersModel,
-  EstimationModel,
-} from "@/services/climatiq/types/models";
-
-export default function HomePage() {
-  const { loading, error, getEmissionFactors } = useClimatiq();
-  const [searchType, setSearchType] = useState<"activity" | "id">("activity");
-  const [params, setParams] = useState<SelectorModel>({
+export default function DashboardPage() {
+  // State management
+  const [loading, setLoading] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useState<SearchParams>({
     data_version: "",
     activity_id: "",
-    source: "",
-    region: "",
-    year: undefined,
-    calculation_method: "ar5",
-    region_fallback: true,
-    year_fallback: true,
   });
+  const [emissionParams, setEmissionParams] = useState<EmissionParameters>({
+    area: {
+      value: 0,
+      unit: "m2",
+    },
+    money: {
+      value: 0,
+      unit: "USD",
+    },
+  });
+  const [result, setResult] = useState<EmissionEstimation | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = async () => {
-    if (
-      searchType === "activity" &&
-      !("activity_id" in params || !params.data_version)
-    ) {
-      alert("Activity ID and Data Version are required for activity search");
-      return;
-    }
-    if (searchType === "id" && !("id" in params)) {
-      alert("Emission Factor ID is required for ID search");
-      return;
-    }
+  // Hooks
+  const { getEmissionFactors, calculateEmissions } = useClimatiq();
 
+  // Handlers
+  const handleSearchParamsChange = (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setSearchParams((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setResult(null);
+  };
+
+  const handleEmissionParamsChange = (
+    category: keyof EmissionParameters,
+    field: "value" | "unit",
+    value: string | number
+  ) => {
+    setEmissionParams((prev) => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleCalculate = async () => {
     try {
-      const result = await getEmissionFactors(params);
-      // Handle result
-    } catch (error) {
-      console.error(error);
+      setLoading(true);
+      setError(null);
+
+      // First get emission factors
+      const selector: EmissionSelector = {
+        data_version: searchParams.data_version,
+        activity_id: searchParams.activity_id,
+        region: searchParams.region,
+        year: searchParams.year,
+      };
+
+      const emissionFactors = await getEmissionFactors(selector);
+      const result = await calculateEmissions(emissionParams);
+      setResult(result);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-4">
-        <h1>Climate Impact Dashboard</h1>
-        <ClimatiqData />
-        <label className="block mb-2">Search Type</label>
-        <select
-          value={searchType}
-          onChange={(e) => {
-            setSearchType(e.target.value as "activity" | "id");
-            // Reset params based on search type
-            if (e.target.value === "id") {
-              setParams({ id: "", calculation_method: "ar5" });
-            } else {
-              setParams({
-                data_version: "",
-                activity_id: "",
-                source: "",
-                calculation_method: "ar5",
-              });
+  // renderSearchParams  helpers
+
+  const renderEmissionParams = () => (
+    <div className="space-y-4">
+      <div>
+        <Label htmlFor="area_value">Area</Label>
+        <div className="flex gap-2">
+          <input
+            type="number"
+            id="area_value"
+            value={emissionParams.area.value}
+            onChange={(e) =>
+              handleEmissionParamsChange(
+                "area",
+                "value",
+                Number(e.target.value)
+              )
             }
-          }}
-          className="w-full p-2 border rounded-md"
-        >
-          <option value="activity">Search by Activity ID</option>
-          <option value="id">Search by Emission Factor ID</option>
-        </select>
+            className="flex-1 p-2 border rounded-md"
+          />
+          <select
+            value={emissionParams.area.unit}
+            onChange={(e) =>
+              handleEmissionParamsChange("area", "unit", e.target.value)
+            }
+            className="w-24 p-2 border rounded-md"
+          >
+            <option value="m2">m²</option>
+            <option value="ft2">ft²</option>
+          </select>
+        </div>
       </div>
 
-      {searchType === "activity" ? (
-        // Activity ID search form
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Activity ID *"
-            value={"activity_id" in params ? params.activity_id : ""}
-            onChange={(e) =>
-              setParams((prev) => ({
-                ...(prev as SelectorByActivityID),
-                activity_id: e.target.value,
-              }))
-            }
-            className="w-full p-2 border rounded-md"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Data Version *"
-            value={"data_version" in params ? params.data_version : ""}
-            onChange={(e) =>
-              setParams((prev) => ({
-                ...(prev as SelectorByActivityID),
-                data_version: e.target.value,
-              }))
-            }
-            className="w-full p-2 border rounded-md"
-            required
-          />
-          {/* Add other optional fields */}
-        </div>
-      ) : (
-        // Emission Factor ID search form
-        <input
-          type="text"
-          placeholder="Emission Factor ID *"
-          value={"id" in params ? params.id : ""}
-          onChange={(e) =>
-            setParams((prev) => ({
-              ...(prev as SelectorByID),
-              id: e.target.value,
-            }))
-          }
-          className="w-full p-2 border rounded-md"
-          required
-        />
-      )}
+      {/* Add other parameter inputs as needed */}
+    </div>
+  );
 
-      <Button onClick={handleSearch} disabled={loading} className="w-full mt-4">
-        {loading ? (
-          <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Search className="mr-2 h-4 w-4" />
-        )}
-        Search Emission Factors
-      </Button>
+  const renderResults = () => {
+    if (loading) {
+      return (
+        <div className="flex justify-center items-center py-4">
+          <LoaderCircle className="animate-spin" />
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="text-red-500 p-4 border border-red-300 rounded-md">
+          {error}
+        </div>
+      );
+    }
+
+    if (result) {
+      return (
+        <div className="p-4 border rounded-md space-y-2">
+          <h3 className="font-bold">Results:</h3>
+          <p>
+            CO2e: {result.co2e} {result.co2e_unit}
+          </p>
+          <p>Method: {result.co2e_calculation_method}</p>
+          <p>Origin: {result.co2e_calculation_origin}</p>
+          <div>
+            <h4 className="font-semibold">Constituent Gases:</h4>
+            <p>CO2: {result.constituent_gases.co2}</p>
+            <p>CH4: {result.constituent_gases.ch4}</p>
+            <p>N2O: {result.constituent_gases.n2o}</p>
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <h1 className="text-2xl font-bold mb-6">Carbon Emissions Calculator</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section>
+          <h2 className="text-xl font-semibold mb-4">Search Parameters</h2>
+          {renderSearchParams()}
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold mb-4">Emission Parameters</h2>
+          {renderEmissionParams()}
+        </section>
+      </div>
+
+      <button
+        onClick={handleCalculate}
+        disabled={
+          loading || !searchParams.data_version || !searchParams.activity_id
+        }
+        className="w-full py-2 px-4 bg-blue-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
+      >
+        {loading ? "Calculating..." : "Calculate Emissions"}
+      </button>
+
+      {renderResults()}
     </div>
   );
 }

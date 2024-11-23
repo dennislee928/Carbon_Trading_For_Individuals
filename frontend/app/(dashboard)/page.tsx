@@ -12,7 +12,7 @@ import * as Icons from "lucide-react";
 //
 import { useState } from "react";
 import { useClimatiq } from "@/hooks/useClimatiq";
-import { Results } from "@/components/results";
+import { Results } from "@/components/Results";
 
 import type {
   SelectorModel,

@@ -4,38 +4,48 @@ import { useState } from "react";
 import { useClimatiq } from "@/hooks/useClimatiq";
 
 export default function ActivityPage() {
+  //
   const {
-    fetchEmissionFactors,
-    fetchDataVersions,
-    estimateEmissions,
-    fetchUnitTypes,
-    fetchManagement,
+    getEmissionFactors,
+    calculateEmissions,
+    getManagementData,
+    getDataVersions,
+    getUnitTypes,
+    getIntermodalFreight,
   } = useClimatiq();
+
+  //
 
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loadingEmissionFactors, setLoadingEmissionFactors] = useState(false);
+  const [loadingEstimation, setLoadingEstimation] = useState(false);
+  const [loadingDataVersions, setLoadingDataVersions] = useState(false);
 
   const handleFetchEmissionFactors = async () => {
-    setLoading(true);
+    setLoadingEmissionFactors(true);
+    setError(null);
     try {
-      const response = await fetchEmissionFactors({
+      const response = await getEmissionFactors({
         activity_id: "fuel_combustion",
         source: "DEFRA",
         year: 2022,
       });
       setData(response);
     } catch (err) {
-      setError("Failed to fetch emission factors.");
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred."
+      );
     } finally {
-      setLoading(false);
+      setLoadingEmissionFactors(false);
     }
   };
 
   const handleEstimateEmissions = async () => {
-    setLoading(true);
+    setLoadingEstimation(true);
+    setError(null);
     try {
-      const response = await estimateEmissions({
+      const response = await calculateEmissions({
         emission_factor: {
           activity_id: "fuel_combustion",
           source: "DEFRA",
@@ -47,21 +57,26 @@ export default function ActivityPage() {
       });
       setData(response);
     } catch (err) {
-      setError("Failed to estimate emissions.");
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred."
+      );
     } finally {
-      setLoading(false);
+      setLoadingEstimation(false);
     }
   };
 
   const handleFetchDataVersions = async () => {
-    setLoading(true);
+    setLoadingDataVersions(true);
+    setError(null);
     try {
-      const response = await fetchDataVersions();
+      const response = await getDataVersions();
       setData(response);
     } catch (err) {
-      setError("Failed to fetch data versions.");
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred."
+      );
     } finally {
-      setLoading(false);
+      setLoadingDataVersions(false);
     }
   };
 
@@ -72,23 +87,23 @@ export default function ActivityPage() {
         <button
           onClick={handleFetchEmissionFactors}
           className="px-4 py-2 bg-blue-500 text-white rounded"
-          disabled={loading}
+          disabled={loadingEmissionFactors}
         >
-          {loading ? "Fetching..." : "Fetch Emission Factors"}
+          {loadingEmissionFactors ? "Fetching..." : "Fetch Emission Factors"}
         </button>
         <button
           onClick={handleEstimateEmissions}
           className="px-4 py-2 bg-green-500 text-white rounded"
-          disabled={loading}
+          disabled={loadingEstimation}
         >
-          {loading ? "Estimating..." : "Estimate Emissions"}
+          {loadingEstimation ? "Estimating..." : "Estimate Emissions"}
         </button>
         <button
           onClick={handleFetchDataVersions}
           className="px-4 py-2 bg-purple-500 text-white rounded"
-          disabled={loading}
+          disabled={loadingDataVersions}
         >
-          {loading ? "Fetching..." : "Fetch Data Versions"}
+          {loadingDataVersions ? "Fetching..." : "Fetch Data Versions"}
         </button>
       </div>
       {error && <div className="text-red-500 mt-4">{error}</div>}

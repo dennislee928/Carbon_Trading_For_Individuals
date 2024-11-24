@@ -1,9 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "next build",
-  "framework": "nextjs",
-  "installCommand": "pnpm install",
-  "env": {
-    "NEXT_TELEMETRY_DISABLED": "1"
-  }
+  "builds": [{ "src": "package.json", "use": "@vercel/next" }],
+  "rewrites": [{ "source": "/api/:path*", "destination": "/api/:path*" }]
 }

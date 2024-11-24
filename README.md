@@ -46,7 +46,8 @@ This project provides a carbon offset trading platform targeting individual user
 
 ## Integrations
 
-- climatiq(api)
+- climatiq(information caculate api)
+- Patch(trade pot api)
 
 ## Workflow
 

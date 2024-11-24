@@ -83,17 +83,20 @@ export const searchEmissionFactors = async (
   const response = await api.get("/data/v1/search", {
     params: searchParams,
     paramsSerializer: (params) => {
-      return Object.entries(params)
-        .filter(([_, value]) => value !== undefined) // Remove undefined values
-        .map(([key, value]) => {
-          // Encode the value properly, replacing spaces with +
-          const encodedValue = encodeURIComponent(value.toString()).replace(
-            /%20/g,
-            "+"
-          );
-          return `${key}=${encodedValue}`;
-        })
-        .join("&");
+      return (
+        Object.entries(params)
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          .filter(([_, value]) => value !== undefined) // Remove undefined values
+          .map(([key, value]) => {
+            // Encode the value properly, replacing spaces with +
+            const encodedValue = encodeURIComponent(value.toString()).replace(
+              /%20/g,
+              "+"
+            );
+            return `${key}=${encodedValue}`;
+          })
+          .join("&")
+      );
     },
   });
 

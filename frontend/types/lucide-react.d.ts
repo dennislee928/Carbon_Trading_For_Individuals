@@ -8,6 +8,8 @@ declare module "lucide-react" {
   }
 
   export const Search: FC<IconProps>;
+  export const Check: FC<IconProps>;
+  export const Copy: FC<IconProps>;
   export const ArrowRight: FC<IconProps>;
   export const CreditCard: FC<IconProps>;
   export const Database: FC<IconProps>;

@@ -1,85 +1,55 @@
-// services/climatiq/api/index.ts
-import {
-  SelectorModel,
-  ParametersModel,
-  EstimationModel,
-  EmissionFactorResponse,
-  EstimationResponse,
-  UnitTypesResponse,
-  DataVersionsResponse,
-  ManagementResponse,
-} from "../types/models";
+import axios from "axios";
 
-export class ClimatiqAPI {
-  private static readonly BASE_URL = process.env.NEXT_PUBLIC_CLIMATIQ_API_URL;
-  private static readonly API_KEY = process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY;
+// Climatiq API Base URL
+const BASE_URL = "https://beta3.api.climatiq.io";
 
-  //Base URL:https://api.climatiq.io
-  //Search:https://api.climatiq.io/data/v1/search
-  //get Unit Types:https://api.climatiq.io/data/v1/unit-types
-  //get dataversions:https://api.climatiq.io/data/v1/data-versions
-  //get https://preview.api.climatiq.io/management/v1-preview1/project
-  //post https://preview.api.climatiq.io/management/v1-preview1/project
-  //patch https://preview.api.climatiq.io/management/v1-preview1/project/:project_id
-  //delete https://preview.api.climatiq.io/management/v1-preview1/project/:project_id
+// Add your API key (store it securely in environment variables)
+const API_KEY = process.env.CLIMATIQ_API_KEY;
 
-  //Estimate:https://preview.api.climatiq.io/freight/v2-preview1/intermodal
+// Axios instance
+const apiClient = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    Authorization: `Bearer ${API_KEY}`,
+    "Content-Type": "application/json",
+  },
+});
 
-  private static async fetchAPI<T>(
-    endpoint: string,
-    method: "GET" | "POST" = "GET",
-    body?: any
-  ): Promise<T> {
-    const response = await fetch(`${this.BASE_URL}${endpoint}`, {
-      method,
-      headers: {
-        Authorization: `Bearer ${this.API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    });
+// Fetch emission factors
+export const fetchEmissionFactors = async (selectorParams: {
+  activity_id?: string;
+  source?: string;
+  region?: string;
+  year?: number;
+}) => {
+  const response = await apiClient.get("/search", {
+    params: selectorParams,
+  });
+  return response.data;
+};
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "API request failed");
-    }
+// Calculate emissions
+export const calculateEmissions = async (params: {
+  emission_factor: {
+    activity_id: string;
+    source: string;
+    region?: string;
+    year?: number;
+  };
+  parameters: any;
+}) => {
+  const response = await apiClient.post("/estimate", params);
+  return response.data;
+};
 
-    return response.json();
-  }
+// Fetch data versions
+export const fetchDataVersions = async () => {
+  const response = await apiClient.get("/data-versions");
+  return response.data;
+};
 
-  // Selector API
-  static async searchEmissionFactors(
-    params: SelectorModel
-  ): Promise<EmissionFactorResponse[]> {
-    return this.fetchAPI("/search", "POST", params);
-  }
-
-  // Parameters API
-  static async getEmissionFactors(
-    params: ParametersModel
-  ): Promise<EmissionFactorResponse> {
-    return this.fetchAPI("/emission-factors", "GET", params);
-  }
-
-  // Estimation API
-  static async calculateEmissions(
-    params: EstimationModel
-  ): Promise<EstimationResponse> {
-    return this.fetchAPI("/estimate", "POST", params);
-  }
-
-  // Unit Types API
-  static async getUnitTypes(): Promise<UnitTypesResponse> {
-    return this.fetchAPI("/unit-types");
-  }
-
-  // Data Versions API
-  static async getDataVersions(): Promise<DataVersionsResponse> {
-    return this.fetchAPI("/data-versions");
-  }
-
-  // Management API
-  static async getManagementData(): Promise<ManagementResponse> {
-    return this.fetchAPI("/management");
-  }
-}
+// Fetch unit types
+export const fetchUnitTypes = async () => {
+  const response = await apiClient.get("/unit-types");
+  return response.data;
+};

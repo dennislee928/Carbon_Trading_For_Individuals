@@ -21,7 +21,7 @@ export default function Home() {
           <UnitTypesDisplay />
         </section>
 
-        {/* Emission Factors Search Section */}
+        {/* Emission Factors Search Section! */}
         <section className="mb-12">
           <EmissionFactorsSearch />
         </section>

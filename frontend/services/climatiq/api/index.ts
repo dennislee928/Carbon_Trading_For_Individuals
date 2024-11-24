@@ -1,12 +1,9 @@
 import axios from "axios";
 
-// Climatiq API Base URL
+// Base configuration
 const BASE_URL = "https://beta3.api.climatiq.io";
-
-// Add your API key (store it securely in environment variables)
 const API_KEY = process.env.CLIMATIQ_API_KEY;
 
-// Axios instance
 const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -15,21 +12,31 @@ const apiClient = axios.create({
   },
 });
 
-// Fetch emission factors
-export const fetchEmissionFactors = async (selectorParams: {
+/** Search Emission Factors */
+export const fetchEmissionFactors = async (params: {
   activity_id?: string;
   source?: string;
   region?: string;
   year?: number;
 }) => {
-  const response = await apiClient.get("/search", {
-    params: selectorParams,
-  });
+  const response = await apiClient.get("/search", { params });
   return response.data;
 };
 
-// Calculate emissions
-export const calculateEmissions = async (params: {
+/** Data Versions */
+export const fetchDataVersions = async () => {
+  const response = await apiClient.get("/data-versions");
+  return response.data;
+};
+
+/** Unit Types */
+export const fetchUnitTypes = async () => {
+  const response = await apiClient.get("/unit-types");
+  return response.data;
+};
+
+/** Estimate Emissions */
+export const estimateEmissions = async (params: {
   emission_factor: {
     activity_id: string;
     source: string;
@@ -42,14 +49,62 @@ export const calculateEmissions = async (params: {
   return response.data;
 };
 
-// Fetch data versions
-export const fetchDataVersions = async () => {
-  const response = await apiClient.get("/data-versions");
+/** Intermodal Freight */
+export const fetchIntermodalFreight = async (params: any) => {
+  const response = await apiClient.post("/intermodal-freight", params);
   return response.data;
 };
 
-// Fetch unit types
-export const fetchUnitTypes = async () => {
-  const response = await apiClient.get("/unit-types");
+/** Procurement */
+export const fetchProcurement = async (params: any) => {
+  const response = await apiClient.post("/procurement", params);
+  return response.data;
+};
+
+/** Classifications */
+export const fetchClassifications = async () => {
+  const response = await apiClient.get("/classifications");
+  return response.data;
+};
+
+/** Computing */
+export const fetchComputing = async (params: any) => {
+  const response = await apiClient.post("/computing", params);
+  return response.data;
+};
+
+/** Custom Mappings */
+export const fetchCustomMappings = async () => {
+  const response = await apiClient.get("/custom-mappings");
+  return response.data;
+};
+
+/** Travel */
+export const fetchTravel = async (params: any) => {
+  const response = await apiClient.post("/travel", params);
+  return response.data;
+};
+
+/** Autopilot */
+export const fetchAutopilot = async (params: any) => {
+  const response = await apiClient.post("/autopilot", params);
+  return response.data;
+};
+
+/** Energy */
+export const fetchEnergy = async (params: any) => {
+  const response = await apiClient.post("/energy", params);
+  return response.data;
+};
+
+/** CBAM */
+export const fetchCBAM = async (params: any) => {
+  const response = await apiClient.post("/cbam", params);
+  return response.data;
+};
+
+/** Management */
+export const fetchManagement = async () => {
+  const response = await apiClient.get("/management");
   return response.data;
 };

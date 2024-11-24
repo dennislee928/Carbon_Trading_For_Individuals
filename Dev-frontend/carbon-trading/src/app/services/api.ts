@@ -42,3 +42,13 @@ export const searchEmissionFactors = async (
   const response = await api.get("/data/v1/search", { params });
   return response.data;
 };
+
+export interface UnitType {
+  unit_type: string;
+  units: string[];
+}
+
+export const getUnitTypes = async (): Promise<UnitType[]> => {
+  const response = await api.get("/data/v1/unit-types");
+  return response.data.unit_types;
+};

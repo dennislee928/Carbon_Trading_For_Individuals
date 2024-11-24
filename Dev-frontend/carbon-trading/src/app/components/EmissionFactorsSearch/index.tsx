@@ -1,7 +1,7 @@
 // app/components/EmissionFactorsSearch/index.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
 import {
   searchEmissionFactors,
@@ -20,12 +20,20 @@ export default function EmissionFactorsSearch() {
   });
 
   const [debouncedQuery] = useDebounce(filters.query, 500);
-
+  // Add effect to trigger search when debouncedQuery changes
+  useEffect(() => {
+    if (debouncedQuery !== undefined) {
+      handleSearch();
+    }
+  }, [debouncedQuery]);
   const handleSearch = async (e?: React.FormEvent) => {
     e?.preventDefault();
     setIsLoading(true);
     try {
-      const response = await searchEmissionFactors(filters);
+      const response = await searchEmissionFactors({
+        ...filters,
+        query: debouncedQuery, // Use the debounced query value
+      });
       setResults(response.results);
       setTotalPages(response.last_page);
     } catch (error) {

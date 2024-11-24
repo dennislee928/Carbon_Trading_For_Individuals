@@ -1,5 +1,6 @@
 // app/page.tsx
 import EmissionFactorsSearch from "./components/EmissionFactorsSearch";
+import UnitTypesDisplay from "./components/UnitTypesDisplay";
 
 export default function Home() {
   return (
@@ -9,17 +10,15 @@ export default function Home() {
           Carbon Trading Platform
         </h1>
 
+        {/* Unit Types Section */}
+        <section className="mb-12">
+          <UnitTypesDisplay />
+        </section>
+
         {/* Emission Factors Search Section */}
         <section className="mb-12">
           <EmissionFactorsSearch />
         </section>
-
-        {/* Add more search-related sections here */}
-        {/* For example:
-        <section className="mb-12">
-          <OtherSearchComponent />
-        </section>
-        */}
       </div>
     </main>
   );

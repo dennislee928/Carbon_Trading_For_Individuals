@@ -1,6 +1,7 @@
 // app/page.tsx
 import EmissionFactorsSearch from "./components/EmissionFactorsSearch";
 import UnitTypesDisplay from "./components/UnitTypesDisplay";
+import DataVersionsDisplay from "./components/DataVersionsDisplay";
 
 export default function Home() {
   return (
@@ -9,6 +10,11 @@ export default function Home() {
         <h1 className="text-4xl font-bold text-gray-900 mb-8">
           Carbon Trading Platform
         </h1>
+
+        {/* Data Versions Section */}
+        <section className="mb-12">
+          <DataVersionsDisplay />
+        </section>
 
         {/* Unit Types Section */}
         <section className="mb-12">

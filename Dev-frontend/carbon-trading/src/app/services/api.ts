@@ -52,3 +52,18 @@ export const getUnitTypes = async (): Promise<UnitType[]> => {
   const response = await api.get("/data/v1/unit-types");
   return response.data.unit_types;
 };
+//
+// app/services/api.ts
+// ... (keep existing code)
+
+export interface DataVersionsResponse {
+  latest_release: string;
+  latest: string;
+  latest_major: number;
+  latest_minor: number;
+}
+
+export const getDataVersions = async (): Promise<DataVersionsResponse> => {
+  const response = await api.get("/data/v1/data-versions");
+  return response.data;
+};

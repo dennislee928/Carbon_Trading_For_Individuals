@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 
 export default function EmissionFactorsSearch() {
-  const [searchParams, setSearchParams] = useState<SearchParams>({
+  const [searchParams, setSearchParams] = useState<URLSearchParams>({
     data_version: "^19",
     results_per_page: 20,
     page: 1,

@@ -10,7 +10,10 @@ export default function Home() {
         <h1 className="text-4xl font-bold text-gray-900 mb-8">
           Carbon Rights Estimating/Calculation Platform
         </h1>
-
+        {/* Emission Factors Search Section! */}
+        <section className="mb-12">
+          <EmissionFactorsSearch />
+        </section>
         {/* Data Versions Section */}
         <section className="mb-12">
           <DataVersionsDisplay />
@@ -19,11 +22,6 @@ export default function Home() {
         {/* Unit Types Section */}
         <section className="mb-12">
           <UnitTypesDisplay />
-        </section>
-
-        {/* Emission Factors Search Section! */}
-        <section className="mb-12">
-          <EmissionFactorsSearch />
         </section>
       </div>
     </main>

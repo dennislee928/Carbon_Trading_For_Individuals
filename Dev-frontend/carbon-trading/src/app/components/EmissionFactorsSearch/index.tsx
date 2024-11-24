@@ -1,4 +1,5 @@
 // Dev-frontend/carbon-trading/src/app/components/EmissionFactorsSearch/index.tsx
+"use client";
 import React, { useState, useEffect } from "react";
 import {
   Box,

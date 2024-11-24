@@ -1,8 +1,12 @@
+# Ignore unnecessary or sensitive files
 .git
 .env
 .env.*
-node_modules
 npm-debug.log
+
+# Optional
 README.md
 
-.vercel
+# Do NOT ignore the following:
+!.vercel
+node_modules/ # This can stay ignored since Vercel installs dependencies automatically

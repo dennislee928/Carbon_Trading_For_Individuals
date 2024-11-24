@@ -8,7 +8,10 @@ export default function EmissionCalculator() {
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const { searchEmissionFactors, calculateEmissionsWithParams } = useClimatiq();
+  const {
+    getEmissionFactors: searchEmissionFactors,
+    calculateEmissions: calculateEmissionsWithParams,
+  } = useClimatiq();
 
   const handleSearch = async () => {
     try {
@@ -51,6 +54,7 @@ export default function EmissionCalculator() {
     <div className="p-4">
       <h1 className="text-lg font-bold mb-4">Emission Calculator</h1>
       <button
+        type="button"
         onClick={handleSearch}
         className="px-4 py-2 bg-blue-500 text-white rounded"
         disabled={loading}
@@ -58,6 +62,7 @@ export default function EmissionCalculator() {
         {loading ? "Searching..." : "Search Emission Factors"}
       </button>
       <button
+        type="button"
         onClick={handleCalculate}
         className="px-4 py-2 bg-green-500 text-white rounded ml-4"
         disabled={loading}

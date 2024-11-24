@@ -1,63 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 import { useClimatiq } from "@/hooks/useClimatiq";
-import {
-  SearchParams,
-  EmissionSelector,
-  EmissionParameters,
-  EmissionEstimation,
-  EmissionParams,
-} from "@/types/climatiq";
 
 export default function DashboardPage() {
-  // State management
-  const [loading, setLoading] = useState<boolean>(false);
-  const [searchParams, setSearchParams] = useState<SearchParams>({
-    data_version: "",
-    activity_id: "",
-  });
-  const [emissionParams, setEmissionParams] = useState<EmissionParameters>({
-    area: {
-      value: 0,
-      unit: "m2",
-    },
-    money: {
-      value: 0,
-      unit: "USD",
-    },
-  });
-  const [result, setResult] = useState<EmissionEstimation | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [selectedApi, setSelectedApi] =
+    useState<keyof typeof apiFunctions>("estimate");
+  const [apiParams, setApiParams] = useState<any>({});
+  const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Hooks
-  const { getEmissionFactors, calculateEmissions } = useClimatiq();
+  const {
+    getEmissionFactors,
+    calculateEmissions,
+    getManagementData,
+    getDataVersions,
+    getUnitTypes,
+    getIntermodalFreight,
+  } = useClimatiq();
 
-  // Handlers
-  const handleSearchParamsChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-    setSearchParams((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setResult(null);
-  };
-
-  const handleEmissionParamsChange = (
-    category: keyof EmissionParameters,
-    field: "value" | "unit",
-    value: string | number
-  ) => {
-    setEmissionParams((prev) => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [field]: value,
-      },
-    }));
+  const apiFunctions = {
+    search: getEmissionFactors,
+    estimate: calculateEmissions,
+    "data-versions": getDataVersions,
+    "unit-types": getUnitTypes,
+    management: getManagementData,
+    "intermodal-freight": getIntermodalFreight,
   };
 
   const handleCalculate = async () => {
@@ -65,27 +34,13 @@ export default function DashboardPage() {
       setLoading(true);
       setError(null);
 
-      // Transform parameters for API
-      const apiParams: EmissionParams = {
-        data_version: searchParams.data_version,
-        activity_id: searchParams.activity_id,
-        parameters: {
-          area: emissionParams.area,
-          money: emissionParams.money,
-        },
-      };
+      // Retrieve the selected API function
+      const apiFunction = apiFunctions[selectedApi];
+      if (!apiFunction) throw new Error("Invalid API selected.");
 
-      // First get emission factors
-      const selector: EmissionSelector = {
-        data_version: searchParams.data_version,
-        activity_id: searchParams.activity_id,
-        region: searchParams.region,
-        year: searchParams.year,
-      };
-
-      const emissionFactors = await getEmissionFactors(selector);
-      const response = await calculateEmissions(apiParams);
-      // setResult(response);
+      // Call the selected API function
+      const response = await apiFunction(apiParams);
+      setResult(response);
     } catch (err) {
       const errorMessage =
         err instanceof Error
@@ -99,145 +54,101 @@ export default function DashboardPage() {
     }
   };
 
-  const renderEmissionParams = () => (
+  return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold mb-6" id="page-title">
-        Carbon Emissions Calculator
-      </h1>
+      <h1 className="text-2xl font-bold mb-6">Climatiq API Dashboard</h1>
 
-      <form
-        role="form"
-        aria-labelledby="page-title"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleCalculate();
-        }}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <section aria-labelledby="search-params-title">
-            <h2 id="search-params-title" className="text-xl font-semibold mb-4">
-              Search Parameters
-            </h2>
-            <div className="space-y-4">
-              {/* Area Input Group */}
-              <div className="form-group">
-                <Label htmlFor="area_value" className="block mb-2">
-                  Area
-                </Label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    id="area_value"
-                    name="area_value"
-                    value={emissionParams.area.value}
-                    onChange={(e) =>
-                      handleEmissionParamsChange(
-                        "area",
-                        "value",
-                        Number(e.target.value)
-                      )
-                    }
-                    className="flex-1 p-2 border rounded-md"
-                    placeholder="Enter area value"
-                    aria-label="Area value"
-                    min="0"
-                    step="0.01"
-                    required
-                  />
-                  <select
-                    id="area_unit"
-                    name="area_unit"
-                    value={emissionParams.area.unit}
-                    onChange={(e) =>
-                      handleEmissionParamsChange("area", "unit", e.target.value)
-                    }
-                    className="w-24 p-2 border rounded-md"
-                    aria-label="Area unit"
-                    title="Select area unit"
-                  >
-                    <option value="m2">m²</option>
-                    <option value="ft2">ft²</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Money Input Group */}
-              <div className="form-group">
-                <Label htmlFor="money_value" className="block mb-2">
-                  Money
-                </Label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    id="money_value"
-                    name="money_value"
-                    value={emissionParams.money.value}
-                    onChange={(e) =>
-                      handleEmissionParamsChange(
-                        "money",
-                        "value",
-                        Number(e.target.value)
-                      )
-                    }
-                    className="flex-1 p-2 border rounded-md"
-                    placeholder="Enter amount"
-                    aria-label="Money value"
-                    min="0"
-                    step="0.01"
-                  />
-                  <select
-                    id="money_unit"
-                    name="money_unit"
-                    value={emissionParams.money.unit}
-                    onChange={(e) =>
-                      handleEmissionParamsChange(
-                        "money",
-                        "unit",
-                        e.target.value
-                      )
-                    }
-                    className="w-24 p-2 border rounded-md"
-                    aria-label="Currency unit"
-                    title="Select currency"
-                  >
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section aria-labelledby="results-title">
-            <h2 id="results-title" className="text-xl font-semibold mb-4">
-              Results
-            </h2>
-            {/* Results content */}
-          </section>
-        </div>
-
-        <button
-          type="submit"
-          disabled={
-            loading || !searchParams.data_version || !searchParams.activity_id
+      <div className="mb-4">
+        <label htmlFor="api-selector" className="block font-medium mb-2">
+          Select API Endpoint
+        </label>
+        <select
+          id="api-selector"
+          value={selectedApi}
+          onChange={(e) =>
+            setSelectedApi(e.target.value as keyof typeof apiFunctions)
           }
-          className="w-full mt-6 py-2 px-4 bg-blue-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
-          {...(loading ? { "aria-busy": "true" } : {})} // Only add aria-busy when loading
+          className="w-full p-2 border rounded-md"
         >
-          {loading ? "Calculating..." : "Calculate Emissions"}
-        </button>
-      </form>
+          {Object.keys(apiFunctions).map((api) => (
+            <option key={api} value={api}>
+              {api}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      {error && (
-        <div
-          role="alert"
-          className="mt-4 p-4 border border-red-300 bg-red-50 text-red-700 rounded-md"
-        >
-          {error}
-        </div>
+      {/* Render dynamic inputs based on selected API */}
+      <div className="space-y-4">
+        {selectedApi === "estimate" && (
+          <>
+            <div>
+              <label className="block mb-2">Activity ID</label>
+              <input
+                type="text"
+                placeholder="Activity ID"
+                value={apiParams.activity_id || ""}
+                onChange={(e) =>
+                  setApiParams({ ...apiParams, activity_id: e.target.value })
+                }
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block mb-2">Volume</label>
+              <input
+                type="number"
+                placeholder="Volume"
+                value={apiParams.parameters?.volume?.value || ""}
+                onChange={(e) =>
+                  setApiParams({
+                    ...apiParams,
+                    parameters: {
+                      ...apiParams.parameters,
+                      volume: { value: Number(e.target.value), unit: "liter" },
+                    },
+                  })
+                }
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+          </>
+        )}
+
+        {selectedApi === "search" && (
+          <div>
+            <label className="block mb-2">Activity ID</label>
+            <input
+              type="text"
+              placeholder="Activity ID"
+              value={apiParams.activity_id || ""}
+              onChange={(e) =>
+                setApiParams({ ...apiParams, activity_id: e.target.value })
+              }
+              className="w-full p-2 border rounded-md"
+            />
+          </div>
+        )}
+
+        {selectedApi === "management" && (
+          <p>No input needed for the management API.</p>
+        )}
+      </div>
+
+      <button
+        onClick={handleCalculate}
+        className="w-full mt-6 py-2 px-4 bg-blue-500 text-white rounded-md"
+        disabled={loading}
+      >
+        {loading ? "Loading..." : "Fetch Data"}
+      </button>
+
+      {result && (
+        <pre className="mt-4 bg-gray-100 p-2 rounded">
+          {JSON.stringify(result, null, 2)}
+        </pre>
       )}
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
-
-  return renderEmissionParams();
 }

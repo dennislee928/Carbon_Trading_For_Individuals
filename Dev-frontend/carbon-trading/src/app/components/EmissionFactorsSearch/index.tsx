@@ -12,15 +12,9 @@ import {
   Grid,
   Typography,
   Tooltip,
-  // Chip,
   FormHelperText,
+  SelectChangeEvent, // Add this import
 } from "@mui/material";
-import {
-  SearchParams,
-  searchEmissionFactors,
-  getUnitTypes,
-  getDataVersions,
-} from "@/app/services/api";
 
 export default function EmissionFactorsSearch() {
   const [searchParams, setSearchParams] = useState<SearchParams>({
@@ -58,9 +52,12 @@ export default function EmissionFactorsSearch() {
     fetchInitialData();
   }, []);
 
+  // Update the handleChange function with correct typing
   const handleChange =
     (field: keyof SearchParams) =>
-    (event: React.ChangeEvent<{ value: unknown }>) => {
+    (
+      event: SelectChangeEvent<string> | React.ChangeEvent<HTMLInputElement>
+    ) => {
       setSearchParams((prev) => ({
         ...prev,
         [field]: event.target.value,
@@ -81,7 +78,6 @@ export default function EmissionFactorsSearch() {
               label="Search Query"
               value={searchParams.query || ""}
               onChange={handleChange("query")}
-              helperText="Enter keywords to search across emission factors"
             />
           </Tooltip>
         </Grid>
@@ -101,9 +97,6 @@ export default function EmissionFactorsSearch() {
                 </MenuItem>
               ))}
             </Select>
-            <FormHelperText>
-              Select the data version for emission factors
-            </FormHelperText>
           </FormControl>
         </Grid>
 

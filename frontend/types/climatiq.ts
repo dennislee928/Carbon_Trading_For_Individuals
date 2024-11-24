@@ -120,4 +120,6 @@ export interface EmissionFactor {
   year: number;
   region: string;
   unit: string; // Add any relevant fields based on your API response
+
+  activity_id: string;
 }

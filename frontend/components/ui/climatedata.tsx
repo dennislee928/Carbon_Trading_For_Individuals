@@ -1,41 +1,44 @@
-import React from "react";
-
+import { useState } from "react";
 import { useClimatiq } from "@/hooks/useClimatiq";
-//
-export const ClimatiqData: React.FC = () => {
-  const { data, loading, error } = useClimatiq();
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+export default function ClimatiqData() {
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  const { getEmissionFactors } = useClimatiq();
 
-  if (!data) {
-    return <div>No data available</div>;
-  }
+  const fetchEmissionFactors = async () => {
+    try {
+      setLoading(true);
+      const response = await getEmissionFactors({
+        activity_id: "fuel_combustion",
+      });
+      setResult(response);
+    } catch (err) {
+      setError("Failed to fetch emission factors");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="climatiq-data">
-      <h2>Emission Data</h2>
-      <div className="data-container">
-        <p>
-          CO2 Equivalent: {data.co2e} {data.co2e_unit}
-        </p>
-        {/* Add more data fields as needed */}
-      </div>
-      <style jsx>{`
-        .climatiq-data {
-          padding: 20px;
-          border: 1px solid #ccc;
-          border-radius: 8px;
-        }
-        .data-container {
-          margin-top: 10px;
-        }
-      `}</style>
+    <div>
+      <button
+        type="button"
+        onClick={fetchEmissionFactors}
+        disabled={loading}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        {loading ? "Loading..." : "Fetch Emission Factors"}
+      </button>
+
+      {result && (
+        <pre className="mt-4 bg-gray-100 p-4 rounded">
+          {JSON.stringify(result, null, 2)}
+        </pre>
+      )}
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
-};
+}

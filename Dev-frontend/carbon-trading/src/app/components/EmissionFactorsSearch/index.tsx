@@ -67,7 +67,6 @@ export default function EmissionFactorsSearch() {
                 Category
               </label>
               <select
-                typeof="select"
                 value={filters.category || ""}
                 onChange={(e) =>
                   setFilters((prev) => ({ ...prev, category: e.target.value }))

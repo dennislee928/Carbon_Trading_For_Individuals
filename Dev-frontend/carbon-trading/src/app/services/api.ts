@@ -24,6 +24,7 @@ export interface SearchParams {
   calculation_method?: "ar4" | "ar5" | "ar6";
   page?: number;
   results_per_page?: number;
+  data_version?: string; // Add this field
 }
 
 export interface EmissionFactor {
@@ -58,7 +59,12 @@ export interface DataVersionsResponse {
 export const searchEmissionFactors = async (
   params: SearchParams
 ): Promise<SearchResponse> => {
-  const response = await api.get("/data/v1/search", { params });
+  const searchParams = {
+    ...params,
+    data_version: "^19", // Always include this default value
+  };
+
+  const response = await api.get("/data/v1/search", { params: searchParams });
   return response.data;
 };
 

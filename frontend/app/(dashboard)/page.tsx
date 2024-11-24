@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import { useClimatiq } from "@/hooks/useClimatiq";
 
 export default function DashboardPage() {

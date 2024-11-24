@@ -1,10 +1,17 @@
 // app/services/api.ts
 import axios from "axios";
 
+const CLIMATIQ_API_KEY = process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY;
+
+if (!CLIMATIQ_API_KEY) {
+  console.error("CLIMATIQ_API_KEY is not set in environment variables");
+}
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://api.climatiq.io",
   headers: {
-    Authorization: `Bearer ${process.env.CLIMATIQ_API_KEY}`,
+    Authorization: `Bearer ${CLIMATIQ_API_KEY}`,
+    "Content-Type": "application/json",
   },
 });
 
@@ -26,7 +33,6 @@ export interface EmissionFactor {
   source: string;
   region: string;
   year: number;
-  // Add more fields as needed
 }
 
 export interface SearchResponse {
@@ -36,25 +42,10 @@ export interface SearchResponse {
   total_results: number;
 }
 
-export const searchEmissionFactors = async (
-  params: SearchParams
-): Promise<SearchResponse> => {
-  const response = await api.get("/data/v1/search", { params });
-  return response.data;
-};
-
 export interface UnitType {
   unit_type: string;
   units: string[];
 }
-
-export const getUnitTypes = async (): Promise<UnitType[]> => {
-  const response = await api.get("/data/v1/unit-types");
-  return response.data.unit_types;
-};
-//
-// app/services/api.ts
-// ... (keep existing code)
 
 export interface DataVersionsResponse {
   latest_release: string;
@@ -62,6 +53,19 @@ export interface DataVersionsResponse {
   latest_major: number;
   latest_minor: number;
 }
+
+// API endpoints
+export const searchEmissionFactors = async (
+  params: SearchParams
+): Promise<SearchResponse> => {
+  const response = await api.get("/data/v1/search", { params });
+  return response.data;
+};
+
+export const getUnitTypes = async (): Promise<UnitType[]> => {
+  const response = await api.get("/data/v1/unit-types");
+  return response.data.unit_types;
+};
 
 export const getDataVersions = async (): Promise<DataVersionsResponse> => {
   const response = await api.get("/data/v1/data-versions");

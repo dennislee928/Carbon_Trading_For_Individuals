@@ -16,24 +16,38 @@ const api = axios.create({
 });
 
 export interface SearchParams {
+  data_version: string; // Making this required as per the API spec
   query?: string;
+  activity_id?: string;
+  id?: string;
   category?: string;
+  sector?: string;
   source?: string;
-  region?: string;
+  source_dataset?: string;
   year?: number;
+  region?: string;
+  unit_type?: string;
+  source_lca_activity?: string;
   calculation_method?: "ar4" | "ar5" | "ar6";
+  allowed_data_quality_flags?: string[];
+  access_type?: "public" | "private" | "premium";
   page?: number;
   results_per_page?: number;
-  data_version?: string; // Add this field
 }
 
 export interface EmissionFactor {
   id: string;
   name: string;
   category: string;
+  sector?: string;
   source: string;
+  source_dataset?: string;
   region: string;
   year: number;
+  unit_type?: string;
+  source_lca_activity?: string;
+  access_type?: string;
+  data_quality_flags?: string[];
 }
 
 export interface SearchResponse {
@@ -59,12 +73,30 @@ export interface DataVersionsResponse {
 export const searchEmissionFactors = async (
   params: SearchParams
 ): Promise<SearchResponse> => {
+  // Transform allowed_data_quality_flags array to comma-separated string if present
   const searchParams = {
     ...params,
-    data_version: "^19", // Always include this default value
+    data_version: params.data_version || "^19", // Use provided data_version or default to "^19"
+    allowed_data_quality_flags: params.allowed_data_quality_flags?.join(","),
   };
 
-  const response = await api.get("/data/v1/search", { params: searchParams });
+  const response = await api.get("/data/v1/search", {
+    params: searchParams,
+    paramsSerializer: (params) => {
+      return Object.entries(params)
+        .filter(([_, value]) => value !== undefined) // Remove undefined values
+        .map(([key, value]) => {
+          // Encode the value properly, replacing spaces with +
+          const encodedValue = encodeURIComponent(value.toString()).replace(
+            /%20/g,
+            "+"
+          );
+          return `${key}=${encodedValue}`;
+        })
+        .join("&");
+    },
+  });
+
   return response.data;
 };
 

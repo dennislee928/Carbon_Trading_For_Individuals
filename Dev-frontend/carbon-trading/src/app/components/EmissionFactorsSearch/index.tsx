@@ -1,195 +1,250 @@
-// app/components/EmissionFactorsSearch/index.tsx
-"use client";
-
-import { useState, useEffect } from "react";
-import { useDebounce } from "use-debounce";
+// Dev-frontend/carbon-trading/src/app/components/EmissionFactorsSearch/index.tsx
+import React, { useState, useEffect } from "react";
 import {
+  Box,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Grid,
+  Typography,
+  Tooltip,
+  Chip,
+  FormHelperText,
+} from "@mui/material";
+import {
+  SearchParams,
   searchEmissionFactors,
-  type EmissionFactor,
-  type SearchParams,
+  getUnitTypes,
+  getDataVersions,
 } from "@/app/services/api";
 
 export default function EmissionFactorsSearch() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [results, setResults] = useState<EmissionFactor[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [filters, setFilters] = useState<SearchParams>({
-    query: "",
-    page: 1,
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    data_version: "^19",
     results_per_page: 20,
+    page: 1,
   });
+  const [unitTypes, setUnitTypes] = useState<string[]>([]);
+  const [dataVersions, setDataVersions] = useState<string[]>([]);
 
-  const [debouncedQuery] = useDebounce(filters.query, 500);
-  // Add effect to trigger search when debouncedQuery changes
+  // Predefined options for select fields
+  const calculationMethods = ["ar4", "ar5", "ar6"];
+  const accessTypes = ["public", "private", "premium"];
+  const years = Array.from(
+    { length: 2024 - 1990 + 1 },
+    (_, i) => 1990 + i
+  ).reverse();
+
   useEffect(() => {
-    if (debouncedQuery !== undefined) {
-      handleSearch();
-    }
-  }, [debouncedQuery]);
-  const handleSearch = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-    setIsLoading(true);
-    try {
-      const response = await searchEmissionFactors({
-        ...filters,
-        query: debouncedQuery, // Use the debounced query value
-      });
-      setResults(response.results);
-      setTotalPages(response.last_page);
-    } catch (error) {
-      console.error("Search failed:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    const fetchInitialData = async () => {
+      try {
+        const [unitTypesData, dataVersionsData] = await Promise.all([
+          getUnitTypes(),
+          getDataVersions(),
+        ]);
+        setUnitTypes(unitTypesData.map((ut) => ut.unit_type));
+        setDataVersions([
+          dataVersionsData.latest,
+          dataVersionsData.latest_release,
+        ]);
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      }
+    };
+    fetchInitialData();
+  }, []);
+
+  const handleChange =
+    (field: keyof SearchParams) =>
+    (event: React.ChangeEvent<{ value: unknown }>) => {
+      setSearchParams((prev) => ({
+        ...prev,
+        [field]: event.target.value,
+      }));
+    };
 
   return (
-    <div className="w-full">
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Emission Factors Search
-        </h2>
-
-        <form onSubmit={handleSearch} className="space-y-6">
-          {/* Search Input */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Search Query
-            </label>
-            <input
-              type="text"
-              value={filters.query}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, query: e.target.value }))
-              }
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search emission factors..."
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h5" gutterBottom>
+        Emission Factors Search
+      </Typography>
+      <Grid container spacing={3}>
+        {/* Search Query */}
+        <Grid item xs={12}>
+          <Tooltip title="Free-text search that matches IDs, names, and descriptions. Uses fuzzy matching.">
+            <TextField
+              fullWidth
+              label="Search Query"
+              value={searchParams.query || ""}
+              onChange={handleChange("query")}
+              helperText="Enter keywords to search across emission factors"
             />
-          </div>
+          </Tooltip>
+        </Grid>
 
-          {/* Filters Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Category */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category
-              </label>
-              <select
-                value={filters.category || ""}
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, category: e.target.value }))
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">All Categories</option>
-                <option value="electricity">Electricity</option>
-                <option value="transport">Transport</option>
-                <option value="industrial">Industrial</option>
-              </select>
-            </div>
-
-            {/* Region */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Region
-              </label>
-              <input
-                type="text"
-                value={filters.region || ""}
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, region: e.target.value }))
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter region...(Ex:NZ,AU-NSW...etc)"
-              />
-            </div>
-
-            {/* Year */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Year
-              </label>
-              <input
-                type="number"
-                value={filters.year || ""}
-                onChange={(e) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    year: parseInt(e.target.value),
-                  }))
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter year..."
-              />
-            </div>
-          </div>
-
-          {/* Search Button */}
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-          >
-            {isLoading ? "Searching..." : "Search"}
-          </button>
-        </form>
-      </div>
-
-      {/* Results Section */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-xl font-semibold mb-4">Results</h3>
-        {isLoading ? (
-          <div className="text-center py-8">Loading...</div>
-        ) : results.length > 0 ? (
-          <div className="space-y-4">
-            {results.map((factor) => (
-              <div
-                key={factor.id}
-                className="border border-gray-200 rounded-md p-4 hover:bg-gray-50"
-              >
-                <h4 className="font-medium">{factor.name}</h4>
-                <div className="mt-2 text-sm text-gray-500">
-                  <p>Category: {factor.category}</p>
-                  <p>Region: {factor.region}</p>
-                  <p>Year: {factor.year}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-8 text-gray-500">No results found</div>
-        )}
-
-        {/* Pagination */}
-        {results.length > 0 && (
-          <div className="mt-6 flex justify-center space-x-2">
-            <button
-              onClick={() =>
-                setFilters((prev) => ({
-                  ...prev,
-                  page: Math.max(1, (prev.page || 1) - 1),
-                }))
-              }
-              disabled={filters.page === 1}
-              className="px-4 py-2 border rounded-md disabled:opacity-50"
+        {/* Data Version */}
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <InputLabel>Data Version</InputLabel>
+            <Select
+              value={searchParams.data_version}
+              onChange={handleChange("data_version")}
+              label="Data Version"
             >
-              Previous
-            </button>
-            <span className="px-4 py-2">
-              Page {filters.page} of {totalPages}
-            </span>
-            <button
-              onClick={() =>
-                setFilters((prev) => ({ ...prev, page: (prev.page || 1) + 1 }))
-              }
-              disabled={filters.page === totalPages}
-              className="px-4 py-2 border rounded-md disabled:opacity-50"
+              {dataVersions.map((version) => (
+                <MenuItem key={version} value={version}>
+                  Version {version}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>
+              Select the data version for emission factors
+            </FormHelperText>
+          </FormControl>
+        </Grid>
+
+        {/* Year */}
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <InputLabel>Year</InputLabel>
+            <Select
+              value={searchParams.year || ""}
+              onChange={handleChange("year")}
+              label="Year"
             >
-              Next
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
+              <MenuItem value="">All Years</MenuItem>
+              {years.map((year) => (
+                <MenuItem key={year} value={year}>
+                  {year}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>Filter by the most relevant year</FormHelperText>
+          </FormControl>
+        </Grid>
+
+        {/* Category */}
+        <Grid item xs={12} md={6}>
+          <Tooltip title="Filter emission factors by category">
+            <TextField
+              fullWidth
+              label="Category"
+              value={searchParams.category || ""}
+              onChange={handleChange("category")}
+              helperText="Enter a specific category to filter results"
+            />
+          </Tooltip>
+        </Grid>
+
+        {/* Sector */}
+        <Grid item xs={12} md={6}>
+          <Tooltip title="Filter emission factors by sector">
+            <TextField
+              fullWidth
+              label="Sector"
+              value={searchParams.sector || ""}
+              onChange={handleChange("sector")}
+              helperText="Enter a specific sector to filter results"
+            />
+          </Tooltip>
+        </Grid>
+
+        {/* Unit Type */}
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <InputLabel>Unit Type</InputLabel>
+            <Select
+              value={searchParams.unit_type || ""}
+              onChange={handleChange("unit_type")}
+              label="Unit Type"
+            >
+              <MenuItem value="">All Unit Types</MenuItem>
+              {unitTypes.map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>Filter by measurement unit type</FormHelperText>
+          </FormControl>
+        </Grid>
+
+        {/* Calculation Method */}
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <InputLabel>Calculation Method</InputLabel>
+            <Select
+              value={searchParams.calculation_method || ""}
+              onChange={handleChange("calculation_method")}
+              label="Calculation Method"
+            >
+              <MenuItem value="">Default (Latest)</MenuItem>
+              {calculationMethods.map((method) => (
+                <MenuItem key={method} value={method}>
+                  {method.toUpperCase()}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>Select the GWP calculation method</FormHelperText>
+          </FormControl>
+        </Grid>
+
+        {/* Region */}
+        <Grid item xs={12} md={6}>
+          <Tooltip title="Use * as wildcard (e.g., 'US*' matches USA, USC)">
+            <TextField
+              fullWidth
+              label="Region"
+              value={searchParams.region || ""}
+              onChange={handleChange("region")}
+              helperText="Enter region code (supports wildcard *)"
+            />
+          </Tooltip>
+        </Grid>
+
+        {/* Access Type */}
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <InputLabel>Access Type</InputLabel>
+            <Select
+              value={searchParams.access_type || ""}
+              onChange={handleChange("access_type")}
+              label="Access Type"
+            >
+              <MenuItem value="">All Access Types</MenuItem>
+              {accessTypes.map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>Filter by access level</FormHelperText>
+          </FormControl>
+        </Grid>
+
+        {/* Results Per Page */}
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <InputLabel>Results Per Page</InputLabel>
+            <Select
+              value={searchParams.results_per_page}
+              onChange={handleChange("results_per_page")}
+              label="Results Per Page"
+            >
+              {[10, 20, 50, 100, 200, 500].map((num) => (
+                <MenuItem key={num} value={num}>
+                  {num}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText>
+              Number of results to display per page (max 500)
+            </FormHelperText>
+          </FormControl>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }

@@ -112,3 +112,12 @@ export interface EmissionParameters {
     unit: string;
   };
 }
+
+// Add  EmissionFactor
+export interface EmissionFactor {
+  id: string;
+  source: string;
+  year: number;
+  region: string;
+  unit: string; // Add any relevant fields based on your API response
+}

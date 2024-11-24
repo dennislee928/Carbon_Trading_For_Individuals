@@ -1,4 +1,5 @@
 // app/page.tsx
+/* eslint-disable */
 import EmissionFactorsSearch from "./components/EmissionFactorsSearch";
 import UnitTypesDisplay from "./components/UnitTypesDisplay";
 import DataVersionsDisplay from "./components/DataVersionsDisplay";

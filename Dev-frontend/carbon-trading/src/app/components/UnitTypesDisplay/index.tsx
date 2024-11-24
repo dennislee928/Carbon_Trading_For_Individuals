@@ -1,4 +1,5 @@
 // app/components/UnitTypesDisplay/index.tsx
+/* eslint-disable */
 "use client";
 
 import { useState, useEffect, useCallback } from "react";

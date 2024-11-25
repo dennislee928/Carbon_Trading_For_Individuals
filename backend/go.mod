@@ -4,8 +4,6 @@ go 1.22
 
 toolchain go1.23.2
 
-//toolchain go1.23.2
-
 require (
 	github.com/golang-jwt/jwt/v4 v4.5.1
 	github.com/jackc/pgx/v5 v5.7.1

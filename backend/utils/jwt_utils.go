@@ -26,7 +26,7 @@ func GenerateJWT(email string) (string, error) {
 // ValidateJWT validates a JWT token and returns the claims
 func ValidateJWT(tokenString string) (*jwt.StandardClaims, error) {
     claims := &jwt.StandardClaims{}
-    token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+    _, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
         return jwtKey, nil
     })
     if err != nil {

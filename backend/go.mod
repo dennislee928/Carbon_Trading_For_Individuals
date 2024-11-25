@@ -1,5 +1,6 @@
 module github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend
 
+
 go 1.22
 
 toolchain go1.23.2

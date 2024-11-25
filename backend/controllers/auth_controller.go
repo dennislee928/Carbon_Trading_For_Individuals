@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"carbon-rights-backend/models"
-	"carbon-rights-backend/utils"
+	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/models"
+	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/utils"
+
 	"database/sql"
 	"log"
 	"net/http"

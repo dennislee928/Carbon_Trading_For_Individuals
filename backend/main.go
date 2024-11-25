@@ -2,12 +2,12 @@ package main
 
 import (
 	"carbon-rights-backend/config"
-	"carbon-rights-backend/routes"
 	"log"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
+
 
 func main() {
 	// Initialize Router using gin
@@ -31,53 +31,52 @@ func main() {
 }
 
 func setupRoutes(r *gin.Engine) {
-	// User Registration
-	r.POST("/register", register)
+    // User Registration
+    r.POST("/register", handlers.Register)
 
-	// OTP Verification
-	r.POST("/verify-otp", verifyOTP)
+    // OTP Verification
+    r.POST("/verify-otp", handlers.VerifyOTP)
 
-	// Social Media Login
-	r.POST("/social-login/:provider", socialLogin)
+    // Social Media Login
+    r.POST("/social-login/:provider", handlers.SocialLogin)
 
-	// Login
-	r.POST("/login", login)
+    // Login
+    r.POST("/login", handlers.Login)
 
-	// Password Management
-	r.POST("/forgot-password", forgotPassword)
-	r.POST("/change-password", authMiddleware(), changePassword)
+    // Password Management
+    r.POST("/forgot-password", handlers.ForgotPassword)
+    r.POST("/change-password", middleware.AuthMiddleware(), handlers.ChangePassword)
 
-	// Profile Management
-	r.GET("/profile", authMiddleware(), viewProfile)
-	r.PUT("/profile", authMiddleware(), updateProfile)
-	r.POST("/profile/picture", authMiddleware(), uploadProfilePicture)
+    // Profile Management
+    r.GET("/profile", middleware.AuthMiddleware(), handlers.ViewProfile)
+    r.PUT("/profile", middleware.AuthMiddleware(), handlers.UpdateProfile)
+    r.POST("/profile/picture", middleware.AuthMiddleware(), handlers.UploadProfilePicture)
 
-	// Email & Notification Settings
-	r.PUT("/notification-preferences", authMiddleware(), updateNotificationPreferences)
+    // Email & Notification Settings
+    r.PUT("/notification-preferences", middleware.AuthMiddleware(), handlers.UpdateNotificationPreferences)
 
-	// User Roles & Permissions
-	r.POST("/admin/assign-role", authMiddleware(), adminOnly(), assignRole)
+    // User Roles & Permissions
+    r.POST("/admin/assign-role", middleware.AuthMiddleware(), middleware.AdminOnly(), handlers.AssignRole)
 
-	// Activity Logs & Security
-	r.GET("/login-history", authMiddleware(), viewLoginHistory)
+    // Activity Logs & Security
+    r.GET("/login-history", middleware.AuthMiddleware(), handlers.ViewLoginHistory)
 
-	// Admin-Level Account Functions
-	r.GET("/admin/users", authMiddleware(), adminOnly(), adminViewUsers)
+    // Admin-Level Account Functions
+    r.GET("/admin/users", middleware.AuthMiddleware(), middleware.AdminOnly(), handlers.AdminViewUsers)
 
-	// Account Deletion
-	r.DELETE("/delete-account", authMiddleware(), deleteAccount)
+    // Account Deletion
+    r.DELETE("/delete-account", middleware.AuthMiddleware(), handlers.DeleteAccount)
 
-	// Verification & KYC
-	r.POST("/kyc/upload", authMiddleware(), uploadKYCDocument)
+    // Verification & KYC
+    r.POST("/kyc/upload", middleware.AuthMiddleware(), handlers.UploadKYCDocument)
 
-	// Account Recovery
-	r.POST("/add-recovery-email", authMiddleware(), addRecoveryEmail)
+    // Account Recovery
+    r.POST("/add-recovery-email", middleware.AuthMiddleware(), handlers.AddRecoveryEmail)
 
-	// Home route
-	r.GET("/", func(c *gin.Context) {
-		// handler logic
-	})
+    // Home route
+    r.GET("/", handlers.Home)
+
 
 	// Set up additional routes from the routes package
-	routes.SetupRoutes(r)
+//	routes.SetupRoutes(r)
 }

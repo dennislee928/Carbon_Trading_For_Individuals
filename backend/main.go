@@ -85,5 +85,7 @@ func setupRoutes(r *gin.Engine, db *sql.DB) {
 	r.POST("/add-recovery-email", authMiddleware(), handlers.AddRecoveryEmail)
 
 	// Home route
-	r.GET("/", handlers.Home)
+	r.GET("/", func(c *gin.Context) {
+        handlers.Home(c)
+    })
 }

@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
-mport { cookies } from 'next/headers';
+// Correct
+import { cookies } from "next/headers";
 
 const secret = new TextEncoder().encode(
   process.env.JWT_SECRET || "your-default-secret-key"
@@ -32,11 +33,11 @@ export async function verifyToken(token: string) {
 // Add export setSession
 export async function setSession(token: string) {
   cookies().set({
-    name: 'session',
+    name: "session",
     value: token,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
   });
 }

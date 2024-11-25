@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	bcrypt "golang.org/x/crypto/bcrypt/v4"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // RegisterUser handles the user registration process

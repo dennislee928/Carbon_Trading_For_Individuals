@@ -16,6 +16,14 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 
+//
+interface SearchParamsType {
+  data_version: string;
+  unit_type?: string;
+  page: number;
+  results_per_page: number;
+}
+
 // Define interfaces
 interface UnitType {
   unit_type: string;
@@ -41,6 +49,56 @@ interface SearchParams {
 }
 
 export default function EmissionFactorsSearch() {
+  //
+  const createSearchParams = (params: SearchParams): URLSearchParams => {
+    const searchParams = new URLSearchParams();
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, value.toString());
+      }
+    });
+
+    return searchParams;
+  };
+
+  //
+  const fetchUnitTypes = async (): Promise<UnitType[]> => {
+    try {
+      // Replace with your actual API endpoint
+      const response = await fetch("/api/unit-types");
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching unit types:", error);
+      return [];
+    }
+  };
+  //
+  const fetchDataVersions = async (): Promise<DataVersions> => {
+    try {
+      // Replace with your actual API endpoint
+      const response = await fetch("/api/data-versions");
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching data versions:", error);
+      return { latest: "19", latest_release: "18" };
+    }
+  };
+  //
+  const handleSearch = async () => {
+    try {
+      const params = createSearchParams(searchParams);
+      // Replace with your actual API endpoint
+      const response = await fetch(`/api/search?${params.toString()}`);
+      const data = await response.json();
+      // Handle the search results
+    } catch (error) {
+      console.error("Error performing search:", error);
+    }
+  };
+  //
   const [searchParams, setSearchParams] = useState<SearchParams>({
     data_version: "19",
     results_per_page: 20,
@@ -76,6 +134,14 @@ export default function EmissionFactorsSearch() {
     };
     fetchInitialData();
   }, []);
+  useEffect(() => {
+    // Debounce the search to avoid too many API calls
+    const timeoutId = setTimeout(() => {
+      handleSearch();
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchParams]);
 
   const handleTextChange =
     (field: keyof SearchParams) =>

@@ -5,17 +5,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
+	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
-// InitializeDB sets up the database connection
-func InitializeDB() *sql.DB {
-    err := godotenv.Load()
-    if err != nil {
-        panic("Error loading .env file")
-    }
+var DB *sql.DB
 
+// InitializeDB sets up the database connection
+func InitializeDB() {
     connStr := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable",
         os.Getenv("DB_USER"),
         os.Getenv("DB_PASSWORD"),
@@ -23,10 +19,9 @@ func InitializeDB() *sql.DB {
         os.Getenv("DB_NAME"),
     )
 
-    db, err := sql.Open("postgres", connStr)
+    var err error
+    DB, err = sql.Open("pgx", connStr)
     if err != nil {
         panic(err)
     }
-
-    return db
 }

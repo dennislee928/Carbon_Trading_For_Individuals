@@ -1,6 +1,7 @@
 package models
 
 import (
+	"carbon-rights-backend/db"
 	"time"
 )
 
@@ -16,7 +17,7 @@ type User struct {
 
 // CreateUser inserts a new user into the database
 func CreateUser(user User) error {
-    _, err := db.Exec("INSERT INTO users (email, password_hash, otp, is_verified, created_at) VALUES ($1, $2, $3, $4, $5)",
+    _, err := db.DB.Exec("INSERT INTO users (email, password_hash, otp, is_verified, created_at) VALUES ($1, $2, $3, $4, $5)",
         user.Email, user.PasswordHash, user.OTP, false, user.CreatedAt)
     return err
 }
@@ -24,13 +25,13 @@ func CreateUser(user User) error {
 // GetUserByEmail retrieves a user by their email
 func GetUserByEmail(email string) (User, error) {
     var user User
-    err := db.QueryRow("SELECT user_id, email, password_hash, otp, is_verified, created_at, updated_at FROM users WHERE email = $1", email).
+    err := db.DB.QueryRow("SELECT user_id, email, password_hash, otp, is_verified, created_at, updated_at FROM users WHERE email = $1", email).
         Scan(&user.UserID, &user.Email, &user.PasswordHash, &user.OTP, &user.IsVerified, &user.CreatedAt, &user.UpdatedAt)
     return user, err
 }
 
 // VerifyUser sets a user as verified
 func VerifyUser(email string) error {
-    _, err := db.Exec("UPDATE users SET is_verified = true WHERE email = $1", email)
+    _, err := db.DB.Exec("UPDATE users SET is_verified = true WHERE email = $1", email)
     return err
 }

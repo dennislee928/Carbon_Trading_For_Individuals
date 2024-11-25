@@ -1,7 +1,8 @@
 package models
 
 import (
-	"carbon-rights-backend/db"
+	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/db"
+
 	"time"
 )
 

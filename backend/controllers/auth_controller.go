@@ -4,100 +4,103 @@ import (
 	"carbon-rights-backend/models"
 	"carbon-rights-backend/utils"
 	"database/sql"
+	"log"
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
-// RegisterUser handles user registration
-func RegisterUser(db *sql.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		email := c.PostForm("email")
-		password := c.PostForm("password")
+// RegisterUser handles the user registration process
+func RegisterUser(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	password := r.FormValue("password")
 
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
-			return
-		}
-
-		otp := utils.GenerateOTP()
-		utils.SendOTPEmail(email, otp)
-
-		user := models.User{
-			Email:        email,
-			PasswordHash: string(hashedPassword),
-			OTP:          otp,
-			CreatedAt:    time.Now(),
-		}
-
-		err = models.CreateUser(db, user)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register user"})
-			return
-		}
-
-		c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Printf("Failed to hash password: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
 	}
+
+	otp := utils.GenerateOTP()
+	utils.SendOTPEmail(email, otp)
+
+	user := models.User{
+		Email:       email,
+		PasswordHash: string(hashedPassword),
+		OTP:          otp,
+		CreatedAt:    time.Now(),
+	}
+
+	err = models.CreateUser(user)
+	if err != nil {
+		log.Printf("Failed to create user: %v", err)
+		http.Error(w, "Could not register user", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("User registered successfully. Please verify your email."))
 }
 
 // LoginUser handles user login
-func LoginUser(db *sql.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		email := c.PostForm("email")
-		password := c.PostForm("password")
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	password := r.FormValue("password")
 
-		user, err := models.GetUserByEmail(db, email)
-		if err == sql.ErrNoRows {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
-			return
-		} else if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user"})
-			return
-		}
-
-		err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
-		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
-			return
-		}
-
-		token, err := utils.GenerateJWT(user.Email)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{"token": token})
+	user, err := models.GetUserByEmail(email)
+	if err == sql.ErrNoRows {
+		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		return
+	} else if err != nil {
+		log.Printf("Failed to fetch user: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
 	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
+	if err != nil {
+		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		return
+	}
+
+	token, err := utils.GenerateJWT(user.Email)
+	if err != nil {
+		log.Printf("Failed to generate token: %v", err)
+		http.Error(w, "Failed to generate token", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(token))
 }
 
 // VerifyOTP handles OTP verification
-func VerifyOTP(db *sql.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		email := c.PostForm("email")
-		userOTP := c.PostForm("otp")
+func VerifyOTP(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	userOTP := r.FormValue("otp")
 
-		user, err := models.GetUserByEmail(db, email)
-		if err == sql.ErrNoRows {
-			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
-			return
-		} else if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user"})
+	user, err := models.GetUserByEmail(email)
+	if err == sql.ErrNoRows {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	} else if err != nil {
+		log.Printf("Failed to fetch user: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	if user.OTP == userOTP {
+		err = models.VerifyUser(email)
+		if err != nil {
+			log.Printf("Failed to verify user: %v", err)
+			http.Error(w, "Failed to verify user", http.StatusInternalServerError)
 			return
 		}
-
-		if user.OTP == userOTP {
-			err = models.VerifyUser(db, email)
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to verify user"})
-				return
-			}
-			c.JSON(http.StatusOK, gin.H{"message": "Account verified successfully"})
-		} else {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid OTP"})
-		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Account verified successfully"))
+	} else {
+		http.Error(w, "Invalid OTP", http.StatusUnauthorized)
 	}
 }

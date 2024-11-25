@@ -47,11 +47,11 @@ export default function EmissionFactorsSearch() {
 
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
-        URLSearchParams.set(key, value.toString());
+        searchParams.set(key, value.toString());
       }
     });
 
-    return URLSearchParams;
+    return searchParams;
   };
 
   //
@@ -314,11 +314,7 @@ export default function EmissionFactorsSearch() {
             <InputLabel>Results Per Page</InputLabel>
             <Select
               value={searchParams.results_per_page}
-              onChange={(event) =>
-                handleSelectChange("results_per_page")(
-                  event as SelectChangeEvent<number>
-                )
-              }
+              onChange={handleSelectChange("results_per_page")}
               label="Results Per Page"
             >
               {[10, 20, 50, 100, 200, 500].map((num) => (

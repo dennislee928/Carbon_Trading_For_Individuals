@@ -13,7 +13,7 @@ func main() {
     defer db.Close() // Close the database connection when the app exits
 
     // Set up routes using Gorilla Mux
-    router := routes.SetupRoutes()
+    routes.SetupRoutes()
 
     // Start the HTTP server
     log.Println("Server is starting on port 8080...")

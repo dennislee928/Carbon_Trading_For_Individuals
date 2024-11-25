@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/config"
@@ -18,16 +19,14 @@ func main() {
 	r.Use(cors.Default())
 
 	// Initialize application configuration (e.g., database)
-    db, err := config.InitializeDB()
-    if err != nil {
-        log.Fatalf("Failed to initialize database: %v", err)
-    }
-    defer db.Close()
-    
-    
+	db, err := config.InitializeDB()
+	if err != nil {
+		log.Fatalf("Failed to initialize database: %v", err)
+	}
+	defer db.Close()
 
 	// Set up routes
-	setupRoutes(r)
+	setupRoutes(r, db)
 
 	// Start the server
 	log.Println("Server is starting on port 8080...")
@@ -36,16 +35,15 @@ func main() {
 	}
 }
 
-func setupRoutes(r *gin.Engine) {
+func setupRoutes(r *gin.Engine, db *sql.DB) {
 	// Apply middleware
 	authMiddleware := middleware.AuthMiddleware
-
 	adminMiddleware := middleware.AdminOnly
 
 	// User Registration
 	r.POST("/register", func(c *gin.Context) {
-        models.RegisterUser(db, c.Writer, c.Request)
-    })
+		handlers.RegisterUser(db, c.Writer, c.Request)
+	})
 
 	// OTP Verification
 	r.POST("/verify-otp", handlers.VerifyOTP)

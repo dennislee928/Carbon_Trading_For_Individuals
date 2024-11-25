@@ -180,7 +180,7 @@ export default function EmissionFactorsSearch() {
               fullWidth
               label="Category"
               value={searchParams.category || ""}
-              onChange={handleChange("category")}
+              onChange={handleTextChange("category")}
               helperText="Enter a specific category to filter results"
             />
           </Tooltip>
@@ -193,7 +193,7 @@ export default function EmissionFactorsSearch() {
               fullWidth
               label="Sector"
               value={searchParams.sector || ""}
-              onChange={handleChange("sector")}
+              onChange={handleTextChange("sector")}
               helperText="Enter a specific sector to filter results"
             />
           </Tooltip>
@@ -205,7 +205,7 @@ export default function EmissionFactorsSearch() {
             <InputLabel>Unit Type</InputLabel>
             <Select
               value={searchParams.unit_type || ""}
-              onChange={handleChange("unit_type")}
+              onChange={handleSelectChange("unit_type")}
               label="Unit Type"
             >
               <MenuItem value="">All Unit Types</MenuItem>
@@ -225,7 +225,7 @@ export default function EmissionFactorsSearch() {
             <InputLabel>Calculation Method</InputLabel>
             <Select
               value={searchParams.calculation_method || ""}
-              onChange={handleChange("calculation_method")}
+              onChange={handleSelectChange("calculation_method")}
               label="Calculation Method"
             >
               <MenuItem value="">Default (Latest)</MenuItem>
@@ -246,7 +246,7 @@ export default function EmissionFactorsSearch() {
               fullWidth
               label="Region"
               value={searchParams.region || ""}
-              onChange={handleChange("region")}
+              onChange={handleTextChange("region")}
               helperText="Enter region code (supports wildcard *)"
             />
           </Tooltip>
@@ -258,7 +258,7 @@ export default function EmissionFactorsSearch() {
             <InputLabel>Access Type</InputLabel>
             <Select
               value={searchParams.access_type || ""}
-              onChange={handleChange("access_type")}
+              onChange={handleSelectChange("access_type")}
               label="Access Type"
             >
               <MenuItem value="">All Access Types</MenuItem>
@@ -277,8 +277,8 @@ export default function EmissionFactorsSearch() {
           <FormControl fullWidth>
             <InputLabel>Results Per Page</InputLabel>
             <Select
-              value={searchParams.results_per_page}
-              onChange={handleChange("results_per_page")}
+              value={searchParams.results_per_page.toString()}
+              onChange={handleSelectChange("results_per_page")}
               label="Results Per Page"
             >
               {[10, 20, 50, 100, 200, 500].map((num) => (

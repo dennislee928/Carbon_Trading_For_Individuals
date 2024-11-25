@@ -16,7 +16,16 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 
-// Define the interface for search parameters
+// Define interfaces
+interface UnitType {
+  unit_type: string;
+}
+
+interface DataVersions {
+  latest: string;
+  latest_release: string;
+}
+
 interface SearchParams {
   data_version: string;
   results_per_page: number;
@@ -31,8 +40,8 @@ interface SearchParams {
   access_type?: string;
 }
 
-// Define API functions before the component
-const getUnitTypes = async (): Promise<Array<{ unit_type: string }>> => {
+// Define API functions
+async function fetchUnitTypes(): Promise<UnitType[]> {
   try {
     const response = await fetch("/api/unit-types");
     const data = await response.json();
@@ -41,12 +50,9 @@ const getUnitTypes = async (): Promise<Array<{ unit_type: string }>> => {
     console.error("Error fetching unit types:", error);
     return [];
   }
-};
+}
 
-const getDataVersions = async (): Promise<{
-  latest: string;
-  latest_release: string;
-}> => {
+async function fetchDataVersions(): Promise<DataVersions> {
   try {
     const response = await fetch("/api/data-versions");
     const data = await response.json();
@@ -55,7 +61,7 @@ const getDataVersions = async (): Promise<{
     console.error("Error fetching data versions:", error);
     return { latest: "19", latest_release: "18" };
   }
-};
+}
 
 export default function EmissionFactorsSearch() {
   const [searchParams, setSearchParams] = useState<SearchParams>({
@@ -78,12 +84,11 @@ export default function EmissionFactorsSearch() {
     const fetchInitialData = async () => {
       try {
         const [unitTypesData, dataVersionsData] = await Promise.all([
-          getUnitTypes(),
-          getDataVersions(),
+          fetchUnitTypes(),
+          fetchDataVersions(),
         ]);
-        setUnitTypes(
-          unitTypesData.map((ut: { unit_type: string }) => ut.unit_type)
-        );
+
+        setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
         setDataVersions([
           dataVersionsData.latest,
           dataVersionsData.latest_release,
@@ -95,11 +100,17 @@ export default function EmissionFactorsSearch() {
     fetchInitialData();
   }, []);
 
-  const handleChange =
+  const handleTextChange =
     (field: keyof SearchParams) =>
-    (
-      event: SelectChangeEvent<string> | React.ChangeEvent<HTMLInputElement>
-    ) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchParams((prev) => ({
+        ...prev,
+        [field]: event.target.value,
+      }));
+    };
+
+  const handleSelectChange =
+    (field: keyof SearchParams) => (event: SelectChangeEvent) => {
       setSearchParams((prev) => ({
         ...prev,
         [field]: event.target.value,
@@ -111,7 +122,6 @@ export default function EmissionFactorsSearch() {
       <Typography variant="h5" gutterBottom>
         Emission Factors Search
       </Typography>
-
       <Grid container spacing={3}>
         {/* Search Query */}
         <Grid item xs={12}>
@@ -120,7 +130,7 @@ export default function EmissionFactorsSearch() {
               fullWidth
               label="Search Query"
               value={searchParams.query || ""}
-              onChange={handleChange("query")}
+              onChange={handleTextChange("query")}
             />
           </Tooltip>
         </Grid>
@@ -131,7 +141,7 @@ export default function EmissionFactorsSearch() {
             <InputLabel>Data Version</InputLabel>
             <Select
               value={searchParams.data_version}
-              onChange={handleChange("data_version")}
+              onChange={handleSelectChange("data_version")}
               label="Data Version"
             >
               {dataVersions.map((version) => (
@@ -149,12 +159,12 @@ export default function EmissionFactorsSearch() {
             <InputLabel>Year</InputLabel>
             <Select
               value={searchParams.year || ""}
-              onChange={handleChange("year")}
+              onChange={handleSelectChange("year")}
               label="Year"
             >
               <MenuItem value="">All Years</MenuItem>
               {years.map((year) => (
-                <MenuItem key={year} value={year}>
+                <MenuItem key={year} value={year.toString()}>
                   {year}
                 </MenuItem>
               ))}

@@ -1,29 +1,37 @@
-package middleware
+package models
 
 import (
-	"carbon-rights-backend/utils"
-	"context"
-	"net/http"
-	"strings"
+	"carbon-rights-backend/db"
+	"time"
 )
 
-// Authenticate ensures that users are authenticated before accessing protected routes
-func Authenticate(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        authHeader := r.Header.Get("Authorization")
-        if authHeader == "" {
-            http.Error(w, "Missing token", http.StatusUnauthorized)
-            return
-        }
+type User struct {
+    UserID      string
+    Email       string
+    PasswordHash string
+    OTP         string
+    IsVerified  bool
+    CreatedAt   time.Time
+    UpdatedAt   time.Time
+}
 
-        tokenString := strings.Split(authHeader, " ")[1]
-        claims, err := utils.ValidateJWT(tokenString)
-        if err != nil {
-            http.Error(w, "Invalid token", http.StatusUnauthorized)
-            return
-        }
+// CreateUser inserts a new user into the database
+func CreateUser(user User) error {
+    _, err := db.DB.Exec("INSERT INTO users (email, password_hash, otp, is_verified, created_at) VALUES ($1, $2, $3, $4, $5)",
+        user.Email, user.PasswordHash, user.OTP, false, user.CreatedAt)
+    return err
+}
 
-        ctx := context.WithValue(r.Context(), "userID", claims.Subject)
-        next.ServeHTTP(w, r.WithContext(ctx))
-    })
+// GetUserByEmail retrieves a user by their email
+func GetUserByEmail(email string) (User, error) {
+    var user User
+    err := db.DB.QueryRow("SELECT user_id, email, password_hash, otp, is_verified, created_at, updated_at FROM users WHERE email = $1", email).
+        Scan(&user.UserID, &user.Email, &user.PasswordHash, &user.OTP, &user.IsVerified, &user.CreatedAt, &user.UpdatedAt)
+    return user, err
+}
+
+// VerifyUser sets a user as verified
+func VerifyUser(email string) error {
+    _, err := db.DB.Exec("UPDATE users SET is_verified = true WHERE email = $1", email)
+    return err
 }

@@ -24,6 +24,7 @@ func main() {
     }
     defer db.Close()
     
+    
 
 	// Set up routes
 	setupRoutes(r)

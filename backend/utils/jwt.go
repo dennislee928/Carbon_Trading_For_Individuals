@@ -1,3 +1,12 @@
+package utils
+
+import (
+	"os"
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
+)
+
 func generateJWT(userID int) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": userID,

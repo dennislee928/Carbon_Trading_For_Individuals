@@ -1,3 +1,12 @@
+package handlers
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+
 func viewProfile(c *gin.Context) {
 	// Fetch and return user profile data
 	c.JSON(http.StatusOK, gin.H{"user_data": "user profile data"})

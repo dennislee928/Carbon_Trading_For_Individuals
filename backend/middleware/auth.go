@@ -1,3 +1,9 @@
+package middleware
+
+import (
+	"github.com/gin-gonic/gin"
+)
+
 func authMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Implement JWT verification logic

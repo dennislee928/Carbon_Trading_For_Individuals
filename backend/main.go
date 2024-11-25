@@ -18,11 +18,12 @@ func main() {
 	r.Use(cors.Default())
 
 	// Initialize application configuration (e.g., database)
-	db, err := config.InitializeDB()
-if err != nil {
-	log.Fatalf("Failed to initialize database: %v", err)
-}
-defer db.Close()
+    db, err := config.InitializeDB()
+    if err != nil {
+        log.Fatalf("Failed to initialize database: %v", err)
+    }
+    defer db.Close()
+    
 
 	// Set up routes
 	setupRoutes(r)
@@ -37,10 +38,13 @@ defer db.Close()
 func setupRoutes(r *gin.Engine) {
 	// Apply middleware
 	authMiddleware := middleware.AuthMiddleware
+
 	adminMiddleware := middleware.AdminOnly
 
 	// User Registration
-	r.POST("/register", handlers.Register)
+	r.POST("/register", func(c *gin.Context) {
+        models.RegisterUser(db, c.Writer, c.Request)
+    })
 
 	// OTP Verification
 	r.POST("/verify-otp", handlers.VerifyOTP)

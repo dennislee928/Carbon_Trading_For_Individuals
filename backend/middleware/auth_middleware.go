@@ -1,37 +1,40 @@
 package middleware
 
 import (
-	"carbon-rights-backend/db"
-	"time"
+	"net/http"
+	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
-type User struct {
-    UserID      string
-    Email       string
-    PasswordHash string
-    OTP         string
-    IsVerified  bool
-    CreatedAt   time.Time
-    UpdatedAt   time.Time
-}
+func AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Extract the Authorization header
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Authorization header required"})
+			return
+		}
 
-// CreateUser inserts a new user into the database
-func CreateUser(user User) error {
-    _, err := db.DB.Exec("INSERT INTO users (email, password_hash, otp, is_verified, created_at) VALUES ($1, $2, $3, $4, $5)",
-        user.Email, user.PasswordHash, user.OTP, false, user.CreatedAt)
-    return err
-}
+		// Extract token from the header
+		token := strings.TrimPrefix(authHeader, "Bearer ")
+		if token == authHeader { // No "Bearer " prefix
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization format"})
+			return
+		}
 
-// GetUserByEmail retrieves a user by their email
-func GetUserByEmail(email string) (User, error) {
-    var user User
-    err := db.DB.QueryRow("SELECT user_id, email, password_hash, otp, is_verified, created_at, updated_at FROM users WHERE email = $1", email).
-        Scan(&user.UserID, &user.Email, &user.PasswordHash, &user.OTP, &user.IsVerified, &user.CreatedAt, &user.UpdatedAt)
-    return user, err
-}
+		// TODO: Implement JWT token validation logic
+		// For example:
+		// userID, err := utils.ValidateJWT(token)
+		// if err != nil {
+		// 	 c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+		//   return
+		// }
 
-// VerifyUser sets a user as verified
-func VerifyUser(email string) error {
-    _, err := db.DB.Exec("UPDATE users SET is_verified = true WHERE email = $1", email)
-    return err
+		// Set user ID in context (placeholder logic)
+		c.Set("userID", "example-user-id")
+
+		// Proceed to the next handler
+		c.Next()
+	}
 }

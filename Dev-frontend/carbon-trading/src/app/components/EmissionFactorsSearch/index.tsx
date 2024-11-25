@@ -40,32 +40,9 @@ interface SearchParams {
   access_type?: string;
 }
 
-// Define API functions
-async function fetchUnitTypes(): Promise<UnitType[]> {
-  try {
-    const response = await fetch("/api/unit-types");
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching unit types:", error);
-    return [];
-  }
-}
-
-async function fetchDataVersions(): Promise<DataVersions> {
-  try {
-    const response = await fetch("/api/data-versions");
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching data versions:", error);
-    return { latest: "19", latest_release: "18" };
-  }
-}
-
 export default function EmissionFactorsSearch() {
   const [searchParams, setSearchParams] = useState<SearchParams>({
-    data_version: "^19",
+    data_version: "19",
     results_per_page: 20,
     page: 1,
   });
@@ -102,7 +79,7 @@ export default function EmissionFactorsSearch() {
 
   const handleTextChange =
     (field: keyof SearchParams) =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setSearchParams((prev) => ({
         ...prev,
         [field]: event.target.value,
@@ -110,7 +87,8 @@ export default function EmissionFactorsSearch() {
     };
 
   const handleSelectChange =
-    (field: keyof SearchParams) => (event: SelectChangeEvent) => {
+    (field: keyof SearchParams) =>
+    (event: SelectChangeEvent<string | number>) => {
       setSearchParams((prev) => ({
         ...prev,
         [field]: event.target.value,
@@ -277,8 +255,12 @@ export default function EmissionFactorsSearch() {
           <FormControl fullWidth>
             <InputLabel>Results Per Page</InputLabel>
             <Select
-              value={searchParams.results_per_page.toString()}
-              onChange={handleSelectChange("results_per_page")}
+              value={searchParams.results_per_page}
+              onChange={(event) =>
+                handleSelectChange("results_per_page")(
+                  event as SelectChangeEvent<number>
+                )
+              }
               label="Results Per Page"
             >
               {[10, 20, 50, 100, 200, 500].map((num) => (

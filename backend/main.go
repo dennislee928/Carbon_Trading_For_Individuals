@@ -6,6 +6,9 @@ import (
 	"carbon-rights-backend/middleware"
 	"log"
 
+	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/config"
+	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/handlers"
+	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )

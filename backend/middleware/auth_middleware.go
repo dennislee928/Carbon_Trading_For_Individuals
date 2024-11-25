@@ -1,4 +1,4 @@
-package models
+package middleware
 
 import (
 	"carbon-rights-backend/db"

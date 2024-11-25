@@ -1,0 +1,6 @@
+.env
+/bin/
+/obj/
+*.exe
+*.log
+*.tmp

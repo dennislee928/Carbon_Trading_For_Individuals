@@ -1,30 +1,23 @@
 package main
 
 import (
+	"carbon-rights-backend/config"
+	"carbon-rights-backend/routes"
+	"log"
 	"net/http"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
-func RegisterUser(w http.ResponseWriter, r *http.Request) {
-    email := r.FormValue("email")
-    password := r.FormValue("password")
-    
-    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-    if err != nil {
-        http.Error(w, "Internal server error", http.StatusInternalServerError)
-        return
+func main() {
+    // Initialize application configuration (database, environment variables, etc.)
+    db := config.InitializeDB()
+    defer db.Close() // Close the database connection when the app exits
+
+    // Set up routes using Gorilla Mux
+    router := routes.SetupRoutes()
+
+    // Start the HTTP server
+    log.Println("Server is starting on port 8080...")
+    if err := http.ListenAndServe(":8080", router); err != nil {
+        log.Fatalf("Failed to start server: %v", err)
     }
-
-    otp := generateOTP() // function to generate OTP
-    sendOTPEmail(email, otp) // send OTP to user email for verification
-
-    // Insert user details into Supabase
-    _, err = db.Exec("INSERT INTO users (email, password_hash, otp) VALUES (?, ?, ?)", email, hashedPassword, otp)
-    if err != nil {
-        http.Error(w, "Could not register user", http.StatusInternalServerError)
-        return
-    }
-
-    w.WriteHeader(http.StatusCreated)
 }

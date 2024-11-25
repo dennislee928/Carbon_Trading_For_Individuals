@@ -61,3 +61,31 @@
 
     Rate Limiting: Apply rate limiting for sensitive operations (e.g., login, registration) to prevent abuse.
     Captcha: Add CAPTCHA during registration and login to prevent bot attacks.
+
+13. Project Structure: Generally good. Got separate directories for different concerns, Here's the breakdown:
+
+- middleware: For HTTP middleware
+
+- config: For configuration-related code
+
+- utils: For utility functions
+
+- models: For data models
+
+- db: For database-related code
+
+- controllers: For request handlers
+
+- routes: For defining API routes
+
+- Key Files:
+
+- main.go: This is likely your entry point
+
+- go.mod and go.sum: For dependency management
+
+- .env: For environment variables (make sure this is in .gitignore)
+
+- Procfile: Suggests you might be deploying to a platform like Heroku
+
+- Package Structure: Packages seem to be organized logically. The db.go file is in its own db directory, which is good.

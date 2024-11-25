@@ -1,120 +1,91 @@
-# Carbon Offset Trading Platform
+1. User Registration
 
-This project provides a carbon offset trading platform targeting individual users in Taiwan. The system integrates with ClimateTrade API for carbon offset services, using Next.js for the frontend, Golang for the backend, Heroku for compute instances, Supabase for the database, and Greenworld ECPay for payment processing.
+   Basic Registration: Allow users to register with their email, password, and personal information.
+   OTP Verification: Send a One-Time Password (OTP) to the user's email or phone to verify their identity during registration.
+   Social Media Login: Allow users to sign up using social accounts like Google, Facebook, or Twitter for easier onboarding.
 
-## System Architecture
+2. Login & Authentication
 
-### 1. Frontend
+   Username/Password Login: Standard login with email and password.
+   Token-Based Authentication: Use JSON Web Tokens (JWT) to authenticate and manage user sessions securely.
+   Multi-Factor Authentication (MFA): Provide an option to enable MFA to improve account security by requiring an additional verification step.
 
-- **Framework:** [Next.js](https://nextjs.org/)
-- **Features:**
-  - Dynamic rendering using Server-Side Rendering (SSR) and Static Site Generation (SSG).
-  - API Routes for lightweight backend logic.
-  - User-friendly interface for purchasing carbon offsets.
+3. Password Management
 
-### 2. Backend
+   Forgot Password: Allow users to reset their password by sending a password reset link or OTP to their registered email or phone.
+   Change Password: Allow logged-in users to change their password.
+   Password Strength Check: Encourage strong passwords by implementing a strength meter and enforcing certain complexity rules.
 
-- **Language:** [Golang](https://golang.org/)
-- **Responsibilities:**
-  - Business logic for processing carbon offset orders.
-  - Integration with ClimateTrade API.
-  - Communication with the Supabase database and Greenworld ECPay payment system.
+4. Profile Management
 
-### 3. Database
+   View/Edit Profile: Users should be able to view and edit their profile details, such as name, contact information, and other personal preferences.
+   Upload Profile Picture: Allow users to upload a profile picture for better personalization.
 
-- **Platform:** [Supabase](https://supabase.com/)
-- **Features:**
-  - Real-time updates for user transactions.
-  - Role-based access and authentication for users.
-  - Scalable cloud-hosted PostgreSQL backend.
+5. Email & Notification Settings
 
-### 4. Payment Integration
+   Email Verification: Require users to verify their email during registration.
+   Notification Preferences: Let users manage their notification settings to control how they receive updates (email, SMS, etc.).
 
-- **Provider:** [Greenworld ECPay](https://www.ecpay.com.tw/)
-- **Capabilities:**
-  - Credit card and bank transfer support.
-  - Webhook integration for payment status updates.
-  - Secure handling of user financial data.
+6. User Roles & Permissions
 
-### 5. Deployment
+   Account Levels: Implement different account levels (e.g., standard user, verified user, premium user) with associated benefits and access rights.
+   Role Assignment: Assign specific roles to users, such as "trader", "viewer", or "admin". Supabase can help manage roles and permissions.
 
-- **Compute Instance:** [Heroku](https://www.heroku.com/)
-- **Benefits:**
-  - Simplified deployment for rapid development.
-  - Scalable to handle traffic growth.
-  - Seamless integration with Golang and Supabase.
+7. Activity Logs & Security
 
-## Integrations
+   Login History: Record user login activity and allow users to see when and from where their account was accessed.
+   Account Lockout: Lock accounts after a certain number of failed login attempts to prevent brute-force attacks.
 
-- climatiq(information caculate api)
-- Patch(trade pot api)
-- https://app.persefoni.com/
+8. Admin-Level Account Functions
 
-## Workflow
+   Admin Dashboard: Allow admins to view registered users, approve new accounts, or suspend users.
+   Role Management: Allow admins to assign or change user roles and permissions.
+   User Statistics: Provide information about user activity, trading volumes, and other platform usage data.
 
-1. **User Interaction:**
+9. Account Deletion
 
-   - Users access the platform via the Next.js frontend.
-   - They can calculate their carbon footprint and place carbon offset orders.
+   Self-Deletion: Allow users to delete their account while providing a warning about the consequences (loss of data, etc.).
+   Admin-Level Deletion: Allow admins to deactivate or delete user accounts for security or policy violations.
 
-2. **Order Processing:**
+10. Verification & KYC
 
-   - Orders are sent to the Golang backend.
-   - The backend communicates with ClimateTrade API to execute transactions.
+    Identity Verification: To meet regulatory requirements for carbon rights exchange, you may want to implement KYC (Know Your Customer) verification for specific account types.
+    Document Upload: Allow users to upload identity documents (e.g., passport, utility bill) for verification.
 
-3. **Payment Handling:**
+11. Account Recovery
 
-   - Payment requests are processed via Greenworld ECPay.
-   - Webhooks confirm payment success and update the Supabase database.
+    Recovery Questions: Optionally provide security questions to help recover accounts.
+    Alternate Recovery Email: Allow users to add an alternate email for account recovery.
 
-4. **Data Management:**
-   - Supabase handles real-time transaction updates.
-   - Users can view their transaction history and carbon offset certificates.
+12. API Rate Limiting & Security
 
-## Installation
+    Rate Limiting: Apply rate limiting for sensitive operations (e.g., login, registration) to prevent abuse.
+    Captcha: Add CAPTCHA during registration and login to prevent bot attacks.
 
-### Prerequisites
+13. Project Structure: Generally good. Got separate directories for different concerns, Here's the breakdown:
 
-- Node.js and npm for frontend development.
-- Go environment for backend development.
-- Supabase account for database integration.
-- Heroku CLI for deployment.
+- middleware: For HTTP middleware
 
-### Steps
+- config: For configuration-related code
 
-1. Clone this repository:
+- utils: For utility functions
 
-   ```bash
-   git clone https://github.com/your-repo-name/carbon-offset-platform.git
-   cd carbon-offset-platform
-   ```
+- models: For data models
 
-2. Set up the environment variables for:
+- db: For database-related code
 
-   - ClimateTrade API
-   - Supabase database connection
-   - Greenworld ECPay credentials
+- controllers: For request handlers
 
-3. Install dependencies:
+- routes: For defining API routes
 
-   ```bash
-   # Frontend
-   cd frontend
-   npm install
+- Key Files:
 
-   # Backend
-   cd ../backend
-   go mod tidy
-   ```
+- main.go: This is likely your entry point
 
-4. Deploy the system:
-   - Deploy frontend using your preferred hosting provider (e.g., Vercel, Netlify).
-   - Deploy backend to Heroku using Docker or Go buildpack.
+- go.mod and go.sum: For dependency management
 
-## License
+- .env: For environment variables (make sure this is in .gitignore)
 
-This project is licensed under the MIT License.
+- Procfile: Suggests you might be deploying to a platform like Heroku
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request to propose changes or enhancements.
+- Package Structure: Packages seem to be organized logically. The db.go file is in its own db directory, which is good.

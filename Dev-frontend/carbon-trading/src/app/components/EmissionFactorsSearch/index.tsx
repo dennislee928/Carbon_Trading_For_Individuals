@@ -16,14 +16,6 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 
-//
-interface SearchParamsType {
-  data_version: string;
-  unit_type?: string;
-  page: number;
-  results_per_page: number;
-}
-
 // Define interfaces
 interface UnitType {
   unit_type: string;
@@ -34,7 +26,7 @@ interface DataVersions {
   latest_release: string;
 }
 
-interface SearchParams {
+interface SearchParamsType {
   data_version: string;
   results_per_page: number;
   page: number;
@@ -50,16 +42,16 @@ interface SearchParams {
 
 export default function EmissionFactorsSearch() {
   //
-  const createSearchParams = (params: SearchParams): URLSearchParams => {
+  const createSearchParams = (params: SearchParamsType): URLSearchParams => {
     const searchParams = new URLSearchParams();
 
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
-        searchParams.append(key, value.toString());
+        URLSearchParams.set(key, value.toString());
       }
     });
 
-    return searchParams;
+    return URLSearchParams;
   };
 
   //
@@ -99,7 +91,7 @@ export default function EmissionFactorsSearch() {
     }
   };
   //
-  const [searchParams, setSearchParams] = useState<SearchParams>({
+  const [searchParams, setSearchParams] = useState<SearchParamsType>({
     data_version: "19",
     results_per_page: 20,
     page: 1,
@@ -144,7 +136,7 @@ export default function EmissionFactorsSearch() {
   }, [searchParams]);
 
   const handleTextChange =
-    (field: keyof SearchParams) =>
+    (field: keyof SearchParamsType) =>
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setSearchParams((prev) => ({
         ...prev,
@@ -153,7 +145,7 @@ export default function EmissionFactorsSearch() {
     };
 
   const handleSelectChange =
-    (field: keyof SearchParams) =>
+    (field: keyof SearchParamsType) =>
     (event: SelectChangeEvent<string | number>) => {
       setSearchParams((prev) => ({
         ...prev,

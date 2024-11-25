@@ -1,9 +1,6 @@
 package main
 
 import (
-	"carbon-rights-backend/config"
-	"carbon-rights-backend/handlers"
-	"carbon-rights-backend/middleware"
 	"log"
 
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/config"
@@ -13,17 +10,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 func main() {
-	// Initialize Router using gin
+	// Initialize Router using Gin
 	r := gin.Default()
 
 	// Enable CORS
 	r.Use(cors.Default())
 
-	// Initialize application configuration (database, environment variables, etc.)
-	db := config.InitializeDB()
-	defer db.Close() // Close the database connection when the app exits
+	// Initialize application configuration (e.g., database)
+	db, err := config.InitializeDB()
+if err != nil {
+	log.Fatalf("Failed to initialize database: %v", err)
+}
+defer db.Close()
 
 	// Set up routes
 	setupRoutes(r)
@@ -36,52 +35,52 @@ func main() {
 }
 
 func setupRoutes(r *gin.Engine) {
-    // User Registration
-    r.POST("/register", handlers.Register())
+	// Apply middleware
+	authMiddleware := middleware.AuthMiddleware
+	adminMiddleware := middleware.AdminOnly
 
-    // OTP Verification
-    r.POST("/verify-otp", handlers.VerifyOTP())
+	// User Registration
+	r.POST("/register", handlers.Register)
 
-    // Social Media Login
-    r.POST("/social-login/:provider", handlers.SocialLogin())
+	// OTP Verification
+	r.POST("/verify-otp", handlers.VerifyOTP)
 
-    // Login
-    r.POST("/login", handlers.Login())
+	// Social Media Login
+	r.POST("/social-login/:provider", handlers.SocialLogin)
 
-    // Password Management
-    r.POST("/forgot-password", handlers.ForgotPassword())
-    r.POST("/change-password", middleware.AuthMiddleware(), handlers.ChangePassword())
+	// Login
+	r.POST("/login", handlers.Login)
 
-    // Profile Management
-    r.GET("/profile", middleware.AuthMiddleware(), handlers.ViewProfile())
-    r.PUT("/profile", middleware.AuthMiddleware(), handlers.UpdateProfile)
-    r.POST("/profile/picture", middleware.AuthMiddleware(), handlers.UploadProfilePicture())
+	// Password Management
+	r.POST("/forgot-password", handlers.ForgotPassword)
+	r.POST("/change-password", authMiddleware(), handlers.ChangePassword)
 
-    // Email & Notification Settings
-    r.PUT("/notification-preferences", middleware.AuthMiddleware(), handlers.UpdateNotificationPreferences())
+	// Profile Management
+	r.GET("/profile", authMiddleware(), handlers.ViewProfile)
+	r.PUT("/profile", authMiddleware(), handlers.UpdateProfile)
+	r.POST("/profile/picture", authMiddleware(), handlers.UploadProfilePicture)
 
-    // User Roles & Permissions
-    r.POST("/admin/assign-role", middleware.AuthMiddleware(), middleware.AdminOnly(), handlers.AssignRole())
+	// Email & Notification Settings
+	r.PUT("/notification-preferences", authMiddleware(), handlers.UpdateNotificationPreferences)
 
-    // Activity Logs & Security
-    r.GET("/login-history", middleware.AuthMiddleware(), handlers.ViewLoginHistory())
+	// User Roles & Permissions
+	r.POST("/admin/assign-role", authMiddleware(), adminMiddleware(), handlers.AssignRole)
 
-    // Admin-Level Account Functions
-    r.GET("/admin/users", middleware.AuthMiddleware(), middleware.AdminOnly(), handlers.AdminViewUsers())
+	// Activity Logs & Security
+	r.GET("/login-history", authMiddleware(), handlers.ViewLoginHistory)
 
-    // Account Deletion
-    r.DELETE("/delete-account", middleware.AuthMiddleware(), handlers.DeleteAccount())
+	// Admin-Level Account Functions
+	r.GET("/admin/users", authMiddleware(), adminMiddleware(), handlers.AdminViewUsers)
 
-    // Verification & KYC
-    r.POST("/kyc/upload", middleware.AuthMiddleware(), handlers.UploadKYCDocument())
+	// Account Deletion
+	r.DELETE("/delete-account", authMiddleware(), handlers.DeleteAccount)
 
-    // Account Recovery
-    r.POST("/add-recovery-email", middleware.AuthMiddleware(), handlers.AddRecoveryEmail())
+	// Verification & KYC
+	r.POST("/kyc/upload", authMiddleware(), handlers.UploadKYCDocument)
 
-    // Home route
-    r.GET("/", handlers.Home)
+	// Account Recovery
+	r.POST("/add-recovery-email", authMiddleware(), handlers.AddRecoveryEmail)
 
-
-	// Set up additional routes from the routes package
-//	routes.SetupRoutes(r)
+	// Home route
+	r.GET("/", handlers.Home)
 }

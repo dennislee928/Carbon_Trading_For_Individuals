@@ -13,11 +13,52 @@ import {
   Typography,
   Tooltip,
   FormHelperText,
-  SelectChangeEvent, // Add this import
+  SelectChangeEvent,
 } from "@mui/material";
 
+// Define the interface for search parameters
+interface SearchParams {
+  data_version: string;
+  results_per_page: number;
+  page: number;
+  query?: string;
+  year?: string;
+  category?: string;
+  sector?: string;
+  unit_type?: string;
+  calculation_method?: string;
+  region?: string;
+  access_type?: string;
+}
+
+// Define API functions before the component
+const getUnitTypes = async (): Promise<Array<{ unit_type: string }>> => {
+  try {
+    const response = await fetch("/api/unit-types");
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching unit types:", error);
+    return [];
+  }
+};
+
+const getDataVersions = async (): Promise<{
+  latest: string;
+  latest_release: string;
+}> => {
+  try {
+    const response = await fetch("/api/data-versions");
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data versions:", error);
+    return { latest: "19", latest_release: "18" };
+  }
+};
+
 export default function EmissionFactorsSearch() {
-  const [searchParams, setSearchParams] = useState<URLSearchParams>({
+  const [searchParams, setSearchParams] = useState<SearchParams>({
     data_version: "^19",
     results_per_page: 20,
     page: 1,
@@ -40,7 +81,9 @@ export default function EmissionFactorsSearch() {
           getUnitTypes(),
           getDataVersions(),
         ]);
-        setUnitTypes(unitTypesData.map((ut) => ut.unit_type));
+        setUnitTypes(
+          unitTypesData.map((ut: { unit_type: string }) => ut.unit_type)
+        );
         setDataVersions([
           dataVersionsData.latest,
           dataVersionsData.latest_release,
@@ -52,7 +95,6 @@ export default function EmissionFactorsSearch() {
     fetchInitialData();
   }, []);
 
-  // Update the handleChange function with correct typing
   const handleChange =
     (field: keyof SearchParams) =>
     (
@@ -69,6 +111,7 @@ export default function EmissionFactorsSearch() {
       <Typography variant="h5" gutterBottom>
         Emission Factors Search
       </Typography>
+
       <Grid container spacing={3}>
         {/* Search Query */}
         <Grid item xs={12}>

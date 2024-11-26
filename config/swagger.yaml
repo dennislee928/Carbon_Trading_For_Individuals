@@ -1,0 +1,267 @@
+openapi: 3.0.0
+info:
+  title: Carbon Trading For Individuals API
+  description: API documentation for Carbon Trading platform
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        profile_picture:
+          type: string
+        notification_preferences:
+          type: object
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                name:
+                  type: string
+      responses:
+        "201":
+          description: User registered successfully
+        "400":
+          description: Invalid input
+
+  /auth/verify-otp:
+    post:
+      summary: Verify OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                otp:
+                  type: string
+      responses:
+        "200":
+          description: OTP verified successfully
+        "400":
+          description: Invalid OTP
+
+  /auth/verify-otp-code:
+    post:
+      summary: Verify OTP Code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+      responses:
+        "200":
+          description: OTP code verified successfully
+        "400":
+          description: Invalid code
+
+  /auth/login:
+    post:
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful
+        "401":
+          description: Invalid credentials
+
+  /auth/social-login/{provider}:
+    post:
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+      summary: Social login
+      responses:
+        "200":
+          description: Social login successful
+        "400":
+          description: Invalid provider
+
+  /auth/forgot-password:
+    post:
+      summary: Request password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        "200":
+          description: Password reset email sent
+
+  /profile:
+    get:
+      summary: View user profile
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Profile retrieved successfully
+    put:
+      summary: Update user profile
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Profile updated successfully
+
+  /profile/picture:
+    post:
+      summary: Upload profile picture
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Picture uploaded successfully
+
+  /account/change-password:
+    post:
+      summary: Change password
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Password changed successfully
+
+  /account/notification-preferences:
+    put:
+      summary: Update notification preferences
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Preferences updated successfully
+
+  /account/delete:
+    delete:
+      summary: Delete account
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Account deleted successfully
+
+  /account/recovery-email:
+    post:
+      summary: Add recovery email
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Recovery email added successfully
+
+  /security/login-history:
+    get:
+      summary: View login history
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Login history retrieved successfully
+
+  /security/kyc/upload:
+    post:
+      summary: Upload KYC document
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: KYC document uploaded successfully
+
+  /admin/assign-role:
+    post:
+      summary: Assign role to user
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Role assigned successfully
+
+  /admin/users:
+    get:
+      summary: Get all users (admin only)
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Users retrieved successfully

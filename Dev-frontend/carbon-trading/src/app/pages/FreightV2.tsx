@@ -16,7 +16,7 @@ import {
   searchEmissionFactors,
   getUnitTypes,
   getDataVersions,
-  SearchParams,
+  //SearchParams,
   EmissionFactor,
   FreightEmissionRequest,
   calculateFreightEmissions,

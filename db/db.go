@@ -2,7 +2,7 @@ package db
 
 import (
 	"database/sql"
-	"fmt"
+	"os"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
@@ -10,20 +10,24 @@ import (
 var DB *sql.DB
 
 // InitializeDB sets up the database connection
-func InitializeDB() (*sql.DB, error) {
-	// Example connection string
-	connStr := "user=username dbname=mydb sslmode=disable password=mypassword"
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to the database: %v", err)
-	}
-	// Verify connection
-	if err = db.Ping(); err != nil {
-		return nil, fmt.Errorf("failed to ping the database: %v", err)
-	}
-	return db, nil
-}
+func InitializeDB()error {
+    var err error
+    DB, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
+    if err != nil {
+        return err
+    }
 
+    // Test the connection
+    if err = DB.Ping(); err != nil {
+        return err
+    }
+
+    // Set connection pool settings
+    DB.SetMaxOpenConns(25)
+    DB.SetMaxIdleConns(25)
+    
+    return nil
+}
 // CloseDB closes the database connection
 func CloseDB() error {
     if DB != nil {

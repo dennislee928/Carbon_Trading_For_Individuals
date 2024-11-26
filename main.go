@@ -16,10 +16,11 @@ func main() {
     r := gin.Default()
 
 	// Initialize Supabase client
-    supabaseClient, err := config.NewSupabaseClient()
+    err := db.Initialize()
     if err != nil {
-        log.Fatalf("Error initializing Supabase client: %v", err)
-    }//
+        log.Fatal("Error connecting to the database:", err)
+    }
+    defer db.DB.Close()
 
     // Configure CORS and other middleware...
 

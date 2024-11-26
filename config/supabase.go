@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/supabase-community/supabase-go"
@@ -16,7 +17,17 @@ func NewSupabaseClient() (*SupabaseClient, error) {
     supabaseUrl := os.Getenv("SUPABASE_URL")
     supabaseKey := os.Getenv("SUPABASE_KEY")
 
-    client, err := supabase.NewClient(supabaseUrl, supabaseKey)
+    if supabaseUrl == "" {
+        return nil, fmt.Errorf("SUPABASE_URL environment variable is not set")
+    }
+    if supabaseKey == "" {
+        return nil, fmt.Errorf("SUPABASE_KEY environment variable is not set")
+    }
+
+    // Create default options or customize as needed
+    options := supabase.ClientOptions{}
+
+    client, err := supabase.NewClient(supabaseUrl, supabaseKey, &options)
     if err != nil {
         return nil, err
     }

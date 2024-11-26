@@ -11,38 +11,33 @@ import (
 	"github.com/gin-gonic/gin"
 )
 func main() {
-    
     // Initialize Router using Gin
     r := gin.Default()
 
-	// Initialize Supabase client
-    err := db.Initialize()
+    // Initialize Supabase client
+    supabaseClient, err := config.NewSupabaseClient()
     if err != nil {
-        log.Fatal("Error connecting to the database:", err)
+        log.Fatal("Error initializing Supabase client:", err)
     }
-    defer db.DB.Close()
 
-    // Configure CORS and other middleware...
-
-    // Pass the Supabase client to setupRoutes
-    setupRoutes(r, supabaseClient)
-    // Configure CORS with more specific settings
-    corsConfig := cors.DefaultConfig()  // Changed variable name from 'config' to 'corsConfig'
-    corsConfig.AllowOrigins = []string{"*"}
-    corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
-    corsConfig.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
-    r.Use(cors.New(corsConfig))
-
-    // Initialize application configuration (e.g., database)
-    db, err := config.InitializeDB()  // Now this will work correctly
-
+    // Initialize database
+    db, err := config.InitializeDB()
     if err != nil {
         log.Fatalf("Failed to initialize database: %v", err)
     }
     defer db.Close()
 
-    // Set up routes
-    setupRoutes(r, db)
+    // Configure CORS
+    corsConfig := cors.DefaultConfig()
+    corsConfig.AllowOrigins = []string{"*"}
+    corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+    corsConfig.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
+    
+    // Apply CORS middleware
+    r.Use(cors.New(corsConfig))
+
+    // Set up routes with both DB and Supabase client
+    setupRoutes(r, db, supabaseClient)
 
     // Start the server
     log.Println("Server is starting on port 8080...")
@@ -50,6 +45,7 @@ func main() {
         log.Fatalf("Failed to start server: %v", err)
     }
 }
+
 
 func setupRoutes(r *gin.Engine, db *sql.DB) {
     // Apply middleware
@@ -67,7 +63,7 @@ func setupRoutes(r *gin.Engine, db *sql.DB) {
                 handlers.RegisterUser(db, c.Writer, c.Request)
             })
             auth.POST("/verify-otp", handlers.VerifyOTP)
-            auth.POST("/verify-otp-code", handlers.VerifyOTPCode) // New endpoint
+            auth.POST("/verify-otp-code", handlers.VerifyOTPCode)
             auth.POST("/login", handlers.Login)
             auth.POST("/social-login/:provider", handlers.SocialLogin)
             auth.POST("/forgot-password", handlers.ForgotPassword)

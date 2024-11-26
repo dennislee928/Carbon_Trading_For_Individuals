@@ -1,5 +1,5 @@
 // app/services/api.ts
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const CLIMATIQ_API_KEY = process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY;
 
@@ -73,44 +73,65 @@ export interface DataVersionsResponse {
 export const searchEmissionFactors = async (
   params: SearchParams
 ): Promise<SearchResponse> => {
-  // Transform allowed_data_quality_flags array to comma-separated string if present
-  const searchParams = {
-    ...params,
-    data_version: params.data_version || "^19", // Use provided data_version or default to "^19"
-    allowed_data_quality_flags: params.allowed_data_quality_flags?.join(","),
-  };
+  try {
+    const searchParams = {
+      ...params,
+      data_version: params.data_version || "^19",
+      allowed_data_quality_flags: params.allowed_data_quality_flags?.join(","),
+    };
 
-  const response = await api.get("/data/v1/search", {
-    params: searchParams,
-    paramsSerializer: (params) => {
-      return (
-        Object.entries(params)
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          .filter(([_, value]) => value !== undefined) // Remove undefined values
+    const response = await api.get("/data/v1/search", {
+      params: searchParams,
+      paramsSerializer: (params) => {
+        return Object.entries(params)
+          .filter(([_, value]) => value !== undefined)
           .map(([key, value]) => {
-            // Encode the value properly, replacing spaces with +
             const encodedValue = encodeURIComponent(value.toString()).replace(
               /%20/g,
               "+"
             );
             return `${key}=${encodedValue}`;
           })
-          .join("&")
-      );
-    },
-  });
+          .join("&");
+      },
+    });
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.error || error.message;
+      throw new Error(`Search failed: ${errorMessage}`);
+    }
+    throw new Error("An unexpected error occurred during search");
+  }
 };
 
 export const getUnitTypes = async (): Promise<UnitType[]> => {
-  const response = await api.get("/data/v1/unit-types");
-  return response.data.unit_types;
+  try {
+    const response = await api.get("/data/v1/unit-types");
+    return response.data.unit_types;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.error || error.message;
+      throw new Error(`Failed to fetch unit types: ${errorMessage}`);
+    }
+    throw new Error("An unexpected error occurred while fetching unit types");
+  }
 };
 
 export const getDataVersions = async (): Promise<DataVersionsResponse> => {
-  const response = await api.get("/data/v1/data-versions");
-  return response.data;
+  try {
+    const response = await api.get("/data/v1/data-versions");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.error || error.message;
+      throw new Error(`Failed to fetch data versions: ${errorMessage}`);
+    }
+    throw new Error(
+      "An unexpected error occurred while fetching data versions"
+    );
+  }
 };
 
 //
@@ -155,10 +176,15 @@ export const calculateFreightEmissions = async (
   payload: FreightEmissionRequest
 ): Promise<FreightEmissionResponse> => {
   try {
-    const response = await api.post("/freight/v2/intermodal", payload);
+    const response = await api.post("/freight/v1/calculate", payload);
     return response.data;
   } catch (error) {
-    console.error("Error calculating freight emissions:", error);
-    throw error;
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.error || error.message;
+      throw new Error(`Freight emission calculation failed: ${errorMessage}`);
+    }
+    throw new Error(
+      "An unexpected error occurred during freight emission calculation"
+    );
   }
 };

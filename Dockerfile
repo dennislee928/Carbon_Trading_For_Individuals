@@ -5,10 +5,13 @@ FROM golang:1.22-alpine
 WORKDIR /app
 
 # Copy go mod and sum files
-COPY go.mod ./
+COPY go.mod go.sum ./
 
 # Download all dependencies
 RUN go mod download
+
+#Tids up go modules
+RUN go mod tidy
 
 # Copy the source code into the container
 COPY . .

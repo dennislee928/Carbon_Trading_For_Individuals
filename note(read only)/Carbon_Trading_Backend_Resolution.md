@@ -92,3 +92,55 @@ This document describes the process undertaken to resolve issues in the Go-based
 ## Conclusion
 
 All issues were resolved successfully. The project is now ready for testing, further enhancements, and deployment.
+
+---
+
+## API end-point structure (2024/11/06)
+
+### /api
+
+#### /auth
+
+##### POST /register
+
+##### POST /verify-otp
+
+##### POST /verify-otp-code
+
+##### POST /login
+
+##### POST /social-login/:provider
+
+##### POST /forgot-password
+
+### /profile (protected)
+
+##### GET /
+
+##### PUT /
+
+##### POST /picture
+
+### /account (protected)
+
+##### POST /change-password
+
+##### PUT /notification-preferences
+
+##### DELETE /delete
+
+##### POST /recovery-email
+
+### /security (protected)
+
+##### GET /login-history
+
+##### POST /kyc/upload
+
+### /admin (protected + admin only)
+
+##### POST /assign-role
+
+##### GET /users
+
+### / (home route)

@@ -11,10 +11,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 func main() {
-    // Initialize Router using Gin
+    
     // Initialize Router using Gin
     r := gin.Default()
 
+	// Initialize Supabase client
+    supabaseClient, err := config.NewSupabaseClient()
+    if err != nil {
+        log.Fatalf("Error initializing Supabase client: %v", err)
+    }//
+
+    // Configure CORS and other middleware...
+
+    // Pass the Supabase client to setupRoutes
+    setupRoutes(r, supabaseClient)
     // Configure CORS with more specific settings
     corsConfig := cors.DefaultConfig()  // Changed variable name from 'config' to 'corsConfig'
     corsConfig.AllowOrigins = []string{"*"}

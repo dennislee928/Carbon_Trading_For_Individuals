@@ -18,16 +18,28 @@ import {
   getDataVersions,
   SearchParams,
   EmissionFactor,
+  FreightEmissionRequest,
+  calculateFreightEmissions,
 } from "../services/api";
-
+import { SelectChangeEvent } from "@mui/material";
+//
+interface SearchParams {
+  data_version: string;
+  results_per_page: number; // Keep as number in the interface
+  page: number; // Keep as number in the interface
+  unit_type?: string;
+  query?: string;
+}
+//
 const FreightV2 = () => {
   const [unitTypes, setUnitTypes] = useState<string[]>([]);
   const [dataVersions, setDataVersions] = useState<string[]>([]);
   const [searchParams, setSearchParams] = useState<SearchParams>({
     data_version: "19",
-    results_per_page: 10,
-    page: 1,
+    results_per_page: 10, // Number
+    page: 1, // Number
   });
+
   const [results, setResults] = useState<EmissionFactor[] | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -59,12 +71,16 @@ const FreightV2 = () => {
       }));
     };
 
+  // For Select components
   const handleSelectChange =
-    (field: keyof SearchParams) =>
-    (event: React.ChangeEvent<{ value: unknown }>) => {
+    (field: keyof SearchParams) => (event: SelectChangeEvent) => {
+      const value = event.target.value;
       setSearchParams((prev) => ({
         ...prev,
-        [field]: event.target as string,
+        [field]:
+          field === "results_per_page" || field === "page"
+            ? Number(value)
+            : value,
       }));
     };
 
@@ -80,7 +96,57 @@ const FreightV2 = () => {
       setLoading(false);
     }
   };
+  //
+  const handleFreightEmissionCalculation = async () => {
+    const payload: FreightEmissionRequest = {
+      route: [
+        { location: { query: "Hamburg" } },
+        {
+          transport_mode: "road",
+          leg_details: {
+            rest_of_world: {
+              vehicle_type: "van",
+              vehicle_weight: "lte_3.5t",
+              fuel_source: "petrol",
+            },
+          },
+        },
+        { location: { query: "Berlin" } },
+      ],
+      cargo: {
+        weight: 10,
+        weight_unit: "t",
+      },
+    };
 
+    try {
+      const response = await calculateFreightEmissions(payload);
+      console.log("Freight Emissions:", response);
+    } catch (error) {
+      console.error("Error calculating freight emissions:", error);
+    }
+  };
+  //
+  {
+    /* Page Select */
+  }
+  <Grid item xs={12} md={6}>
+    <FormControl fullWidth>
+      <InputLabel>Page</InputLabel>
+      <Select
+        value={String(searchParams.page)} // Convert to string for Select
+        onChange={handleSelectChange("page")}
+        label="Page"
+      >
+        {[1, 2, 3, 4, 5].map((num) => (
+          <MenuItem key={num} value={String(num)}>
+            {num}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  </Grid>;
+  //
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -140,12 +206,12 @@ const FreightV2 = () => {
           <FormControl fullWidth>
             <InputLabel>Results Per Page</InputLabel>
             <Select
-              value={searchParams.results_per_page}
+              value={String(searchParams.results_per_page)} // Convert to string for Select
               onChange={handleSelectChange("results_per_page")}
               label="Results Per Page"
             >
               {[10, 20, 50, 100].map((num) => (
-                <MenuItem key={num} value={num}>
+                <MenuItem key={num} value={String(num)}>
                   {num}
                 </MenuItem>
               ))}
@@ -158,7 +224,7 @@ const FreightV2 = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleSearch}
+            onClick={handleFreightEmissionCalculation} // Should be handleSearch
             fullWidth
           >
             Search
@@ -172,6 +238,25 @@ const FreightV2 = () => {
           <CircularProgress />
         </Box>
       )}
+      {/* Results Per Page */}
+      <Grid item xs={12} md={6}>
+        <FormControl fullWidth>
+          <InputLabel>Results Per Page</InputLabel>
+          <Select
+            value={String(searchParams.results_per_page)} // Convert to string
+            onChange={handleSelectChange("results_per_page")}
+            label="Results Per Page"
+          >
+            {[10, 20, 50, 100].map((num) => (
+              <MenuItem key={num} value={String(num)}>
+                {" "}
+                {/* Convert to string */}
+                {num}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
 
       {/* Search Results */}
       {results && (

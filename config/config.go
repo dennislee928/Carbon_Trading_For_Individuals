@@ -5,35 +5,48 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq" // PostgreSQL driver
 )
 
 func InitializeDB() (*sql.DB, error) {
-	// Load environment variables
-	err := godotenv.Load()
-	if err != nil {
-		return nil, fmt.Errorf("error loading .env file: %v", err)
-	}
+    // Get database connection details from environment variables
+    dbHost := os.Getenv("DB_HOST")
+    dbPort := os.Getenv("DB_PORT")
+    dbUser := os.Getenv("DB_USER")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbName := os.Getenv("DB_NAME")
 
-	// Create connection string
-	connStr := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable",
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_NAME"),
-	)
+    // If environment variables are not set, use defaults
+    if dbHost == "" {
+        dbHost = "localhost"
+    }
+    if dbPort == "" {
+        dbPort = "5432"
+    }
+    if dbUser == "" {
+        dbUser = "postgres"
+    }
+    if dbName == "" {
+        dbName = "carbon_trading"
+    }
 
-	// Open the database connection
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		return nil, fmt.Errorf("error opening database: %v", err)
-	}
+    // Create the connection string
+    connStr := fmt.Sprintf(
+        "host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+        dbHost, dbPort, dbUser, dbPassword, dbName,
+    )
 
-	// Verify the database connection
-	if err = db.Ping(); err != nil {
-		return nil, fmt.Errorf("error connecting to database: %v", err)
-	}
+    // Open database connection
+    db, err := sql.Open("postgres", connStr)
+    if err != nil {
+        return nil, fmt.Errorf("error opening database: %v", err)
+    }
 
-	return db, nil
+    // Test the connection
+    err = db.Ping()
+    if err != nil {
+        return nil, fmt.Errorf("error connecting to the database: %v", err)
+    }
+
+    return db, nil
 }

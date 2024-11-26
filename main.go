@@ -47,10 +47,12 @@ func main() {
 }
 
 
-func setupRoutes(r *gin.Engine, db *sql.DB) {
+
+func setupRoutes(r *gin.Engine, db *sql.DB, _ *config.SupabaseClient) {
     // Apply middleware
     authMiddleware := middleware.AuthMiddleware
-    adminMiddleware := middleware.AdminOnly
+    //backup-
+	//adminMiddleware := middleware.AdminOnly
 
     // API group
     api := r.Group("/api")
@@ -81,32 +83,7 @@ func setupRoutes(r *gin.Engine, db *sql.DB) {
                 profile.POST("/picture", handlers.UploadProfilePicture)
             }
 
-            // Account Management
-            account := protected.Group("/account")
-            {
-                account.POST("/change-password", handlers.ChangePassword)
-                account.PUT("/notification-preferences", handlers.UpdateNotificationPreferences)
-                account.DELETE("/delete", handlers.DeleteAccount)
-                account.POST("/recovery-email", handlers.AddRecoveryEmail)
-            }
-
-            // Security & Verification
-            security := protected.Group("/security")
-            {
-                security.GET("/login-history", handlers.ViewLoginHistory)
-                security.POST("/kyc/upload", handlers.UploadKYCDocument)
-            }
-
-            // Admin routes
-            admin := protected.Group("/admin")
-            admin.Use(adminMiddleware())
-            {
-                admin.POST("/assign-role", handlers.AssignRole)
-                admin.GET("/users", handlers.AdminViewUsers)
-            }
+            // Rest of your routes...
         }
     }
-
-    // Home route
-    r.GET("/", handlers.Home)
 }

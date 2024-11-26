@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 
+	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/config"
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/handlers"
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/middleware"
 	"github.com/gin-contrib/cors"
@@ -11,17 +12,19 @@ import (
 )
 func main() {
     // Initialize Router using Gin
+    // Initialize Router using Gin
     r := gin.Default()
 
     // Configure CORS with more specific settings
-    config := cors.DefaultConfig()
-    config.AllowOrigins = []string{"*"} // Configure based on your frontend URL in production
-    config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
-    config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
-    r.Use(cors.New(config))
+    corsConfig := cors.DefaultConfig()  // Changed variable name from 'config' to 'corsConfig'
+    corsConfig.AllowOrigins = []string{"*"}
+    corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+    corsConfig.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
+    r.Use(cors.New(corsConfig))
 
     // Initialize application configuration (e.g., database)
-    db, err := config.InitializeDB();
+    db, err := config.InitializeDB()  // Now this will work correctly
+
     if err != nil {
         log.Fatalf("Failed to initialize database: %v", err)
     }

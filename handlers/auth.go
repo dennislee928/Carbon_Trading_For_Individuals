@@ -171,17 +171,19 @@ func ChangePassword(c *gin.Context) {
 
 // generateJWT is a helper function to generate JWT tokens
 func generateJWT(userID int) (string, error) {
-    // Create a new token object, specifying signing method and the claims
     token := jwt.New(jwt.SigningMethodHS256)
 
-    // Set claims
     claims := token.Claims.(jwt.MapClaims)
     claims["user_id"] = userID
     claims["exp"] = time.Now().Add(time.Hour * 24).Unix() // Token expires in 24 hours
 
-    // Sign and get the complete encoded token as a string
-    tokenString, err := token.SignedString([]byte("your_secret_key")) // Replace with a secure secret key
+    // Get the secret key from environment variable
+    secretKey := os.Getenv("JWT_SECRET_KEY")
+    if secretKey == "" {
+        secretKey = "your_secret_key" // Fallback secret key (not recommended for production)
+    }
 
+    tokenString, err := token.SignedString([]byte(secretKey))
     if err != nil {
         return "", err
     }

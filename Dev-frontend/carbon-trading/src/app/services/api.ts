@@ -112,3 +112,53 @@ export const getDataVersions = async (): Promise<DataVersionsResponse> => {
   const response = await api.get("/data/v1/data-versions");
   return response.data;
 };
+
+//
+export interface FreightEmissionRequest {
+  route: {
+    location?:
+      | { query: string }
+      | { iata?: string }
+      | { locode?: string }
+      | { longitude: number; latitude: number };
+    transport_mode?: "road" | "air" | "sea" | "rail";
+    leg_details?: {
+      rest_of_world?: {
+        vehicle_type: string;
+        vehicle_weight: string;
+        fuel_source: string;
+      };
+      north_america?: {
+        vehicle_type: string;
+      };
+    };
+  }[];
+  cargo: {
+    weight: number;
+    weight_unit: string;
+  };
+}
+
+export interface FreightEmissionResponse {
+  co2e: number;
+  hub_equipment_co2e: number;
+  vehicle_operation_co2e: number;
+  vehicle_energy_provision_co2e: number;
+  co2e_unit: string;
+  co2e_calculation_method: string;
+  distance_km: number;
+  cargo_tonnes: number;
+  route: any[];
+}
+
+export const calculateFreightEmissions = async (
+  payload: FreightEmissionRequest
+): Promise<FreightEmissionResponse> => {
+  try {
+    const response = await api.post("/freight/v2/intermodal", payload);
+    return response.data;
+  } catch (error) {
+    console.error("Error calculating freight emissions:", error);
+    throw error;
+  }
+};

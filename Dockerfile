@@ -4,23 +4,16 @@ FROM golang:1.22-alpine
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy go mod and sum files
-COPY go.mod go.sum ./
-
-# Download all dependencies
-RUN go mod download
-
-#Tids up go modules
-RUN go mod tidy
-
-# Copy the source code into the container
+# Copy the entire source code into the container
 COPY . .
+
+# Download dependencies and tidy up modules in a single layer
+RUN go mod download && go mod tidy
 
 # Build the application
 RUN go build -o main .
 
 # Expose the port your application runs on
-# (Update this port number to match your application's port)
 EXPOSE 8080
 
 # Command to run the application

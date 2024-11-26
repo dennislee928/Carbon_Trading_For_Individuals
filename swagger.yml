@@ -1,12 +1,16 @@
 openapi: 3.0.0
 info:
   title: Carbon Trading For Individuals API
-  description: API documentation for Carbon Trading platform
+  description: API documentation for Carbon Rights Trading platform
   version: 1.0.0
 
 servers:
+  - url: https://carbon-rights-backend-334c8980a6b5.herokuapp.com/api
+    description: Production Server
   - url: http://localhost:8080/api
+    description: Local Development Server
 
+# Rest of the specification remains the same as before
 components:
   securitySchemes:
     BearerAuth:
@@ -61,6 +65,8 @@ paths:
           description: User registered successfully
         "400":
           description: Invalid input
+
+  # ... (rest of the paths remain the same as in the previous response)
 
   /auth/verify-otp:
     post:

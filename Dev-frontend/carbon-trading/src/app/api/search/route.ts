@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 // app/api/search/route.ts
 import { NextResponse } from "next/server";
 

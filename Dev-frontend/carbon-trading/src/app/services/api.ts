@@ -1,5 +1,5 @@
 // app/services/api.ts
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 const CLIMATIQ_API_KEY = process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY;
 

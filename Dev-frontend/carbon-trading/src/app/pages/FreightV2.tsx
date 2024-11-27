@@ -15,7 +15,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import {
-  searchEmissionFactors,
+  //searchEmissionFactors,
   getUnitTypes,
   getDataVersions,
   //SearchParams,
@@ -42,8 +42,8 @@ const FreightV2 = () => {
     page: 1, // Number
   });
 
-  const [results, setResults] = useState<EmissionFactor[] | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [results] = useState<EmissionFactor[] | null>(null); //[, setResults]
+  const [loading] = useState(false); //[, setLoading]
 
   useEffect(() => {
     const fetchInitialData = async () => {

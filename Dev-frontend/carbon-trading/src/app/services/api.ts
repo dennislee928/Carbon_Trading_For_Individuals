@@ -1,4 +1,3 @@
-// app/services/api.ts
 import axios from "axios";
 
 const CLIMATIQ_API_KEY = process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY;
@@ -84,7 +83,7 @@ export const searchEmissionFactors = async (
       params: searchParams,
       paramsSerializer: (params) => {
         return Object.entries(params)
-          .filter(([key, value]) => value !== undefined) // Remove unused '_'
+          .filter(([value]) => value !== undefined) // Remove unused '_' and[key,]
           .map(([key, value]) => {
             const encodedValue = encodeURIComponent(value.toString()).replace(
               /%20/g,
@@ -134,10 +133,8 @@ export const getDataVersions = async (): Promise<DataVersionsResponse> => {
   }
 };
 
-//
 export interface FreightEmissionRequest {
   route: Array<{
-    // Define specific type instead of any
     location?: {
       query?: string;
       iata?: string;

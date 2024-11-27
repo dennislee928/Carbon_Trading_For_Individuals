@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 "use client";
 import React, { useState, useEffect } from "react";
 import {
@@ -11,9 +10,8 @@ import {
   Grid,
   Typography,
   Tooltip,
-  // FormHelperText,
   SelectChangeEvent,
-  Button, // Import Button component
+  Button,
 } from "@mui/material";
 
 // Define interfaces
@@ -80,7 +78,7 @@ export default function EmissionFactorsSearch() {
       const params = createSearchParams(searchParams);
       const response = await fetch(`/api/search?${params.toString()}`);
       const data = await response.json();
-      console.log("Search Results:", data); // You can replace this with your data handling logic
+      console.log("Search Results:", data); // Handle the search results accordingly
     } catch (error) {
       console.error("Error performing search:", error);
     }
@@ -91,15 +89,9 @@ export default function EmissionFactorsSearch() {
     results_per_page: 20,
     page: 1,
   });
+
   const [unitTypes, setUnitTypes] = useState<string[]>([]);
   const [dataVersions, setDataVersions] = useState<string[]>([]);
-
-  const calculationMethods = ["ar4", "ar5", "ar6"];
-  const accessTypes = ["public", "private", "premium"];
-  const years = Array.from(
-    { length: 2024 - 1990 + 1 },
-    (_, i) => 1990 + i
-  ).reverse();
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -174,8 +166,6 @@ export default function EmissionFactorsSearch() {
             </Select>
           </FormControl>
         </Grid>
-
-        {/* Additional filters and inputs... */}
 
         {/* Search Button */}
         <Grid item xs={12}>

@@ -84,18 +84,19 @@ const FreightV2 = () => {
       }));
     };
 
-  const handleSearch = async () => {
-    setLoading(true);
-    try {
-      const response = await searchEmissionFactors(searchParams);
-      setResults(response.results);
-    } catch (error) {
-      console.error("Error during search:", error);
-      setResults([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //used later disable now for eslint regulations
+  //const handleSearch = async () => {
+  //setLoading(true);
+  //try {
+  // const response = await searchEmissionFactors(searchParams);
+  // setResults(response.results);
+  //} catch (error) {
+  //  console.error("Error during search:", error);
+  //  setResults([]);
+  //} finally {
+  //  setLoading(false);
+  // }
+  //};
   //
   const handleFreightEmissionCalculation = async () => {
     const payload: FreightEmissionRequest = {

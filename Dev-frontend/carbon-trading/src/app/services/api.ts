@@ -136,12 +136,17 @@ export const getDataVersions = async (): Promise<DataVersionsResponse> => {
 
 //
 export interface FreightEmissionRequest {
-  route: {
-    location?:
-      | { query: string }
-      | { iata?: string }
-      | { locode?: string }
-      | { longitude: number; latitude: number };
+  route: Array<{
+    // Define specific type instead of any
+    location?: {
+      query?: string;
+      iata?: string;
+      locode?: string;
+      coordinates?: {
+        longitude: number;
+        latitude: number;
+      };
+    };
     transport_mode?: "road" | "air" | "sea" | "rail";
     leg_details?: {
       rest_of_world?: {
@@ -153,7 +158,7 @@ export interface FreightEmissionRequest {
         vehicle_type: string;
       };
     };
-  }[];
+  }>;
   cargo: {
     weight: number;
     weight_unit: string;

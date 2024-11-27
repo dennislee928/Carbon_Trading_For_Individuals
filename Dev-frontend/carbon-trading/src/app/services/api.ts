@@ -84,7 +84,7 @@ export const searchEmissionFactors = async (
       params: searchParams,
       paramsSerializer: (params) => {
         return Object.entries(params)
-          .filter(([_, value]) => value !== undefined)
+          .filter(([key, value]) => value !== undefined) // Remove unused '_'
           .map(([key, value]) => {
             const encodedValue = encodeURIComponent(value.toString()).replace(
               /%20/g,

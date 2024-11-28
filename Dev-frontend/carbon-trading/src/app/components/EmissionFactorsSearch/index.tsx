@@ -178,6 +178,23 @@ export default function EmissionFactorsSearch() {
             Search
           </Button>
         </Grid>
+        {/* Unit Type Selector */}
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth>
+            <InputLabel>Unit Type</InputLabel>
+            <Select
+              value={searchParams.unit_type || ""}
+              onChange={handleSelectChange("unit_type")}
+              label="Unit Type"
+            >
+              {unitTypes.map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
       </Grid>
     </Box>
   );

@@ -93,7 +93,7 @@ export default function EmissionFactorsSearch() {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Emission Factors Search
+        Vague Emission Factors Search
       </Typography>
       <Grid container spacing={3}>
         {/* Search Query */}

@@ -47,7 +47,7 @@
    Self-Deletion: Allow users to delete their account while providing a warning about the consequences (loss of data, etc.).
    Admin-Level Deletion: Allow admins to deactivate or delete user accounts for security or policy violations.
 
-10. Verification & KYC
+10. Verification & KYC :
 
     Identity Verification: To meet regulatory requirements for carbon rights exchange, you may want to implement KYC (Know Your Customer) verification for specific account types.
     Document Upload: Allow users to upload identity documents (e.g., passport, utility bill) for verification.

@@ -1,8 +1,16 @@
-// app/components/UnitTypesDisplay/index.tsx
-/* eslint-disable */
 "use client";
-
 import React, { useEffect, useState } from "react";
+import {
+  Box,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+  Grid,
+  Alert,
+} from "@mui/material";
 import { getUnitTypes, UnitType } from "@/app/services/api";
 
 interface UnitTypesDisplayProps {
@@ -44,15 +52,15 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
   }, []);
 
   const handleUnitTypeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<{ value: unknown }>
   ) => {
-    const newUnitType = event.target.value;
+    const newUnitType = event.target.value as string;
     setSelectedUnitType(newUnitType);
     setSelectedUnit("");
   };
 
-  const handleUnitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newUnit = event.target.value;
+  const handleUnitChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const newUnit = event.target.value as string;
     setSelectedUnit(newUnit);
     if (onUnitTypeSelect && selectedUnitType) {
       onUnitTypeSelect(selectedUnitType, newUnit);
@@ -60,61 +68,79 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
   };
 
   if (loading) {
-    return <div>Loading unit types...</div>;
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <Box sx={{ mt: 4 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
   }
 
   const selectedTypeData = unitTypes.find(
     (type) => type.unit_type === selectedUnitType
   );
-  const availableUnits = selectedTypeData?.units || [];
+  const availableUnits = selectedTypeData
+    ? Object.values(selectedTypeData.units).flat()
+    : [];
 
   return (
-    <div className="unit-types-display">
-      <div className="unit-type-selector">
-        <label className="form-label" htmlFor="unitType">
-          Unit Type:
-        </label>
-        <select
-          id="unitType"
-          className="form-select"
-          value={selectedUnitType}
-          onChange={handleUnitTypeChange}
-        >
-          <option value="">Select a unit type</option>
-          {unitTypes.map((type) => (
-            <option key={type.unit_type} value={type.unit_type}>
-              {type.unit_type}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {selectedUnitType && (
-        <div className="unit-selector">
-          <label className="form-label" htmlFor="unit">
-            Unit:
-          </label>
-          <select
-            id="unit"
-            className="form-select"
-            value={selectedUnit}
-            onChange={handleUnitChange}
-          >
-            <option value="">Select a unit</option>
-            {Array.isArray(availableUnits) &&
-              availableUnits.map((unit) => (
-                <option key={unit} value={unit}>
-                  {unit}
-                </option>
+    <Box sx={{ p: 4, backgroundColor: "#f9f9f9", borderRadius: 2 }}>
+      <Typography variant="h5" gutterBottom align="center">
+        Unit Types Selection
+      </Typography>
+      <Grid container spacing={3}>
+        {/* Unit Type Selector */}
+        <Grid item xs={12} md={6}>
+          <FormControl fullWidth variant="outlined">
+            <InputLabel>Unit Type</InputLabel>
+            <Select
+              value={selectedUnitType}
+              onChange={handleUnitTypeChange}
+              label="Unit Type"
+            >
+              <MenuItem value="">
+                <em>Select a unit type</em>
+              </MenuItem>
+              {unitTypes.map((type) => (
+                <MenuItem key={type.unit_type} value={type.unit_type}>
+                  {type.unit_type}
+                </MenuItem>
               ))}
-          </select>
-        </div>
-      )}
-    </div>
+            </Select>
+          </FormControl>
+        </Grid>
+
+        {/* Unit Selector */}
+        {selectedUnitType && (
+          <Grid item xs={12} md={6}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>Unit</InputLabel>
+              <Select
+                value={selectedUnit}
+                onChange={handleUnitChange}
+                label="Unit"
+              >
+                <MenuItem value="">
+                  <em>Select a unit</em>
+                </MenuItem>
+                {availableUnits.map((unit) => (
+                  <MenuItem key={unit} value={unit}>
+                    {unit}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        )}
+      </Grid>
+    </Box>
   );
 };
 

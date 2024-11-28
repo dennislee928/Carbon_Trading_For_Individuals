@@ -171,7 +171,28 @@ export interface FreightEmissionResponse {
   co2e_calculation_method: string;
   distance_km: number;
   cargo_tonnes: number;
-  route: any[];
+  route: Array<{
+    from: {
+      query?: string;
+      iata?: string;
+      locode?: string;
+      coordinates?: {
+        longitude: number;
+        latitude: number;
+      };
+    };
+    to: {
+      query?: string;
+      iata?: string;
+      locode?: string;
+      coordinates?: {
+        longitude: number;
+        latitude: number;
+      };
+    };
+    distance_km: number;
+    transport_mode: "road" | "air" | "sea" | "rail";
+  }>;
 }
 
 export const calculateFreightEmissions = async (

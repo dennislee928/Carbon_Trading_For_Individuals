@@ -42,7 +42,7 @@
    Role Management: Allow admins to assign or change user roles and permissions.
    User Statistics: Provide information about user activity, trading volumes, and other platform usage data.
 
-9. Account Deletion
+9. Account Deletion :
 
    Self-Deletion: Allow users to delete their account while providing a warning about the consequences (loss of data, etc.).
    Admin-Level Deletion: Allow admins to deactivate or delete user accounts for security or policy violations.

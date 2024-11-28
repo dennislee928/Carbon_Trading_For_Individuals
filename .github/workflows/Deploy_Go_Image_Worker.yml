@@ -1,7 +1,7 @@
 name: Deploy Go Image Worker
 on:
   push:
-    branches:
+    branch:
       - dev/backend
 jobs:
   deploy:

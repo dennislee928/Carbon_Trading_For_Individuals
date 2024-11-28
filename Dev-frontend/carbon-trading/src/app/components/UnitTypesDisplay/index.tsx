@@ -2,8 +2,6 @@
 /* eslint-disable */
 "use client";
 
-// Dev-frontend/carbon-trading/src/app/components/UnitTypesDisplay/index.tsx
-
 import React, { useEffect, useState } from "react";
 import { getUnitTypes, UnitType } from "@/app/services/api";
 
@@ -25,12 +23,18 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
       try {
         setLoading(true);
         const data = await getUnitTypes();
-        setUnitTypes(data);
+        // Ensure data is an array and has the correct structure
+        if (Array.isArray(data)) {
+          setUnitTypes(data);
+        } else {
+          throw new Error("Invalid data format received");
+        }
         setError(null);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to fetch unit types"
         );
+        setUnitTypes([]); // Reset to empty array on error
       } finally {
         setLoading(false);
       }
@@ -44,7 +48,7 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
   ) => {
     const newUnitType = event.target.value;
     setSelectedUnitType(newUnitType);
-    setSelectedUnit(""); // Reset selected unit when unit type changes
+    setSelectedUnit("");
   };
 
   const handleUnitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -63,12 +67,20 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
     return <div>Error: {error}</div>;
   }
 
+  const selectedTypeData = unitTypes.find(
+    (type) => type.unit_type === selectedUnitType
+  );
+  const availableUnits = selectedTypeData?.units || [];
+
   return (
     <div className="unit-types-display">
       <div className="unit-type-selector">
-        <label htmlFor="unitType">Unit Type:</label>
+        <label className="form-label" htmlFor="unitType">
+          Unit Type:
+        </label>
         <select
           id="unitType"
+          className="form-select"
           value={selectedUnitType}
           onChange={handleUnitTypeChange}
         >
@@ -83,12 +95,18 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
 
       {selectedUnitType && (
         <div className="unit-selector">
-          <label htmlFor="unit">Unit:</label>
-          <select id="unit" value={selectedUnit} onChange={handleUnitChange}>
+          <label className="form-label" htmlFor="unit">
+            Unit:
+          </label>
+          <select
+            id="unit"
+            className="form-select"
+            value={selectedUnit}
+            onChange={handleUnitChange}
+          >
             <option value="">Select a unit</option>
-            {unitTypes
-              .find((type) => type.unit_type === selectedUnitType)
-              ?.units.map((unit) => (
+            {Array.isArray(availableUnits) &&
+              availableUnits.map((unit) => (
                 <option key={unit} value={unit}>
                   {unit}
                 </option>

@@ -13,78 +13,19 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-
-// Define interfaces
-interface UnitType {
-  unit_type: string;
-}
-
-interface DataVersions {
-  latest: string;
-  latest_release: string;
-}
-
-interface SearchParamsType {
-  data_version: string;
-  results_per_page: number;
-  page: number;
-  query?: string;
-  year?: string;
-  category?: string;
-  sector?: string;
-  unit_type?: string;
-  calculation_method?: string;
-  region?: string;
-  access_type?: string;
-}
+import {
+  SearchParams,
+  EmissionFactor,
+  SearchResponse,
+  UnitType,
+  DataVersionsResponse,
+  searchEmissionFactors,
+  getUnitTypes,
+  getDataVersions,
+} from "@/app/services/api";
 
 export default function EmissionFactorsSearch() {
-  const createSearchParams = (params: SearchParamsType): URLSearchParams => {
-    const searchParams = new URLSearchParams();
-
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        searchParams.set(key, value.toString());
-      }
-    });
-
-    return searchParams;
-  };
-
-  const fetchUnitTypes = async (): Promise<UnitType[]> => {
-    try {
-      const response = await fetch("/api/unit-types");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching unit types:", error);
-      return [];
-    }
-  };
-
-  const fetchDataVersions = async (): Promise<DataVersions> => {
-    try {
-      const response = await fetch("/api/data-versions");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching data versions:", error);
-      return { latest: "19", latest_release: "18" };
-    }
-  };
-
-  const handleSearch = async () => {
-    try {
-      const params = createSearchParams(searchParams);
-      const response = await fetch(`/api/search?${params.toString()}`);
-      const data = await response.json();
-      console.log("Search Results:", data); // Handle the search results accordingly
-    } catch (error) {
-      console.error("Error performing search:", error);
-    }
-  };
-
-  const [searchParams, setSearchParams] = useState<SearchParamsType>({
+  const [searchParams, setSearchParams] = useState<SearchParams>({
     data_version: "19",
     results_per_page: 20,
     page: 1,
@@ -92,13 +33,16 @@ export default function EmissionFactorsSearch() {
 
   const [unitTypes, setUnitTypes] = useState<string[]>([]);
   const [dataVersions, setDataVersions] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<EmissionFactor[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         const [unitTypesData, dataVersionsData] = await Promise.all([
-          fetchUnitTypes(),
-          fetchDataVersions(),
+          getUnitTypes(),
+          getDataVersions(),
         ]);
 
         setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
@@ -107,6 +51,7 @@ export default function EmissionFactorsSearch() {
           dataVersionsData.latest_release,
         ]);
       } catch (error) {
+        setError("Error fetching initial data");
         console.error("Error fetching initial data:", error);
       }
     };
@@ -114,7 +59,7 @@ export default function EmissionFactorsSearch() {
   }, []);
 
   const handleTextChange =
-    (field: keyof SearchParamsType) =>
+    (field: keyof SearchParams) =>
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setSearchParams((prev) => ({
         ...prev,
@@ -123,13 +68,27 @@ export default function EmissionFactorsSearch() {
     };
 
   const handleSelectChange =
-    (field: keyof SearchParamsType) =>
+    (field: keyof SearchParams) =>
     (event: SelectChangeEvent<string | number>) => {
       setSearchParams((prev) => ({
         ...prev,
         [field]: event.target.value,
       }));
     };
+
+  const handleSearch = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await searchEmissionFactors(searchParams);
+      setSearchResults(response.results);
+    } catch (error) {
+      setError("Error performing search");
+      console.error("Error performing search:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Box sx={{ p: 3 }}>
@@ -167,18 +126,7 @@ export default function EmissionFactorsSearch() {
           </FormControl>
         </Grid>
 
-        {/* Search Button */}
-        <Grid item xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSearch}
-            fullWidth
-          >
-            Search
-          </Button>
-        </Grid>
-        {/* Unit Type Selector */}
+        {/* Unit Type */}
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <InputLabel>Unit Type</InputLabel>
@@ -195,6 +143,61 @@ export default function EmissionFactorsSearch() {
             </Select>
           </FormControl>
         </Grid>
+
+        {/* Search Button */}
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSearch}
+            fullWidth
+            disabled={loading}
+          >
+            {loading ? "Searching..." : "Search"}
+          </Button>
+        </Grid>
+
+        {/* Error Message */}
+        {error && (
+          <Grid item xs={12}>
+            <Typography color="error">{error}</Typography>
+          </Grid>
+        )}
+
+        {/* Search Results */}
+        {searchResults.length > 0 && (
+          <Grid item xs={12}>
+            <Typography variant="h6" gutterBottom>
+              Search Results
+            </Typography>
+            {searchResults.map((result) => (
+              <Box
+                key={result.id}
+                sx={{
+                  mb: 2,
+                  p: 2,
+                  border: 1,
+                  borderColor: "grey.300",
+                  borderRadius: 1,
+                }}
+              >
+                <Typography variant="subtitle1">{result.name}</Typography>
+                <Typography variant="body2">ID: {result.id}</Typography>
+                <Typography variant="body2">
+                  Category: {result.category}
+                </Typography>
+                {result.sector && (
+                  <Typography variant="body2">
+                    Sector: {result.sector}
+                  </Typography>
+                )}
+                <Typography variant="body2">Source: {result.source}</Typography>
+                <Typography variant="body2">Region: {result.region}</Typography>
+                <Typography variant="body2">Year: {result.year}</Typography>
+              </Box>
+            ))}
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

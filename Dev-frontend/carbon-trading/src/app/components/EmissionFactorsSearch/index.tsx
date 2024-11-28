@@ -16,9 +16,9 @@ import {
 import {
   SearchParams,
   EmissionFactor,
-  SearchResponse,
+  // SearchResponse,
   UnitType,
-  DataVersionsResponse,
+  //DataVersionsResponse,
   searchEmissionFactors,
   getUnitTypes,
   getDataVersions,

@@ -5,9 +5,10 @@ export async function GET() {
   try {
     // Replace with your actual API endpoint
     const apiUrl = `${process.env.API_BASE_URL}/data-versions`;
+    const apiKey = `${process.env.API_KEY}/data-versions`;
     const response = await fetch(apiUrl, {
       headers: {
-        Authorization: `Bearer ${process.env.API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
       },
     });
 

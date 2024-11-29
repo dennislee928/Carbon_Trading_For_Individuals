@@ -82,36 +82,7 @@ export const climatiqApi = {
       handleError(error);
       throw new Error("Classification search failed."); // Ensure no undefined return
     }
-  }
-  
-
-  /**
-   * Calculate emissions for procurement data
-   */
-  async calculateProcurementEmissions(data: ProcurementData): Promise<EmissionResult> {
-    try {
-      const response = await api.post(API_CONFIG.ENDPOINTS.PROCUREMENT, data);
-      return response.data;
-    } catch (error) {
-      handleError(error);
-      throw new Error("Procurement emissions calculation failed."); // Ensure no undefined return
-    }
-  }
-  
-
-  /**
-   * Calculate emissions for computing data
-   */
-  async calculateComputingEmissions(
-    data: ComputingData
-  ): Promise<EmissionResult> {
-    try {
-      const response = await api.post(API_CONFIG.ENDPOINTS.COMPUTING, data);
-      return response.data;
-    } catch (error) {
-      handleError(error);
-    }
-  }
+  },
 
   /**
    * Search for emission factors
@@ -131,6 +102,7 @@ export const climatiqApi = {
       return response.data;
     } catch (error) {
       handleError(error);
+      throw new Error("Search emission factors failed.");
     }
   },
 
@@ -143,36 +115,38 @@ export const climatiqApi = {
       return response.data.unit_types;
     } catch (error) {
       handleError(error);
+      throw new Error("Failed to fetch unit types.");
     }
   },
   /**
- * Calculate emissions for procurement data
- */
-async calculateProcurementEmissions(data: ProcurementData): Promise<EmissionResult> {
-  try {
-    const response = await api.post(API_CONFIG.ENDPOINTS.PROCUREMENT, data);
-    return response.data;
-  } catch (error) {
-    handleError(error);
-    throw new Error("Procurement emissions calculation failed."); // Ensure no undefined return
-  }
-},
+   * Calculate emissions for procurement data
+   */
+  async calculateProcurementEmissions(
+    data: ProcurementData
+  ): Promise<EmissionResult> {
+    try {
+      const response = await api.post(API_CONFIG.ENDPOINTS.PROCUREMENT, data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("Procurement emissions calculation failed."); // Ensure no undefined return
+    }
+  },
 
-/**
- * Calculate emissions for computing data
- */
-async calculateComputingEmissions(
-  data: ComputingData
-): Promise<EmissionResult> {
-  try {
-    const response = await api.post(API_CONFIG.ENDPOINTS.COMPUTING, data);
-    return response.data;
-  } catch (error) {
-    handleError(error);
-    throw new Error("Computing emissions calculation failed."); // Ensure no undefined return
-  }
-}
-
+  /**
+   * Calculate emissions for computing data
+   */
+  async calculateComputingEmissions(
+    data: ComputingData
+  ): Promise<EmissionResult> {
+    try {
+      const response = await api.post(API_CONFIG.ENDPOINTS.COMPUTING, data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("Computing emissions calculation failed."); // Ensure no undefined return
+    }
+  },
 
   /**
    * Fetch available data versions
@@ -183,6 +157,7 @@ async calculateComputingEmissions(
       return response.data;
     } catch (error) {
       handleError(error);
+      throw new Error("Failed to fetch data versions.");
     }
   },
 
@@ -200,6 +175,7 @@ async calculateComputingEmissions(
       return response.data;
     } catch (error) {
       handleError(error);
+      throw new Error("Freight emissions calculation failed.");
     }
   },
 };

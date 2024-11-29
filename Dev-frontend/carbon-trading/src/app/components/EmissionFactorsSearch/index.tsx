@@ -13,16 +13,8 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import {
-  SearchParams,
-  EmissionFactor,
-  // SearchResponse,
-  UnitType,
-  //DataVersionsResponse,
-  searchEmissionFactors,
-  getUnitTypes,
-  getDataVersions,
-} from "@/app/services/api";
+import { SearchParams, EmissionFactor, UnitType } from "@/app/services/types"; // Update import path for types
+import { climatiqApi } from "@/app/services/api"; // Update import for API
 
 export default function EmissionFactorsSearch() {
   const [searchParams, setSearchParams] = useState<SearchParams>({
@@ -41,8 +33,8 @@ export default function EmissionFactorsSearch() {
     const fetchInitialData = async () => {
       try {
         const [unitTypesData, dataVersionsData] = await Promise.all([
-          getUnitTypes(),
-          getDataVersions(),
+          climatiqApi.getUnitTypes(),
+          climatiqApi.getDataVersions(),
         ]);
 
         setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
@@ -80,7 +72,7 @@ export default function EmissionFactorsSearch() {
     setLoading(true);
     setError(null);
     try {
-      const response = await searchEmissionFactors(searchParams);
+      const response = await climatiqApi.searchEmissionFactors(searchParams);
       setSearchResults(response.results);
     } catch (error) {
       setError("Error performing search");

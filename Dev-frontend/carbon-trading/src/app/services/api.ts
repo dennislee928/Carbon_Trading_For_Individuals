@@ -22,13 +22,8 @@ import {
 const validateEnv = (key: string, defaultValue?: string): string => {
   const value = process.env[key] || defaultValue;
   if (!value) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(
-        `Environment variable ${key} is not set. Defaulting to an empty value.`
-      );
-      return "";
-    }
-    throw new Error(`Missing environment variable: ${key}`);
+    console.warn(`Environment variable ${key} is not set.`);
+    return ""; // Return an empty string instead of throwing
   }
   return value;
 };

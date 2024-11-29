@@ -19,6 +19,7 @@ import {
   EmissionFactor,
 } from "./types";
 // Utility to validate environment variables
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const validateEnv = (key: string, defaultValue?: string): string => {
   const value = process.env[key] || defaultValue;
   if (!value) {

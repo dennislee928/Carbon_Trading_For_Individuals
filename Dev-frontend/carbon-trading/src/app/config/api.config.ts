@@ -2,6 +2,7 @@
 
 export const API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.climatiq.io",
+  API_KEY: process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY,
   ENDPOINTS: {
     SEARCH: "/data/v1/search",
     UNIT_TYPES: "/data/v1/unit-types",
@@ -16,5 +17,6 @@ export const API_CONFIG = {
 } as const;
 //
 export const CLIMATIQ_CONFIG = {
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.climatiq.io",
   API_KEY: process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY,
 };

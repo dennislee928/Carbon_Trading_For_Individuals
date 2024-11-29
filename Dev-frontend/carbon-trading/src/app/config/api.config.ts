@@ -18,5 +18,6 @@ export const API_CONFIG = {
 //
 export const CLIMATIQ_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.climatiq.io",
-  API_KEY: process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY,
+  API_KEY:
+    process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY || "NKFZH0Y8Q15KKFS84BQZ3MXC0G",
 };

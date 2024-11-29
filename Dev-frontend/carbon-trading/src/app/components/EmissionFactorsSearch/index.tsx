@@ -13,15 +13,16 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import { SearchParams, EmissionFactor, UnitType } from "@/app/services/types"; // Ensure path is correct
-import { climatiqApi } from "@/app/services/api"; // Ensure path is correct
+import { SearchParams, EmissionFactor, UnitType } from "@/app/services/types";
+import { climatiqApi } from "@/app/services/api";
 
 export default function EmissionFactorsSearch() {
   const [searchParams, setSearchParams] = useState<SearchParams>({
     data_version: "19",
     results_per_page: 20,
     page: 1,
-    unit_type: "", // Ensure optional fields are initialized
+    unit_type: "",
+    query: "",
   });
 
   const [unitTypes, setUnitTypes] = useState<string[]>([]);
@@ -37,7 +38,6 @@ export default function EmissionFactorsSearch() {
           climatiqApi.getUnitTypes(),
           climatiqApi.getDataVersions(),
         ]);
-
         setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
         setDataVersions([
           dataVersionsData.latest,
@@ -74,9 +74,11 @@ export default function EmissionFactorsSearch() {
     setError(null);
     try {
       const response = await climatiqApi.searchEmissionFactors(searchParams);
-      setSearchResults(response.results);
+      setSearchResults(response.results || []);
     } catch (error) {
-      setError("Error performing search");
+      setError(
+        "An unexpected error occurred while performing the search. Please try again."
+      );
       console.error("Error performing search:", error);
     } finally {
       setLoading(false);
@@ -105,11 +107,11 @@ export default function EmissionFactorsSearch() {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Tooltip title="Free-text search that matches IDs, names, and descriptions. Uses fuzzy matching.">
+          <Tooltip title="Enter keywords to search for emission factors. This matches IDs, names, and descriptions.">
             <TextField
               fullWidth
               label="Search Query"
-              value={searchParams.query || ""}
+              value={searchParams.query}
               onChange={handleTextChange("query")}
             />
           </Tooltip>
@@ -136,7 +138,7 @@ export default function EmissionFactorsSearch() {
           <FormControl fullWidth>
             <InputLabel>Unit Type</InputLabel>
             <Select
-              value={searchParams.unit_type || ""}
+              value={searchParams.unit_type}
               onChange={handleSelectChange("unit_type")}
               label="Unit Type"
             >
@@ -156,14 +158,29 @@ export default function EmissionFactorsSearch() {
             onClick={handleSearch}
             fullWidth
             disabled={loading}
+            aria-label="Search for emission factors"
           >
             {loading ? "Searching..." : "Search"}
           </Button>
         </Grid>
 
+        {loading && (
+          <Grid item xs={12}>
+            <Typography>Loading...</Typography>
+          </Grid>
+        )}
+
         {error && (
           <Grid item xs={12}>
             <Typography color="error">{error}</Typography>
+          </Grid>
+        )}
+
+        {searchResults.length === 0 && !loading && (
+          <Grid item xs={12}>
+            <Typography>
+              No results found. Please refine your search.
+            </Typography>
           </Grid>
         )}
 
@@ -180,8 +197,14 @@ export default function EmissionFactorsSearch() {
                   p: 2,
                   border: 1,
                   borderColor: "grey.300",
-                  borderRadius: 1,
-                  backgroundColor: "background.paper",
+                  borderRadius: 2,
+                  backgroundColor: "background.default",
+                  boxShadow: 1,
+                  "&:hover": {
+                    boxShadow: 2,
+                    borderColor: "primary.main",
+                  },
+                  transition: "all 0.3s ease-in-out",
                 }}
               >
                 <Grid container spacing={2}>
@@ -190,7 +213,6 @@ export default function EmissionFactorsSearch() {
                       {result.name}
                     </Typography>
                   </Grid>
-
                   <Grid item xs={12} md={6}>
                     <Typography variant="subtitle2" color="textSecondary">
                       Basic Information
@@ -203,7 +225,6 @@ export default function EmissionFactorsSearch() {
                       {result.example_activity_id ?? "N/A"}
                     </Typography>
                   </Grid>
-
                   <Grid item xs={12}>
                     <Typography variant="subtitle2" color="textSecondary">
                       Additional Information

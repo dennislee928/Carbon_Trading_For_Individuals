@@ -21,7 +21,12 @@ import {
 const validateEnv = (key: string, defaultValue?: string): string => {
   const value = process.env[key] || defaultValue;
   if (!value) {
-    console.error(`Environment variable ${key} is not set.`);
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `Environment variable ${key} is not set. Defaulting to an empty value.`
+      );
+      return "";
+    }
     throw new Error(`Missing environment variable: ${key}`);
   }
   return value;
@@ -34,8 +39,11 @@ const CLIMATIQ_API_KEY = validateEnv("NEXT_PUBLIC_CLIMATIQ_API_KEY");
 const handleError = (error: unknown): never => {
   if (axios.isAxiosError(error)) {
     const errorMessage = error.response?.data?.error || error.message;
-    throw new Error(`API Error: ${errorMessage}`);
+    const statusCode = error.response?.status || "Unknown";
+    console.error(`API Error (${statusCode}): ${errorMessage}`);
+    throw new Error(`API Error (${statusCode}): ${errorMessage}`);
   }
+  console.error("An unexpected error occurred:", error);
   throw new Error("An unexpected error occurred.");
 };
 
@@ -46,13 +54,14 @@ const api = axios.create({
     Authorization: `Bearer ${CLIMATIQ_API_KEY}`,
     "Content-Type": "application/json",
   },
+  paramsSerializer: (params) => serializeParams(params),
 });
 
 // Response interceptor for centralized error handling
-api.interceptors.response.use(
-  (response) => response,
-  (error) => handleError(error)
-);
+api.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${CLIMATIQ_API_KEY}`;
+  return config;
+});
 
 // Utility for parameter serialization
 const serializeParams = (params: Record<string, unknown>): string =>

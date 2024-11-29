@@ -1,25 +1,45 @@
 // src/app/services/api.ts
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { API_CONFIG, CLIMATIQ_CONFIG } from "../config/api.config";
+//
+import {
+  ClassificationSearchParams,
+  ClassificationResult,
+  ProcurementData,
+  ComputingData,
+  EmissionResult,
+  SearchParams,
+  SearchResponse,
+  UnitType,
+  DataVersionsResponse,
+  FreightEmissionRequest,
+  FreightEmissionResponse,
+  EmissionFactor,
+} from "./types";
+// Utility to validate environment variables
+const validateEnv = (key: string, defaultValue?: string): string => {
+  const value = process.env[key] || defaultValue;
+  if (!value) {
+    console.error(`Environment variable ${key} is not set.`);
+    throw new Error(`Missing environment variable: ${key}`);
+  }
+  return value;
+};
 
-const CLIMATIQ_API_KEY = process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY;
+// Validate CLIMATIQ API Key
+const CLIMATIQ_API_KEY = validateEnv("NEXT_PUBLIC_CLIMATIQ_API_KEY");
 
-if (!CLIMATIQ_API_KEY) {
-  console.error("CLIMATIQ_API_KEY is not set in environment variables");
-}
+// Centralized error handler
+const handleError = (error: unknown): never => {
+  if (axios.isAxiosError(error)) {
+    const errorMessage = error.response?.data?.error || error.message;
+    throw new Error(`API Error: ${errorMessage}`);
+  }
+  throw new Error("An unexpected error occurred.");
+};
 
-// API endpoints configuration
-const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.climatiq.io",
-  ENDPOINTS: {
-    SEARCH: "/data/v1/search",
-    UNIT_TYPES: "/data/v1/unit-types",
-    DATA_VERSIONS: "/data/v1/data-versions",
-    FREIGHT_CALCULATE: "/freight/v1/calculate",
-  },
-} as const;
-
-// Create axios instance with default config
+// Axios instance configuration
 const api = axios.create({
   baseURL: API_CONFIG.BASE_URL,
   headers: {
@@ -28,214 +48,174 @@ const api = axios.create({
   },
 });
 
-// Add response interceptor for error handling
+// Response interceptor for centralized error handling
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.error || error.message;
-      throw new Error(`API Error: ${errorMessage}`);
-    }
-    throw error;
-  }
+  (error) => handleError(error)
 );
 
-export interface SearchParams {
-  data_version: string;
-  query?: string;
-  activity_id?: string;
-  id?: string;
-  category?: string;
-  sector?: string;
-  source?: string;
-  source_dataset?: string;
-  year?: number;
-  region?: string;
-  unit_type?: string;
-  source_lca_activity?: string;
-  calculation_method?: "ar4" | "ar5" | "ar6";
-  allowed_data_quality_flags?: string[];
-  access_type?: "public" | "private" | "premium";
-  page?: number;
-  results_per_page?: number;
-}
+// Utility for parameter serialization
+const serializeParams = (params: Record<string, unknown>): string =>
+  Object.entries(params)
+    .filter(([, value]) => value !== undefined)
+    .map(
+      ([key, value]) =>
+        `${key}=${encodeURIComponent(String(value)).replace(/%20/g, "+")}`
+    )
+    .join("&");
 
-export interface EmissionFactor {
-  id: string;
-  name: string;
-  category: string;
-  sector?: string;
-  source: string;
-  source_dataset?: string;
-  region: string;
-  year: number;
-  unit_type?: string;
-  source_lca_activity?: string;
-  access_type?: string;
-  data_quality_flags?: string[];
-}
+// API service functions
+export const climatiqApi = {
+  /**
+   * Search classifications based on parameters
+   */
+  async searchClassifications(
+    params: ClassificationSearchParams
+  ): Promise<ClassificationResult[]> {
+    const defaultParams = { results_per_page: 10 };
+    try {
+      const response = await api.get(API_CONFIG.ENDPOINTS.CLASSIFICATIONS, {
+        params: { ...defaultParams, ...params },
+      });
+      return response.data.results;
+    } catch (error) {
+      handleError(error);
+      throw new Error("Classification search failed."); // Ensure no undefined return
+    }
+  }
+  
 
-export interface SearchResponse {
-  results: EmissionFactor[];
-  current_page: number;
-  last_page: number;
-  total_results: number;
-}
+  /**
+   * Calculate emissions for procurement data
+   */
+  async calculateProcurementEmissions(data: ProcurementData): Promise<EmissionResult> {
+    try {
+      const response = await api.post(API_CONFIG.ENDPOINTS.PROCUREMENT, data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("Procurement emissions calculation failed."); // Ensure no undefined return
+    }
+  }
+  
 
-export interface UnitType {
-  unit_type: string;
-  units: string[];
-}
+  /**
+   * Calculate emissions for computing data
+   */
+  async calculateComputingEmissions(
+    data: ComputingData
+  ): Promise<EmissionResult> {
+    try {
+      const response = await api.post(API_CONFIG.ENDPOINTS.COMPUTING, data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+    }
+  }
 
-export interface DataVersionsResponse {
-  latest_release: string;
-  latest: string;
-  latest_major: number;
-  latest_minor: number;
-}
+  /**
+   * Search for emission factors
+   */
+  async searchEmissionFactors(params: SearchParams): Promise<SearchResponse> {
+    try {
+      const queryParams = {
+        ...params,
+        data_version: params.data_version || "^19",
+        allowed_data_quality_flags:
+          params.allowed_data_quality_flags?.join(","),
+      };
+      const response = await api.get(API_CONFIG.ENDPOINTS.SEARCH, {
+        params: queryParams,
+        paramsSerializer: serializeParams,
+      });
+      return response.data;
+    } catch (error) {
+      handleError(error);
+    }
+  },
 
-export const searchEmissionFactors = async (
-  params: SearchParams
-): Promise<SearchResponse> => {
+  /**
+   * Fetch available unit types
+   */
+  async getUnitTypes(): Promise<UnitType[]> {
+    try {
+      const response = await api.get(API_CONFIG.ENDPOINTS.UNIT_TYPES);
+      return response.data.unit_types;
+    } catch (error) {
+      handleError(error);
+    }
+  },
+  /**
+ * Calculate emissions for procurement data
+ */
+async calculateProcurementEmissions(data: ProcurementData): Promise<EmissionResult> {
   try {
-    const searchParams = {
-      ...params,
-      data_version: params.data_version || "^19",
-      allowed_data_quality_flags: params.allowed_data_quality_flags?.join(","),
-    };
-
-    const response = await api.get(API_CONFIG.ENDPOINTS.SEARCH, {
-      params: searchParams,
-      paramsSerializer: (params) => {
-        return Object.entries(params)
-          .filter(([, value]) => value !== undefined) // Use comma without variable name
-          .map(([key, value]) => {
-            const encodedValue = encodeURIComponent(value.toString()).replace(
-              /%20/g,
-              "+"
-            );
-            return `${key}=${encodedValue}`;
-          })
-          .join("&");
-      },
-    });
-
+    const response = await api.post(API_CONFIG.ENDPOINTS.PROCUREMENT, data);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.error || error.message;
-      throw new Error(`Search failed: ${errorMessage}`);
-    }
-    throw new Error("An unexpected error occurred during search");
+    handleError(error);
+    throw new Error("Procurement emissions calculation failed."); // Ensure no undefined return
   }
-};
+},
 
-export const getUnitTypes = async (): Promise<UnitType[]> => {
+/**
+ * Calculate emissions for computing data
+ */
+async calculateComputingEmissions(
+  data: ComputingData
+): Promise<EmissionResult> {
   try {
-    const response = await api.get(API_CONFIG.ENDPOINTS.UNIT_TYPES);
-    return response.data.unit_types;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.error || error.message;
-      throw new Error(`Failed to fetch unit types: ${errorMessage}`);
-    }
-    throw new Error("An unexpected error occurred while fetching unit types");
-  }
-};
-
-export const getDataVersions = async (): Promise<DataVersionsResponse> => {
-  try {
-    const response = await api.get(API_CONFIG.ENDPOINTS.DATA_VERSIONS);
+    const response = await api.post(API_CONFIG.ENDPOINTS.COMPUTING, data);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.error || error.message;
-      throw new Error(`Failed to fetch data versions: ${errorMessage}`);
-    }
-    throw new Error(
-      "An unexpected error occurred while fetching data versions"
-    );
+    handleError(error);
+    throw new Error("Computing emissions calculation failed."); // Ensure no undefined return
   }
+}
+
+
+  /**
+   * Fetch available data versions
+   */
+  async getDataVersions(): Promise<DataVersionsResponse> {
+    try {
+      const response = await api.get(API_CONFIG.ENDPOINTS.DATA_VERSIONS);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+    }
+  },
+
+  /**
+   * Calculate emissions for freight data
+   */
+  async calculateFreightEmissions(
+    payload: FreightEmissionRequest
+  ): Promise<FreightEmissionResponse> {
+    try {
+      const response = await api.post(
+        API_CONFIG.ENDPOINTS.FREIGHT_CALCULATE,
+        payload
+      );
+      return response.data;
+    } catch (error) {
+      handleError(error);
+    }
+  },
 };
 
-export interface FreightEmissionRequest {
-  route: Array<{
-    location?: {
-      query?: string;
-      iata?: string;
-      locode?: string;
-      coordinates?: {
-        longitude: number;
-        latitude: number;
-      };
-    };
-    transport_mode?: "road" | "air" | "sea" | "rail";
-    leg_details?: {
-      rest_of_world?: {
-        vehicle_type: string;
-        vehicle_weight: string;
-        fuel_source: string;
-      };
-      north_america?: {
-        vehicle_type: string;
-      };
-    };
-  }>;
-  cargo: {
-    weight: number;
-    weight_unit: string;
-  };
-}
-
-export interface FreightEmissionResponse {
-  co2e: number;
-  hub_equipment_co2e: number;
-  vehicle_operation_co2e: number;
-  vehicle_energy_provision_co2e: number;
-  co2e_unit: string;
-  co2e_calculation_method: string;
-  distance_km: number;
-  cargo_tonnes: number;
-  route: Array<{
-    from: {
-      query?: string;
-      iata?: string;
-      locode?: string;
-      coordinates?: {
-        longitude: number;
-        latitude: number;
-      };
-    };
-    to: {
-      query?: string;
-      iata?: string;
-      locode?: string;
-      coordinates?: {
-        longitude: number;
-        latitude: number;
-      };
-    };
-    distance_km: number;
-    transport_mode: "road" | "air" | "sea" | "rail";
-  }>;
-}
-
-export const calculateFreightEmissions = async (
-  payload: FreightEmissionRequest
-): Promise<FreightEmissionResponse> => {
-  try {
-    const response = await api.post(
-      API_CONFIG.ENDPOINTS.FREIGHT_CALCULATE,
-      payload
-    );
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const errorMessage = error.response?.data?.error || error.message;
-      throw new Error(`Freight emission calculation failed: ${errorMessage}`);
-    }
-    throw new Error(
-      "An unexpected error occurred during freight emission calculation"
-    );
-  }
+// Type Exports
+export type {
+  ClassificationResult,
+  ClassificationSearchParams,
+  ProcurementData,
+  ComputingData,
+  EmissionResult,
+  SearchParams,
+  EmissionFactor,
+  SearchResponse,
+  UnitType,
+  DataVersionsResponse,
+  FreightEmissionRequest,
+  FreightEmissionResponse,
 };

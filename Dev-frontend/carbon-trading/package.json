@@ -10,10 +10,10 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
     "@mui/icons-material": "^5.15.0",
-    "@mui/material": "^5.16.7",
+    "@mui/material": "^5.16.8",
     "axios": "^1.7.7",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",

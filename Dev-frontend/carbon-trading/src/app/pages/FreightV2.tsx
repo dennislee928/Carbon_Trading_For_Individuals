@@ -159,6 +159,11 @@ const FreightV2 = () => {
   //
   return (
     <Box sx={{ p: 4 }}>
+      <div
+        className="cf-turnstile"
+        data-sitekey="0x4AAAAAAA1H9-_QXzXQ-oJe"
+        data-callback="javascriptCallback"
+      ></div>
       <Typography variant="h4" gutterBottom>
         Emission Factors Search
       </Typography>

@@ -35,7 +35,7 @@ const validateEnv = (key: string, defaultValue?: string): string => {
 //
 
 // Validate CLIMATIQ API Key
-const CLIMATIQ_API_KEY = validateEnv("NEXT_PUBLIC_CLIMATIQ_API_KEY");
+const CLIMATIQ_API_KEY = "NKFZH0Y8Q15KKFS84BQZ3MXC0G";
 
 // Centralized error handler
 const handleError = (error: unknown): never => {

@@ -24,15 +24,22 @@ export interface EmissionFactor {
   id: string;
   name: string;
   category: string;
-  sector?: string;
+  sector?: string; // Optional if not always present
   source: string;
-  source_dataset?: string;
+  source_dataset?: string; // Optional if not always present
   region: string;
-  year: number;
-  unit_type?: string;
-  source_lca_activity?: string;
-  access_type?: string;
-  data_quality_flags?: string[];
+  year: number; // Required if always present
+  year_released?: number; // Optional if not always present
+  unit_type?: string; // Optional if not always present
+  unit?: string; // Optional if not always present
+  source_lca_activity?: string; // Optional if not always present
+  access_type?: string; // Optional if not always present
+  data_quality_flags?: string[]; // Optional if not always present
+  region_name?: string; // Optional if not always present
+  example_activity_id?: string; // Optional if not always present
+  uncertainty?: string; // Optional if not always present
+  description?: string; // Optional if not always present
+  source_link?: string; // Optional if not always present
 }
 
 export interface SearchResponse {

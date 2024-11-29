@@ -13,14 +13,15 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import { SearchParams, EmissionFactor, UnitType } from "@/app/services/types"; // Update import path for types
-import { climatiqApi } from "@/app/services/api"; // Update import for API
+import { SearchParams, EmissionFactor, UnitType } from "@/app/services/types"; // Ensure path is correct
+import { climatiqApi } from "@/app/services/api"; // Ensure path is correct
 
 export default function EmissionFactorsSearch() {
   const [searchParams, setSearchParams] = useState<SearchParams>({
     data_version: "19",
     results_per_page: 20,
     page: 1,
+    unit_type: "", // Ensure optional fields are initialized
   });
 
   const [unitTypes, setUnitTypes] = useState<string[]>([]);
@@ -83,12 +84,26 @@ export default function EmissionFactorsSearch() {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box
+      sx={{
+        mb: 3,
+        p: 2,
+        border: 1,
+        borderColor: "grey.300",
+        borderRadius: 1,
+        backgroundColor: "background.paper",
+        boxShadow: 1,
+        "&:hover": {
+          boxShadow: 2,
+          borderColor: "primary.main",
+        },
+        transition: "all 0.3s ease-in-out",
+      }}
+    >
       <Typography variant="h5" gutterBottom>
         Vague Emission Factors Search
       </Typography>
       <Grid container spacing={3}>
-        {/* Search Query */}
         <Grid item xs={12}>
           <Tooltip title="Free-text search that matches IDs, names, and descriptions. Uses fuzzy matching.">
             <TextField
@@ -100,7 +115,6 @@ export default function EmissionFactorsSearch() {
           </Tooltip>
         </Grid>
 
-        {/* Data Version */}
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <InputLabel>Data Version</InputLabel>
@@ -118,7 +132,6 @@ export default function EmissionFactorsSearch() {
           </FormControl>
         </Grid>
 
-        {/* Unit Type */}
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>
             <InputLabel>Unit Type</InputLabel>
@@ -136,7 +149,6 @@ export default function EmissionFactorsSearch() {
           </FormControl>
         </Grid>
 
-        {/* Search Button */}
         <Grid item xs={12}>
           <Button
             variant="contained"
@@ -149,14 +161,12 @@ export default function EmissionFactorsSearch() {
           </Button>
         </Grid>
 
-        {/* Error Message */}
         {error && (
           <Grid item xs={12}>
             <Typography color="error">{error}</Typography>
           </Grid>
         )}
 
-        {/* Search Results */}
         {searchResults.length > 0 && (
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
@@ -166,26 +176,44 @@ export default function EmissionFactorsSearch() {
               <Box
                 key={result.id}
                 sx={{
-                  mb: 2,
+                  mb: 3,
                   p: 2,
                   border: 1,
                   borderColor: "grey.300",
                   borderRadius: 1,
+                  backgroundColor: "background.paper",
                 }}
               >
-                <Typography variant="subtitle1">{result.name}</Typography>
-                <Typography variant="body2">ID: {result.id}</Typography>
-                <Typography variant="body2">
-                  Category: {result.category}
-                </Typography>
-                {result.sector && (
-                  <Typography variant="body2">
-                    Sector: {result.sector}
-                  </Typography>
-                )}
-                <Typography variant="body2">Source: {result.source}</Typography>
-                <Typography variant="body2">Region: {result.region}</Typography>
-                <Typography variant="body2">Year: {result.year}</Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" color="primary">
+                      {result.name}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="subtitle2" color="textSecondary">
+                      Basic Information
+                    </Typography>
+                    <Typography>
+                      <strong>ID:</strong> {result.id}
+                    </Typography>
+                    <Typography>
+                      <strong>Activity ID:</strong>{" "}
+                      {result.example_activity_id ?? "N/A"}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Typography variant="subtitle2" color="textSecondary">
+                      Additional Information
+                    </Typography>
+                    <Typography>
+                      <strong>Data Quality Flags:</strong>{" "}
+                      {result.data_quality_flags?.join(", ") || "None"}
+                    </Typography>
+                  </Grid>
+                </Grid>
               </Box>
             ))}
           </Grid>

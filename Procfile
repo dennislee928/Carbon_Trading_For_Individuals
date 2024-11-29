@@ -1,1 +1,2 @@
-web: ./carbon-rights-backend
+
+web: bin/Carbon_Trading_For_Individuals_Frontend

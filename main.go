@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/config"
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/handlers"
@@ -38,6 +39,12 @@ func main() {
 
     // Set up routes with both DB and Supabase client
     setupRoutes(r, db, supabaseClient)
+
+    //Create ports
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080"
+    }
 
     // Start the server
     log.Println("Server is starting on port 8080...")

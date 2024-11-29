@@ -23,10 +23,16 @@ const validateEnv = (key: string, defaultValue?: string): string => {
   const value = process.env[key] || defaultValue;
   if (!value) {
     console.warn(`Environment variable ${key} is not set.`);
+    console.log(
+      "CLIMATIQ_API_KEY in runtime:",
+      process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY
+    );
+
     return ""; // Return an empty string instead of throwing
   }
   return value;
 };
+//
 
 // Validate CLIMATIQ API Key
 const CLIMATIQ_API_KEY = validateEnv("NEXT_PUBLIC_CLIMATIQ_API_KEY");

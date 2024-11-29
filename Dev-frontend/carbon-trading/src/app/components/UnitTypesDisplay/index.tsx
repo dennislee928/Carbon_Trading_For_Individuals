@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { SelectChangeEvent } from "@mui/material"; // Ensure this import exists
 import {
   Box,
   CircularProgress,
@@ -11,7 +12,7 @@ import {
   Grid,
   Alert,
 } from "@mui/material";
-import { getUnitTypes, UnitType } from "@/app/services/api";
+import climatiqApi, { UnitType } from "@/app/services/api";
 
 interface UnitTypesDisplayProps {
   onUnitTypeSelect?: (unitType: string, unit: string) => void;
@@ -30,8 +31,7 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
     const fetchUnitTypes = async () => {
       try {
         setLoading(true);
-        const data = await getUnitTypes();
-        // Ensure data is an array and has the correct structure
+        const data = await climatiqApi.getUnitTypes(); // Correctly use climatiqApi object
         if (Array.isArray(data)) {
           setUnitTypes(data);
         } else {
@@ -42,7 +42,7 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
         setError(
           err instanceof Error ? err.message : "Failed to fetch unit types"
         );
-        setUnitTypes([]); // Reset to empty array on error
+        setUnitTypes([]);
       } finally {
         setLoading(false);
       }
@@ -51,16 +51,14 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
     fetchUnitTypes();
   }, []);
 
-  const handleUnitTypeChange = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    const newUnitType = event.target.value as string;
+  const handleUnitTypeChange = (event: SelectChangeEvent<string>) => {
+    const newUnitType = event.target.value;
     setSelectedUnitType(newUnitType);
     setSelectedUnit("");
   };
 
-  const handleUnitChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const newUnit = event.target.value as string;
+  const handleUnitChange = (event: SelectChangeEvent<string>) => {
+    const newUnit = event.target.value;
     setSelectedUnit(newUnit);
     if (onUnitTypeSelect && selectedUnitType) {
       onUnitTypeSelect(selectedUnitType, newUnit);

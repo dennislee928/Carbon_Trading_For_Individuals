@@ -1,9 +1,7 @@
-// app/components/DataVersionsDisplay/index.tsx
-/* eslint-disable */
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { getDataVersions, type DataVersionsResponse } from "@/app/services/api";
+import climatiqApi, { type DataVersionsResponse } from "@/app/services/api";
 
 export default function DataVersionsDisplay() {
   const [versions, setVersions] = useState<DataVersionsResponse | null>(null);
@@ -13,8 +11,8 @@ export default function DataVersionsDisplay() {
   const fetchDataVersions = useCallback(async () => {
     try {
       setIsLoading(true);
-      const data = await getDataVersions();
-      setVersions(data);
+      const data = await climatiqApi.getDataVersions();
+      setVersions(data ?? null); // Explicitly handle undefined
       setError(null);
     } catch (err) {
       setError("Failed to load data versions");
@@ -129,29 +127,6 @@ export default function DataVersionsDisplay() {
             Note: The legacy version fields are deprecated. We recommend using
             the latest_release field for all new implementations.
           </p>
-        </div>
-
-        {/* Refresh Button */}
-        <div className="mt-6 flex justify-end">
-          <button
-            onClick={fetchDataVersions}
-            className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 flex items-center space-x-2"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-            <span>Refresh</span>
-          </button>
         </div>
       </div>
     </div>

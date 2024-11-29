@@ -11,7 +11,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
+
 func main() {
+    // Set Gin to release mode in production
+    gin.SetMode(gin.ReleaseMode)
+
     // Initialize Router using Gin
     r := gin.Default()
 
@@ -21,7 +25,7 @@ func main() {
         log.Fatal("Error initializing Supabase client:", err)
     }
 
-    // Initialize database
+    // Initialize database (fix the double initialization)
     db, err := config.InitializeDB()
     if err != nil {
         log.Fatalf("Failed to initialize database: %v", err)
@@ -40,30 +44,31 @@ func main() {
     // Set up routes with both DB and Supabase client
     setupRoutes(r, db, supabaseClient)
 
-    //Create ports
+    // Get port from environment variable
     port := os.Getenv("PORT")
     if port == "" {
         port = "8080"
     }
 
-    // Start the server
-    log.Println("Server is starting on port 8080...")
-    if err := r.Run(":8080"); err != nil {
+    // Start the server with the correct port
+    log.Printf("Server is starting on port %s...", port)
+    if err := r.Run(":" + port); err != nil {
         log.Fatalf("Failed to start server: %v", err)
     }
 }
 
-
-
-func setupRoutes(r *gin.Engine, db *sql.DB, _ *config.SupabaseClient) {
+func setupRoutes(r *gin.Engine, db *sql.DB, supabaseClient *config.SupabaseClient) {
     // Apply middleware
     authMiddleware := middleware.AuthMiddleware
-    //backup-
-	//adminMiddleware := middleware.AdminOnly
 
     // API group
     api := r.Group("/api")
     {
+        // Add a health check endpoint
+        api.GET("/health", func(c *gin.Context) {
+            c.JSON(200, gin.H{"status": "ok"})
+        })
+
         // Auth routes
         auth := api.Group("/auth")
         {
@@ -89,8 +94,6 @@ func setupRoutes(r *gin.Engine, db *sql.DB, _ *config.SupabaseClient) {
                 profile.PUT("", handlers.UpdateProfile)
                 profile.POST("/picture", handlers.UploadProfilePicture)
             }
-
-            // Rest of your routes...
         }
     }
 }

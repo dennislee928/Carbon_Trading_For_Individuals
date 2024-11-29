@@ -1,5 +1,4 @@
 "use client";
-import climatiqApi from "@/app/services/api";
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -15,9 +14,7 @@ import {
   Button,
 } from "@mui/material";
 import { SearchParams, EmissionFactor, UnitType } from "@/app/services/types";
-
-import getDataVersions from "@/app/services/api";
-import getUnitTypes from "@/app/services/api";
+import climatiqApi from "@/app/services/api"; // Import the climatiqApi object
 
 export default function EmissionFactorsSearch() {
   const [searchParams, setSearchParams] = useState<SearchParams>({

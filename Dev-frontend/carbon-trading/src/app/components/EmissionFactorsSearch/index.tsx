@@ -1,4 +1,5 @@
 "use client";
+import climatiqApi from "@/app/services/api";
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -14,7 +15,9 @@ import {
   Button,
 } from "@mui/material";
 import { SearchParams, EmissionFactor, UnitType } from "@/app/services/types";
-import { climatiqApi } from "@/app/services/api";
+
+import getDataVersions from "@/app/services/api";
+import getUnitTypes from "@/app/services/api";
 
 export default function EmissionFactorsSearch() {
   const [searchParams, setSearchParams] = useState<SearchParams>({
@@ -38,11 +41,19 @@ export default function EmissionFactorsSearch() {
           climatiqApi.getUnitTypes(),
           climatiqApi.getDataVersions(),
         ]);
-        setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
-        setDataVersions([
-          dataVersionsData.latest,
-          dataVersionsData.latest_release,
-        ]);
+
+        if (unitTypesData) {
+          setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
+        }
+
+        if (dataVersionsData) {
+          setDataVersions([
+            dataVersionsData.latest,
+            dataVersionsData.latest_release,
+          ]);
+        } else {
+          console.error("dataVersionsData is undefined.");
+        }
       } catch (error) {
         setError("Error fetching initial data");
         console.error("Error fetching initial data:", error);

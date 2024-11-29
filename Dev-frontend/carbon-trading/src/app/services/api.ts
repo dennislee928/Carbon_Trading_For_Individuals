@@ -1,6 +1,7 @@
 // src/app/services/api.ts
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import axios, { AxiosError } from "axios";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { API_CONFIG, CLIMATIQ_CONFIG } from "../config/api.config";
 //
 import {
@@ -123,8 +124,8 @@ export const climatiqApi = {
       const response = await api.get(API_CONFIG.ENDPOINTS.UNIT_TYPES);
       return response.data.unit_types;
     } catch (error) {
-      handleError(error);
-      throw new Error("Failed to fetch unit types.");
+      handleError(error); // Handles the error
+      throw new Error("Failed to fetch unit types"); // Explicitly throw an error
     }
   },
   /**
@@ -160,13 +161,13 @@ export const climatiqApi = {
   /**
    * Fetch available data versions
    */
-  async getDataVersions(): Promise<DataVersionsResponse> {
+  async getDataVersions(): Promise<DataVersionsResponse | undefined> {
     try {
       const response = await api.get(API_CONFIG.ENDPOINTS.DATA_VERSIONS);
       return response.data;
     } catch (error) {
       handleError(error);
-      throw new Error("Failed to fetch data versions.");
+      return undefined; // Explicitly return undefined
     }
   },
 
@@ -189,6 +190,7 @@ export const climatiqApi = {
   },
 };
 
+export default climatiqApi;
 // Type Exports
 export type {
   ClassificationResult,

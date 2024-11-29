@@ -1,6 +1,8 @@
 // pages/search.tsx
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import climatiqApi from "../services/api";
 
+//
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -16,12 +18,12 @@ import {
 } from "@mui/material";
 import {
   //searchEmissionFactors,
-  getUnitTypes,
-  getDataVersions,
+  UnitType,
+  // getDataVersions,
   //SearchParams,
   EmissionFactor,
   FreightEmissionRequest,
-  calculateFreightEmissions,
+  //  calculateFreightEmissions,
 } from "../services/api";
 import { SelectChangeEvent } from "@mui/material";
 //
@@ -48,14 +50,19 @@ const FreightV2 = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const unitTypesData = await getUnitTypes();
-        const dataVersionsData = await getDataVersions();
+        const unitTypesData = await climatiqApi.getUnitTypes();
+        const dataVersionsData = await climatiqApi.getDataVersions();
 
-        setUnitTypes(unitTypesData.map((ut) => ut.unit_type));
-        setDataVersions([
-          dataVersionsData.latest,
-          dataVersionsData.latest_release,
-        ]);
+        setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
+
+        if (dataVersionsData) {
+          setDataVersions([
+            dataVersionsData.latest ?? "unknown",
+            dataVersionsData.latest_release ?? "unknown",
+          ]);
+        } else {
+          console.warn("dataVersionsData is undefined.");
+        }
       } catch (error) {
         console.error("Error fetching initial data:", error);
       }
@@ -123,7 +130,7 @@ const FreightV2 = () => {
     };
 
     try {
-      const response = await calculateFreightEmissions(payload);
+      const response = await climatiqApi.calculateFreightEmissions(payload);
       console.log("Freight Emissions:", response);
     } catch (error) {
       console.error("Error calculating freight emissions:", error);

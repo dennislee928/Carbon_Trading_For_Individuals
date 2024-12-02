@@ -24,6 +24,10 @@ func NewSupabaseClient() (*SupabaseClient, error) {
         return nil, fmt.Errorf("SUPABASE_KEY environment variable is not set")
     }
 
+    // Log values for debugging
+    fmt.Println("Using Supabase URL:", supabaseUrl)
+    fmt.Println("Using Supabase Key:", supabaseKey)
+
     // Create default options or customize as needed
     options := supabase.ClientOptions{}
 

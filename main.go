@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 
@@ -30,19 +29,7 @@ func main() {
 	}
 
 	// Initialize Supabase client with an optional third argument for custom headers
-	client := postgrest.NewClient(supabaseURL, supabaseKey, nil)
-
-	// Example query to get data from "profiles" table
-	var profiles []map[string]interface{}
-	resp, status, err := client.From("profiles").Select("*").Execute(&profiles)
-	if err != nil {
-		log.Fatalf("Error fetching profiles: %v", err)
-	}
-
-	// Output the status, response, and the fetched data
-	fmt.Println("Response:", resp)    // Response is typically the raw body or metadata
-	fmt.Println("Status:", status)    // HTTP status code
-	fmt.Println("Profiles:", profiles)  // The actual data retrieved
+	supabaseClient := postgrest.NewClient(supabaseURL, supabaseKey, nil)
 
 	// Initialize database
 	db, err := config.InitializeDB()
@@ -61,7 +48,7 @@ func main() {
 	r.Use(cors.New(corsConfig))
 
 	// Set up routes with both DB and Supabase client
-	setupRoutes(r, db, client)
+	setupRoutes(r, db, supabaseClient)
 
 	// Get port from environment variable
 	port := os.Getenv("PORT")
@@ -86,6 +73,20 @@ func setupRoutes(r *gin.Engine, db *sql.DB, supabaseClient *postgrest.Client) {
 		// Add a health check endpoint
 		api.GET("/health", func(c *gin.Context) {
 			c.JSON(200, gin.H{"status": "ok"})
+		})
+
+		// Add a profiles endpoint that uses Supabase
+		api.GET("/profiles", func(c *gin.Context) {
+			data, status, err := supabaseClient.From("profiles").Select("*", "", false).Execute()
+			if err != nil {
+				c.JSON(500, gin.H{"error": err.Error()})
+				return
+			}
+			if status != 200 {
+				c.JSON(int(status), gin.H{"error": "Failed to fetch profiles"})
+				return
+			}
+			c.Data(200, "application/json", data)
 		})
 
 		// Auth routes

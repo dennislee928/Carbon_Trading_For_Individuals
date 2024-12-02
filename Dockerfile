@@ -4,6 +4,10 @@ FROM golang:1.22-alpine
 # Install CA certificates
 RUN apk add --no-cache ca-certificates
 
+# Copy the custom CA certificate into the container
+COPY prod-ca-2021.crt /usr/local/share/ca-certificates/prod-ca-2021.crt
+RUN update-ca-certificates
+
 # Set the working directory inside the container
 WORKDIR /app
 

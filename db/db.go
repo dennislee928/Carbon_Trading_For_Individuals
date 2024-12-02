@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
-	"strings"
+	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
@@ -13,20 +13,17 @@ var DB *sql.DB
 
 // InitializeDB sets up the database connection
 func InitializeDB() (*sql.DB, error) {
-    // Construct the connection string using Supabase credentials
+    // Get database credentials from environment variables
     supabaseURL := os.Getenv("SUPABASE_URL")
     supabaseKey := os.Getenv("SUPABASE_KEY")
     if supabaseURL == "" || supabaseKey == "" {
         return nil, fmt.Errorf("missing required environment variables SUPABASE_URL or SUPABASE_KEY")
     }
-    
-    // Extract the project reference from Supabase URL
-    projectRef := supabaseURL[8:strings.Index(supabaseURL, ".supabase.co")]
-    
-    // Construct the database URL
-    dbURL := fmt.Sprintf("postgres://postgres:%s@db.%s.supabase.co:5432/postgres?sslmode=require", 
+
+    // Construct the database URL directly
+    dbURL := fmt.Sprintf("postgres://postgres.%s:%s@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=verify-full",
+        supabaseURL,
         supabaseKey,
-        projectRef,
     )
 
     var err error
@@ -43,6 +40,7 @@ func InitializeDB() (*sql.DB, error) {
     // Set connection pool settings
     DB.SetMaxOpenConns(25)
     DB.SetMaxIdleConns(25)
+    DB.SetConnMaxLifetime(5 * time.Minute)
     
     return DB, nil
 }

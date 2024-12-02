@@ -22,8 +22,9 @@ func InitializeDB() (*sql.DB, error) {
         log.Println("Error: DATABASE_URL environment variable is not set")
         return nil, fmt.Errorf("missing required environment variable DATABASE_URL")
     }
+    
     log.Println("Using DATABASE_URL:", dbURL) // Log the DATABASE_URL for debugging
-
+    
     // Print environment variable status (without exposing sensitive data)
     log.Printf("Database configuration:")
     log.Printf("- DATABASE_URL is set")

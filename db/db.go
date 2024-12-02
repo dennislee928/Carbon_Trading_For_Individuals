@@ -12,7 +12,7 @@ import (
 
 var DB *sql.DB
 
-// InitializeDB sets up the database connection using the DATABASE_URL environment variable
+// InitializeDB sets up the database connection using the DATABASE_URL environment variable!
 func InitializeDB() (*sql.DB, error) {
     log.Println("Starting database initialization...")
 

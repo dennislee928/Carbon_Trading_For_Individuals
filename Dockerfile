@@ -1,9 +1,11 @@
 # Start from the official Go image
 FROM golang:1.22-alpine
 
+# Install CA certificates
+RUN apk add --no-cache ca-certificates
+
 # Set environment variables in the Dockerfile (optional, not necessary for Heroku)
 ENV DATABASE_URL=${DATABASE_URL}
-
 
 # Set the working directory inside the container
 WORKDIR /app

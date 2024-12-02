@@ -17,40 +17,45 @@ func InitializeDB() (*sql.DB, error) {
     log.Println("Starting database initialization...")
 
     // Get database credentials from environment variables
-    dbUser := "postgres.omlzzhqhuhcpypohelbq"  // Your specific Supabase postgres user
+    dbUser := "postgres.omlzzhqhuhcpypohelbq"
     dbPassword := os.Getenv("SUPABASE_DB_PASSWORD")
     dbHost := "aws-0-ap-northeast-1.pooler.supabase.com"
-    dbPort := "6543"  // Note the specific port 6543
+    dbPort := "6543"
     
     if dbPassword == "" {
+        log.Println("Error: SUPABASE_DB_PASSWORD environment variable is not set")
         return nil, fmt.Errorf("missing required environment variable SUPABASE_DB_PASSWORD")
     }
 
-    // Construct the database URL using the correct format
-    dbURL := fmt.Sprintf("postgresql://%s:%s@%s:%s/postgres?sslmode=verify-full",
-        dbUser,
-        dbPassword,
+    // Print environment variable status (without exposing sensitive data)
+    log.Printf("Database configuration:")
+    log.Printf("- User: %s", dbUser)
+    log.Printf("- Host: %s", dbHost)
+    log.Printf("- Port: %s", dbPort)
+    log.Printf("- Password length: %d", len(dbPassword))
+
+    // Construct the connection string
+    connectionString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=postgres sslmode=verify-full",
         dbHost,
         dbPort,
+        dbUser,
+        dbPassword,
     )
 
-    // Log connection attempt (without credentials)
-    log.Printf("Attempting to connect to: postgresql://%s:****@%s:%s/postgres", 
-        dbUser, 
-        dbHost, 
-        dbPort,
-    )
+    log.Printf("Attempting database connection to host: %s:%s", dbHost, dbPort)
 
     var err error
-    DB, err = sql.Open("pgx", dbURL)
+    DB, err = sql.Open("pgx", connectionString)
     if err != nil {
-        return nil, fmt.Errorf("error connecting to the database: %v", err)
+        log.Printf("Error opening database: %v", err)
+        return nil, fmt.Errorf("error opening database: %v", err)
     }
 
     // Test the connection
     log.Println("Testing connection with Ping()...")
     if err = DB.Ping(); err != nil {
-        return nil, fmt.Errorf("error pinging the database: %v", err)
+        log.Printf("Error pinging database: %v", err)
+        return nil, fmt.Errorf("error pinging database: %v", err)
     }
 
     // Set connection pool settings

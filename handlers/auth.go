@@ -25,12 +25,7 @@ type OTPVerification struct {
     OTP   string `json:"otp" binding:"required"`
 }
 
-// Register handles user registration
-func Register(c *gin.Context) {
-    // Implement user registration logic here
-    // Include email verification, OTP generation, and password hashing
-    c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
-}
+
 
 // VerifyOTP handles OTP verification
 func VerifyOTP(c *gin.Context) {

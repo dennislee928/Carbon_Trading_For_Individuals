@@ -4,8 +4,18 @@ info:
   description: API for managing user profiles, authentication, and carbon trading platform features.
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/api
+  - url: http://carbon-rights-backend-334c8980a6b5.herokuapp.com/api
     description: Local development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
 
 paths:
   /register:
@@ -50,6 +60,8 @@ paths:
     get:
       summary: View user profile
       description: Retrieves the user's profile information.
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: Profile retrieved successfully
@@ -60,12 +72,16 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: ViewProfile handler is not implemented yet
+                    example: Profile retrieved successfully
+        401:
+          description: Unauthorized
         500:
           description: Internal server error
     put:
       summary: Update user profile
       description: Updates the user's profile information.
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -92,6 +108,8 @@ paths:
                     example: Profile updated successfully
         400:
           description: Invalid input
+        401:
+          description: Unauthorized
         500:
           description: Internal server error
 
@@ -99,6 +117,8 @@ paths:
     post:
       summary: Upload profile picture
       description: Uploads a profile picture for the user.
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -122,5 +142,7 @@ paths:
                     example: Profile picture uploaded successfully
         400:
           description: Invalid file format
+        401:
+          description: Unauthorized
         500:
           description: Internal server error

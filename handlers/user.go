@@ -39,17 +39,17 @@ func Register(c *gin.Context) {
 	}
 
 	// Insert user into the "users" table
-	resp, err := client.From("users").Insert(userData, false, "").Execute()
-	if err != nil {
-		log.Println("Error inserting user:", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error inserting user"})
+	rowsAffected := client.From("users").Insert(userData, false, "", "*", "").Execute()
+	if rowsAffected == 0 {
+		log.Println("No rows were inserted")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert user"})
 		return
 	}
 
 	// Return success response
 	c.JSON(http.StatusOK, gin.H{
 		"message": "User registered successfully",
-		"data":    resp,
+		"rows":    rowsAffected,
 	})
 }
 

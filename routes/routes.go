@@ -22,6 +22,14 @@ func SetupRoutes() *gin.Engine {
             auth.POST("/login", handlers.Login)
             auth.POST("/social-login/:provider", handlers.SocialLogin)
             auth.POST("/forgot-password", handlers.ForgotPassword)
+//
+// Account group
+account := api.Group("/account")
+{
+    account.Use(handlers.AuthMiddleware())
+    account.POST("/change-password", handlers.ChangePassword)
+}
+
 
             // Protected routes (require authentication)
             protected := auth.Group("")

@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/uuid"
 	"github.com/mailgun/mailgun-go/v4"
 )
 
@@ -143,14 +144,19 @@ func SocialLogin(c *gin.Context) {
 
 // Login handles user login
 func Login(c *gin.Context) {
-    // Implement login logic and return JWT token
-    token, err := generateJWT(1) // Replace with actual user ID
+    // Authenticate the user (replace with actual authentication logic)
+    userID := 1 // Example user ID after authentication
+
+    // Generate JWT with session ID
+    token, err := generateJWT(userID)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
         return
     }
+
     c.JSON(http.StatusOK, gin.H{"token": token})
 }
+
 
 // ForgotPassword handles password reset requests
 func ForgotPassword(c *gin.Context) {
@@ -191,7 +197,6 @@ func generateJWT(userID int) (string, error) {
 
 func AuthMiddleware() gin.HandlerFunc {
     return func(c *gin.Context) {
-        // Get the Authorization header
         authHeader := c.GetHeader("Authorization")
         if authHeader == "" {
             c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is required"})
@@ -199,7 +204,6 @@ func AuthMiddleware() gin.HandlerFunc {
             return
         }
 
-        // Check if the header has the Bearer prefix
         parts := strings.Split(authHeader, " ")
         if len(parts) != 2 || parts[0] != "Bearer" {
             c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization header format"})
@@ -207,20 +211,16 @@ func AuthMiddleware() gin.HandlerFunc {
             return
         }
 
-        // Get the token
         tokenString := parts[1]
 
-        // Parse and validate the token
         token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-            // Validate the signing method
             if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
                 return nil, jwt.ErrSignatureInvalid
             }
 
-            // Get the secret key from environment variable
             secretKey := os.Getenv("JWT_SECRET_KEY")
             if secretKey == "" {
-                secretKey = "your_secret_key" // Fallback secret key (not recommended for production)
+                secretKey = "your_secret_key"
             }
 
             return []byte(secretKey), nil
@@ -232,10 +232,17 @@ func AuthMiddleware() gin.HandlerFunc {
             return
         }
 
-        // Check if the token is valid
         if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-            // Add claims to the context
             c.Set("user_id", claims["user_id"])
+            c.Set("session_id", claims["jti"]) // Extract session ID
+
+            // Optional: Validate the session ID (e.g., check against a database)
+            if !isValidSession(claims["jti"].(string)) {
+                c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid session"})
+                c.Abort()
+                return
+            }
+
             c.Next()
         } else {
             c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
@@ -243,4 +250,15 @@ func AuthMiddleware() gin.HandlerFunc {
             return
         }
     }
+}
+
+// Helper function to generate a unique session identifier
+func generateSessionID() string {
+    return uuid.New().String() // Generates a random unique ID
+}
+
+// Example validation function for session ID
+func isValidSession(sessionID string) bool {
+    // TODO: Implement session validation logic (e.g., check against Redis or a database)
+    return true
 }

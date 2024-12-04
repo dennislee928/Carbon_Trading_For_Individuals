@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-var jwtSecret = []byte("your-secret-key") // Replace with your actual secret or use public/private keys for RS256
+var jwtSecret = []byte("ThisIsA$trongS3cr3tK3yWith!@#$%^&*") // Replace with your actual secret or use public/private keys for RS256
 
 // JWTValidation middleware validates the token
 func JWTValidation(next http.Handler) http.Handler {

@@ -24,5 +24,5 @@ func isAdmin(c *gin.Context) bool {
     // You might check a session, JWT token, or database to verify admin status
     // For demonstration, let's assume we check a custom header
     adminToken := c.GetHeader("X-Admin-Token")
-    return adminToken == "your-secret-admin-token"
+    return adminToken == "DogLover2024!WoofSecure#Bark-Bark^2025"
 }

@@ -20,6 +20,16 @@ func SetupRoutes() *gin.Engine {
 	api.POST("/kyc", handlers.UploadKYCDocument)
 	api.GET("/admin/users", handlers.AdminViewUsers)
 	api.PUT("/admin/role", handlers.AssignRole)
+	//api.GET("/notifications", handlers.UpdateNotificationPreferences)
+	//api.GET("/login-history", handlers.ViewLoginHistory)
+	//api.DELETE("/account", handlers.DeleteAccount)
+	//api.POST("/recovery-email", handlers.AddRecoveryEmail)
+
+	api.POST("/verify-otp", handlers.VerifyOTP)
+	api.POST("/verify-otp-code", handlers.VerifyOTPCode)
+	api.POST("/social-login", handlers.SocialLogin)
+	api.POST("/forgot-password", handlers.ForgotPassword)
+	api.POST("/change-password", handlers.ChangePassword)
     //debug parts
     api.GET("/register", func(c *gin.Context) {
         c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Use POST for register endpoint"})
@@ -33,3 +43,4 @@ func SetupRoutes() *gin.Engine {
 
 	return router
 }
+

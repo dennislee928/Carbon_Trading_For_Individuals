@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 
@@ -10,7 +11,9 @@ import (
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/supabase-community/postgrest-go"
+	//"github.com/google/uuid"
 )
 
 func main() {
@@ -55,7 +58,9 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-
+//
+kid := uuid.New().String()
+	fmt.Println("Generated kid:", kid)
 	// Start the server with the correct port
 	log.Printf("Server is starting on port %s...", port)
 	if err := r.Run(":" + port); err != nil {

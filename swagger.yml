@@ -49,8 +49,6 @@ paths:
                   message:
                     type: string
                     example: User registered successfully
-                  result:
-                    type: object
         400:
           description: Invalid input
         500:

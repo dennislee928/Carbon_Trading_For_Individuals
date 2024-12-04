@@ -34,6 +34,14 @@ func main() {
 	// Initialize Supabase client with an optional third argument for custom headers
 	supabaseClient := postgrest.NewClient(supabaseURL, supabaseKey, nil)
 
+
+	//test  GenerateJWT for cf validation
+
+	token, err := handlers.GenerateJWT("user123")
+	if err != nil {
+		panic(err)
+	}
+	println("Generated Token:", token)
 	// Initialize database
 	db, err := config.InitializeDB()
 	if err != nil {
@@ -121,16 +129,5 @@ func setupRoutes(r *gin.Engine, db *sql.DB, supabaseClient *postgrest.Client) {
 			}
 		}
 	}
-}
-func ViewProfile(c *gin.Context) {
-	c.JSON(200, gin.H{"message": "ViewProfile handler is not implemented yet"})
-}
-
-func UpdateProfile(c *gin.Context) {
-	c.JSON(200, gin.H{"message": "UpdateProfile handler is not implemented yet"})
-}
-
-func UploadProfilePicture(c *gin.Context) {
-	c.JSON(200, gin.H{"message": "UploadProfilePicture handler is not implemented yet"})
 }
 

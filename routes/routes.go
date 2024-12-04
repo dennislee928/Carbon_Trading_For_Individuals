@@ -22,13 +22,13 @@ func SetupRoutes() *gin.Engine {
 	api.PUT("/admin/role", handlers.AssignRole)
     //debug parts
     api.GET("/register", func(c *gin.Context) {
-        c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Use POST for this endpoint"})
+        c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Use POST for register endpoint"})
     })//this one is for debug
     api.GET("/login", func(c *gin.Context) {
-        c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Use POST for this endpoint"})
+        c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Use POST login this endpoint"})
     })//this one is for debug
     api.GET("/kyc", func(c *gin.Context) {
-        c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Use POST for this endpoint"})
+        c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Use POST kyc this endpoint"})
     })//this one is for debug
 
 	return router

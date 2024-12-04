@@ -39,20 +39,36 @@ func Register(c *gin.Context) {
 	}
 
 	// Insert user into the "users" table
-	rowsAffected := client.From("users").Insert(userData, false, "", "*", "").Execute()
-	if rowsAffected == 0 {
-		log.Println("No rows were inserted")
+	result, count, err := client.From("users").Insert(userData, false, "","", "*").Execute()
+
+	// Handle errors
+	if err != nil {
+		log.Println("Error inserting user:", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert user"})
+		return
+	}
+	// Check if no rows were affected
+if count == 0 {
+    log.Println("No rows were inserted")
+    c.JSON(http.StatusInternalServerError, gin.H{"error": "No rows affected"})
+    return
+}
+
+	// Check if no rows were affected
+	if len(result) == 0 {
+		log.Println("No rows were inserted")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "No rows affected"})
 		return
 	}
 
 	// Return success response
 	c.JSON(http.StatusOK, gin.H{
 		"message": "User registered successfully",
-		"rows":    rowsAffected,
-	})
-}
+		"result":  result,
+	})}
 
+
+// NewSupabaseClient creates and returns a new Supabase client
 // NewSupabaseClient creates and returns a new Supabase client
 func NewSupabaseClient() (*supabase.Client, error) {
 	// Supabase project URL and API Key
@@ -65,3 +81,17 @@ func NewSupabaseClient() (*supabase.Client, error) {
 	}
 	return client, nil
 }
+//
+func ViewProfile(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "ViewProfile handler is not implemented yet"})
+}
+
+func UpdateProfile(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "UpdateProfile handler is not implemented yet"})
+}
+
+func UploadProfilePicture(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "UploadProfilePicture handler is not implemented yet"})
+}
+
+

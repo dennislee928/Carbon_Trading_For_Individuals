@@ -122,3 +122,15 @@ func setupRoutes(r *gin.Engine, db *sql.DB, supabaseClient *postgrest.Client) {
 		}
 	}
 }
+func ViewProfile(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "ViewProfile handler is not implemented yet"})
+}
+
+func UpdateProfile(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "UpdateProfile handler is not implemented yet"})
+}
+
+func UploadProfilePicture(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "UploadProfilePicture handler is not implemented yet"})
+}
+

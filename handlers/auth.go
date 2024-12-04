@@ -258,7 +258,7 @@ func generateSessionID() string {
 }
 
 // Example validation function for session ID
-func isValidSession(sessionID string) bool {
+func isValidSession(_ string) bool {
     // TODO: Implement session validation logic (e.g., check against Redis or a database)
     return true
 }

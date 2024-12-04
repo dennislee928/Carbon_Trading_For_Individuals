@@ -1,56 +1,126 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   title: Carbon Trading API
+  description: API for managing user profiles, authentication, and carbon trading platform features.
   version: 1.0.0
 servers:
-  - url: https://carbon-rights-backend-334c8980a6b5.herokuapp.com/api
+  - url: http://localhost:8080/api
+    description: Local development server
+
 paths:
-  /auth/register:
+  /register:
     post:
       summary: Register a new user
-      tags:
-        - Authentication
-  /auth/verify-otp:
-    post:
-      summary: Send OTP for verification
-      tags:
-        - Authentication
-  /auth/verify-otp-code:
-    post:
-      summary: Verify OTP code
-      tags:
-        - Authentication
-  /auth/login:
-    post:
-      summary: User login
-      tags:
-        - Authentication
-  /auth/social-login/{provider}:
-    post:
-      summary: Social login
-      parameters:
-        - name: provider
-          in: path
-          required: true
-          schema:
-            type: string
-      tags:
-        - Authentication
-  /auth/forgot-password:
-    post:
-      summary: Request password reset
-      tags:
-        - Authentication
-  /auth/change-password:
-    post:
-      summary: Change user password
-      security:
-        - BearerAuth: []
-      tags:
-        - Authentication
+      description: Creates a new user in the Supabase database.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: johndoe
+                email:
+                  type: string
+                  example: johndoe@example.com
+                password:
+                  type: string
+                  example: password123
+      responses:
+        200:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User registered successfully
+                  result:
+                    type: object
+        400:
+          description: Invalid input
+        500:
+          description: Failed to insert user
 
-components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
+  /profile:
+    get:
+      summary: View user profile
+      description: Retrieves the user's profile information.
+      responses:
+        200:
+          description: Profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: ViewProfile handler is not implemented yet
+        500:
+          description: Internal server error
+    put:
+      summary: Update user profile
+      description: Updates the user's profile information.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: newusername
+                email:
+                  type: string
+                  example: newemail@example.com
+      responses:
+        200:
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Profile updated successfully
+        400:
+          description: Invalid input
+        500:
+          description: Internal server error
+
+  /profile/picture:
+    post:
+      summary: Upload profile picture
+      description: Uploads a profile picture for the user.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Profile picture uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Profile picture uploaded successfully
+        400:
+          description: Invalid file format
+        500:
+          description: Internal server error

@@ -4,7 +4,7 @@ info:
   description: API for managing user profiles, authentication, and carbon trading platform features.
   version: 1.0.0
 servers:
-  - url: https://api.para-universe-energy-exchange-station.com/api
+  - url: https://apiv5.twister5.cf/
     description: Production server
 
 components:

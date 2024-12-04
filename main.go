@@ -102,57 +102,56 @@ func startServer() {
 }
 
 func setupRoutes(r *gin.Engine, db *sql.DB, supabaseClient *postgrest.Client) {
-	// Apply middleware
-	authMiddleware := middleware.AuthMiddleware
+    // Apply middleware
+    authMiddleware := middleware.AuthMiddleware
 
-	// API group
-	api := r.Group("/api")
-	{
-		// Add a health check endpoint
-		api.GET("/health", func(c *gin.Context) {
-			c.JSON(200, gin.H{"status": "ok"})
-		})
+    // API group
+    api := r.Group("/api")
+    {
+        // Add a health check endpoint
+        api.GET("/health", func(c *gin.Context) {
+            c.JSON(200, gin.H{"status": "ok"})
+        })
 
-		// Add a profiles endpoint that uses Supabase
-		api.GET("/profiles", func(c *gin.Context) {
-			data, status, err := supabaseClient.From("profiles").Select("*", "", false).Execute()
-			if err != nil {
-				c.JSON(500, gin.H{"error": err.Error()})
-				return
-			}
-			if status != 200 {
-				c.JSON(int(status), gin.H{"error": "Failed to fetch profiles"})
-				return
-			}
-			c.Data(200, "application/json", data)
-		})
+        // Add a profiles endpoint that uses Supabase
+        api.GET("/profiles", func(c *gin.Context) {
+            data, status, err := supabaseClient.From("profiles").Select("*", "", false).Execute()
+            if err != nil {
+                c.JSON(500, gin.H{"error": err.Error()})
+                return
+            }
+            if status != 200 {
+                c.JSON(int(status), gin.H{"error": "Failed to fetch profiles"})
+                return
+            }
+            c.Data(200, "application/json", data)
+        })
 
-		// Auth routes
-		auth := api.Group("/auth")
-		{
-			// Public routes
-			auth.POST("/register", func(c *gin.Context) {
-				handlers.RegisterUser(db, c.Writer, c.Request)
-			})
-			auth.POST("/verify-otp", handlers.VerifyOTP)
-			auth.POST("/verify-otp-code", handlers.VerifyOTPCode)
-			auth.POST("/login", handlers.Login)
-			auth.POST("/social-login/:provider", handlers.SocialLogin)
-			auth.POST("/forgot-password", handlers.ForgotPassword)
-		}
+        // Auth routes
+        auth := api.Group("/auth")
+        {
+            // Public routes
+            auth.POST("/register", handlers.RegisterUser(db)) // Updated this line
+            auth.POST("/verify-otp", handlers.VerifyOTP)
+            auth.POST("/verify-otp-code", handlers.VerifyOTPCode)
+            auth.POST("/login", handlers.Login)
+            auth.POST("/social-login/:provider", handlers.SocialLogin)
+            auth.POST("/forgot-password", handlers.ForgotPassword)
+        }
 
-		// Protected routes
-		protected := api.Group("")
-		protected.Use(authMiddleware())
-		{
-			// User Profile Management
-			profile := protected.Group("/profile")
-			{
-				profile.GET("", handlers.ViewProfile)
-				profile.PUT("", handlers.UpdateProfile)
-				profile.POST("/picture", handlers.UploadProfilePicture)
-			}
-		}
-	}
+        // Protected routes
+        protected := api.Group("")
+        protected.Use(authMiddleware())
+        {
+            // User Profile Management
+            profile := protected.Group("/profile")
+            {
+                profile.GET("", handlers.ViewProfile)
+                profile.PUT("", handlers.UpdateProfile)
+                profile.POST("/picture", handlers.UploadProfilePicture)
+            }
+        }
+    }
 }
+
 

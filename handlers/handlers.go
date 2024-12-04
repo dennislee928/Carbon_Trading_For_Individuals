@@ -11,9 +11,10 @@ import (
 )
 	
 
-func RegisterUser(db *sql.DB, w http.ResponseWriter, r *http.Request) {
-	controllers.RegisterUser(w, r) // Forward to the controller
+func RegisterUser(db *sql.DB) gin.HandlerFunc {
+    return controllers.RegisterUser(db)
 }
+
 
 func Home(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Welcome to Carbon Rights Backend API"})

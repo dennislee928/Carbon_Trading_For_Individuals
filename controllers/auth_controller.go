@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/models"
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/utils"
+	"github.com/gin-gonic/gin"
 
 	"database/sql"
 	"log"
@@ -13,37 +14,46 @@ import (
 )
 
 // RegisterUser handles the user registration process
-func RegisterUser(w http.ResponseWriter, r *http.Request) {
-	email := r.FormValue("email")
-	password := r.FormValue("password")
+func RegisterUser(db *sql.DB) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        var user struct {
+            Email    string `json:"email"`
+            Password string `json:"password"`
+        }
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		log.Printf("Failed to hash password: %v", err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
+        if err := c.ShouldBindJSON(&user); err != nil {
+            c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+            return
+        }
 
-	otp := utils.GenerateOTP()
-	utils.SendOTPEmail(email, otp)
+    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+    if err != nil {
+        log.Printf("Failed to hash password: %v", err)
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+        return
+    }
 
-	user := models.User{
-		Email:       email,
-		PasswordHash: string(hashedPassword),
-		OTP:          otp,
-		CreatedAt:    time.Now(),
-	}
+// Use the db connection for database operations
+        // Example query (adjust according to your schema):
+        _, err = db.Exec(`
+            INSERT INTO users (email, password_hash, created_at) 
+            VALUES ($1, $2, $3)`,
+            user.Email, string(hashedPassword), time.Now(),
+        )
 
-	err = models.CreateUser(user)
-	if err != nil {
-		log.Printf("Failed to create user: %v", err)
-		http.Error(w, "Could not register user", http.StatusInternalServerError)
-		return
-	}
+        if err != nil {
+            log.Printf("Failed to create user: %v", err)
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not register user"})
+            return
+        }
 
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("User registered successfully. Please verify your email."))
+        c.JSON(http.StatusCreated, gin.H{
+            "message": "User registered successfully",
+        })
+    }
 }
+
+
 
 // LoginUser handles user login
 func LoginUser(w http.ResponseWriter, r *http.Request) {

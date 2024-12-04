@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/config"
 	"github.com/dennislee928/Carbon_Trading_For_Individuals_Frontend/backend/handlers"
@@ -74,6 +76,29 @@ kid := uuid.New().String()
 	if err := r.Run(":" + port); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
+   // Create a channel to listen for OS signals
+   sigs := make(chan os.Signal, 1)
+   done := make(chan bool, 1)
+
+   signal.Notify(sigs, syscall.SIGTERM, syscall.SIGINT)
+
+   go func() {
+	   sig := <-sigs
+	   log.Printf("Received signal: %s, shutting down...", sig)
+	   done <- true
+   }()
+
+   log.Println("Server is starting...")
+    // Start your server here (replace with your actual server code)
+    go startServer()
+
+    <-done
+    log.Println("Server stopped gracefully")
+
+}
+
+func startServer() {
+	panic("unimplemented")
 }
 
 func setupRoutes(r *gin.Engine, db *sql.DB, supabaseClient *postgrest.Client) {

@@ -1,0 +1,23 @@
+{
+  "credentials": {
+    "keys": [
+      {
+        "kty": "EC",
+        "use": "sig",
+        "crv": "P-256",
+        "kid": "9b2dec47-ac10-47a5-9836-4dbb17f68b5e",
+        "x": "CNpBF2vZDhLpsa02qUllh5rEQgtZBeEyVjk3HLLn7Q",
+        "y": "KwVQCP93n4W9bOoSBC1k146hxu96b0AS_SNpG9mKbQZ9",
+        "alg": "ES256"
+      }
+    ]
+  }
+}
+
+
+//
+(http.request.headers["Authorization"][0]) OR
+jwt.iss == "https://api.para-universe-energy-exchange-station.com" AND 
+jwt.aud == "api.para-universe-energy-exchange-station.com" AND 
+jwt.exp > now()
+//

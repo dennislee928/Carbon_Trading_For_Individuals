@@ -1,48 +1,38 @@
 package middleware
 
 import (
-	"errors"
-	"os"
-	"time"
+	"fmt"
+	"net/http"
+	"strings"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 )
 
-type JWTClaims struct {
-    UserID    uint   `json:"user_id"`
-    Email     string `json:"email"`
-    Role      string `json:"role"`
-    jwt.StandardClaims
-}
+var jwtSecret = []byte("your-secret-key") // Replace with your actual secret or use public/private keys for RS256
 
-func ValidateToken(tokenString string) (*JWTClaims, error) {
-    // Get secret from environment variable
-    secret := os.Getenv("JWT_SECRET")
-    if secret == "" {
-        return nil, errors.New("JWT_SECRET not set")
-    }
+// JWTValidation middleware validates the token
+func JWTValidation(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" {
+			http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
+			return
+		}
 
-    token, err := jwt.ParseWithClaims(tokenString, &JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
-        // Validate signing method
-        if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-            return nil, errors.New("invalid signing method")
-        }
-        return []byte(secret), nil
-    })
+		// Extract token from "Bearer <token>"
+		tokenString := strings.Split(authHeader, " ")[1]
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+			}
+			return jwtSecret, nil
+		})
 
-    if err != nil {
-        return nil, err
-    }
+		if err != nil || !token.Valid {
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
 
-    claims, ok := token.Claims.(*JWTClaims)
-    if !ok || !token.Valid {
-        return nil, errors.New("invalid token")
-    }
-
-    // Additional validation rules
-    if claims.ExpiresAt < time.Now().Unix() {
-        return nil, errors.New("token expired")
-    }
-
-    return claims, nil
+		next.ServeHTTP(w, r)
+	})
 }

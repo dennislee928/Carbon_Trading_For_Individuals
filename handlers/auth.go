@@ -170,9 +170,9 @@ func generateJWT(userID int) (string, error) {
 
     claims := token.Claims.(jwt.MapClaims)
     claims["user_id"] = userID
+    claims["jti"] = generateSessionID() // Add session ID
     claims["exp"] = time.Now().Add(time.Hour * 24).Unix() // Token expires in 24 hours
 
-    // Get the secret key from environment variable
     secretKey := os.Getenv("JWT_SECRET_KEY")
     if secretKey == "" {
         secretKey = "your_secret_key" // Fallback secret key (not recommended for production)

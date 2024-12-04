@@ -10,6 +10,9 @@ import (
 
 var jwtSecret = []byte("ThisIsA$trongS3cr3tK3yWith!@#$%^&*") // Replace with your actual secret or use public/private keys for RS256
 
+
+//base64:VGhpc0lzQSR0cm9uZ1MzY3IzdEszeVdpdGghQCMkJV4mKg==
+
 // JWTValidation middleware validates the token
 func JWTValidation(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

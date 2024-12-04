@@ -11,7 +11,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/google/uuid"
 	"github.com/mailgun/mailgun-go/v4"
 )
 
@@ -252,10 +251,7 @@ func AuthMiddleware() gin.HandlerFunc {
     }
 }
 
-// Helper function to generate a unique session identifier
-func generateSessionID() string {
-    return uuid.New().String() // Generates a random unique ID
-}
+
 
 // Example validation function for session ID
 func isValidSession(_ string) bool {

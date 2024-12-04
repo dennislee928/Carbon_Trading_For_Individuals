@@ -1,6 +1,6 @@
 {
   "credentials": {
-    "keys": [
+    "keys-// use key  from Public and Private Keypair Set generated from:https://mkjwk.org/": [
       {
         "kty": "EC",
         "use": "sig",
@@ -13,11 +13,3 @@
     ]
   }
 }
-
-
-//
-(http.request.headers["Authorization"][0]) OR
-jwt.iss == "https://api.para-universe-energy-exchange-station.com" AND 
-jwt.aud == "api.para-universe-energy-exchange-station.com" AND 
-jwt.exp > now()
-//

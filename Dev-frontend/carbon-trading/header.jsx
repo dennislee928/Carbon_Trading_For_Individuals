@@ -14,11 +14,22 @@ export default function HomePage() {
         property="og:image"
         content="https://gratisography.com/wp-content/uploads/2024/10/gratisography-cool-cat-800x525.jpg"
       />
+      <meta property="og:url" content="" />
+      <meta property="og:type" content="website" />
+      <meta name="twitter:card" content="" />
+      <meta name="twitter:site" content="" />
       <meta
-        property="og:url"
+        name="twitter:title"
         content="https://www.para-universe-energy-exchange-station.com/"
       />
-      <meta property="og:type" content="website" />
+      <meta
+        name="twitter:description"
+        content="https://www.para-universe-energy-exchange-station.com/"
+      />
+      <meta
+        name="twitter:image"
+        content="https://gratisography.com/wp-content/uploads/2024/10/gratisography-cool-cat-800x525.jp"
+      />
     </Head>
   );
 }

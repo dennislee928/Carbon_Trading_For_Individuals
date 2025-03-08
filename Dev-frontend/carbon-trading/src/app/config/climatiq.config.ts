@@ -1,0 +1,6 @@
+// ... existing code ...
+export const climatiqConfig = {
+  apiKey: process.env.CLIMATIQ_API_KEY,
+  baseUrl: process.env.NEXT_PUBLIC_CLIMATIQ_BASE_URL,
+};
+// ... existing code ...

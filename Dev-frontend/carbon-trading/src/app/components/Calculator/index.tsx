@@ -1,4 +1,4 @@
-// ... existing code ...
+"use client";
 import { useState } from "react";
 import FreightForm from "./FreightForm";
 import TravelForm from "./TravelForm";
@@ -60,4 +60,3 @@ export default function ClimatiqCalculator({ initialTab = "freight" }) {
     </div>
   );
 }
-// ... existing code ...

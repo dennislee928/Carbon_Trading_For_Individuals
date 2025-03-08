@@ -1,8 +1,8 @@
-// pages/search.tsx
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import climatiqApi from "../services/api";
+"use client"; // 告訴 Next.js 這個元件是客戶端元件
 
-//
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import climatiqApi from "@/app/services/api";
+
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -24,9 +24,9 @@ import {
   EmissionFactor,
   FreightEmissionRequest,
   //  calculateFreightEmissions,
-} from "../services/api";
+} from "@/app/services/api"; // 確保路徑正確
 import { SelectChangeEvent } from "@mui/material";
-//
+
 interface SearchParams {
   data_version: string;
   results_per_page: number; // Keep as number in the interface
@@ -34,8 +34,8 @@ interface SearchParams {
   unit_type?: string;
   query?: string;
 }
-//
-const FreightV2 = () => {
+
+const FreightV2Client = () => {
   const [unitTypes, setUnitTypes] = useState<string[]>([]);
   const [dataVersions, setDataVersions] = useState<string[]>([]);
   const [searchParams, setSearchParams] = useState<SearchParams>({
@@ -109,9 +109,6 @@ const FreightV2 = () => {
   //
   const handleFreightEmissionCalculation = async () => {
     const payload: FreightEmissionRequest = {
-      distance_km: 100, // 示例距離
-      weight_kg: 1000, // 示例重量
-      transport_mode: "road", // 示例運輸模式
       route: [
         { location: { query: "Hamburg" } },
         {
@@ -130,7 +127,12 @@ const FreightV2 = () => {
         weight: 10,
         weight_unit: "t",
       },
+
+      distance_km: 500, // 增加 distance_km
+      weight_kg: 10000, // 增加 weight_kg
+      transport_mode: "road", // 增加 transport_mode
     };
+
     try {
       const response = await climatiqApi.calculateFreightEmissions(payload);
       console.log("Freight Emissions:", response);
@@ -296,4 +298,4 @@ const FreightV2 = () => {
   );
 };
 
-export default FreightV2;
+export default FreightV2Client;

@@ -1,14 +1,10 @@
-// ... existing code ...
+"use client";
 import { useState } from "react";
 import { climatiqApi } from "../../services/api";
 import { ProcurementData } from "../../services/types";
 
 // ... existing code ...
-export default function ProcurementForm({
-  onResult,
-}: {
-  onResult: (data: any) => void;
-}) {
+export default function ProcurementForm() {
   const [formData, setFormData] = useState<ProcurementData>({
     spend: 0,
     spend_unit: "TWD",
@@ -20,11 +16,13 @@ export default function ProcurementForm({
     e.preventDefault();
     try {
       const result = await climatiqApi.calculateProcurementEmissions(formData);
-      onResult(result);
+      setResult(result);
     } catch (error) {
       console.error("Error calculating procurement emissions:", error);
     }
   };
+
+  const [result, setResult] = useState<any>(null);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -57,6 +55,11 @@ export default function ProcurementForm({
       <button type="submit" className="bg-green-500 text-white px-4 py-2">
         Calculate
       </button>
+      {result && (
+        <div>
+          <p>Result: {JSON.stringify(result)}</p>
+        </div>
+      )}
     </form>
   );
 }

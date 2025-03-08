@@ -1,5 +1,5 @@
 // src/app/pages/Travel.tsx
-import ClimatiqCalculator from "../components/Calculator";
+import ClimatiqCalculator from "@/app/components/Calculator";
 
 export default function TravelPage() {
   return (

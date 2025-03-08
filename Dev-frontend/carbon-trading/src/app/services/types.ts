@@ -91,16 +91,8 @@ export interface FreightEmissionRequest {
 }
 
 export interface FreightEmissionResponse {
-  co2e: number;
-  hub_equipment_co2e: number;
-  vehicle_operation_co2e: number;
-  vehicle_energy_provision_co2e: number;
-  co2e_unit: string;
-  co2e_calculation_method: string;
-  distance_km: number;
-  cargo_tonnes: number;
   route: Array<{
-    from: {
+    location?: {
       query?: string;
       iata?: string;
       locode?: string;
@@ -109,18 +101,22 @@ export interface FreightEmissionResponse {
         latitude: number;
       };
     };
-    to: {
-      query?: string;
-      iata?: string;
-      locode?: string;
-      coordinates?: {
-        longitude: number;
-        latitude: number;
+    transport_mode?: "road" | "air" | "sea" | "rail";
+    leg_details?: {
+      rest_of_world?: {
+        vehicle_type: string;
+        vehicle_weight: string;
+        fuel_source: string;
+      };
+      north_america?: {
+        vehicle_type: string;
       };
     };
-    distance_km: number;
-    transport_mode: "road" | "air" | "sea" | "rail";
   }>;
+  cargo: {
+    weight: number;
+    weight_unit: string;
+  };
 }
 //
 export interface ClassificationSearchParams {
@@ -143,8 +139,8 @@ export interface ClassificationResult {
 //
 
 export interface ProcurementData {
-  amount: number;
-  currency: string;
+  spend: number;
+  spend_unit: string;
   category: string;
   region: string;
 }
@@ -257,12 +253,6 @@ export interface EmissionResult {
   co2e_unit: string;
   activity_id?: string;
   parameters?: Record<string, any>;
-}
-
-export interface ProcurementData {
-  spend: number;
-  spend_unit: string;
-  category: string;
 }
 
 export interface ComputingData {

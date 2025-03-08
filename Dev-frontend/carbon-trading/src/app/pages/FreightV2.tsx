@@ -109,6 +109,9 @@ const FreightV2 = () => {
   //
   const handleFreightEmissionCalculation = async () => {
     const payload: FreightEmissionRequest = {
+      distance_km: 100, // 示例距離
+      weight_kg: 1000, // 示例重量
+      transport_mode: "road", // 示例運輸模式
       route: [
         { location: { query: "Hamburg" } },
         {
@@ -128,13 +131,6 @@ const FreightV2 = () => {
         weight_unit: "t",
       },
     };
-
-    try {
-      const response = await climatiqApi.calculateFreightEmissions(payload);
-      console.log("Freight Emissions:", response);
-    } catch (error) {
-      console.error("Error calculating freight emissions:", error);
-    }
   };
   //
   {

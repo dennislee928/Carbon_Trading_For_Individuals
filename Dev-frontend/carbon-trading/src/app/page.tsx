@@ -1,35 +1,36 @@
-// app/page.tsx
-/* eslint-disable */
-import EmissionFactorsSearch from "./components/EmissionFactorsSearch";
-import UnitTypesDisplay from "./components/UnitTypesDisplay";
-import DataVersionsDisplay from "./components/DataVersionsDisplay";
-import Head from "next/head";
+// src/app/page.tsx
+import Link from "next/link";
+import Hero from "./components/UI/Hero";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50">
-      <Head>
-        <title>para-universe-energy-exchange-station.com</title>
-        <meta name="description" content="cloudflare lab" />
-      </Head>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">
-          Carbon Rights Estimating/Calculation Platform
-        </h1>
-        {/* Emission Factors Search Section! */}
-        <section className="mb-12">
-          <EmissionFactorsSearch />
-        </section>
-        {/* Data Versions Section */}
-        <section className="mb-12">
-          <DataVersionsDisplay />
-        </section>
-
-        {/* Unit Types Section */}
-        <section className="mb-12">
-          <UnitTypesDisplay />
-        </section>
-      </div>
-    </main>
+    <div>
+      <Hero />
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Explore Categories
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {[
+            { name: "Freight", href: "/pages/Freight" },
+            { name: "Travel", href: "/pages/Travel" },
+            { name: "Energy", href: "/pages/Energy" },
+            { name: "Computing", href: "/pages/Computing" },
+            { name: "Procurement", href: "/pages/Procurement" },
+            { name: "Custom Mappings", href: "/pages/CustomMappings" },
+            { name: "CBAM", href: "/pages/CBAM" },
+            { name: "Autopilot", href: "/pages/Autopilot" },
+          ].map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="bg-green-100 text-green-800 p-6 rounded-lg shadow hover:bg-green-200 transition text-center"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

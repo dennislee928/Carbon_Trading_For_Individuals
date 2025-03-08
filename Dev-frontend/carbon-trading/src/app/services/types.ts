@@ -192,3 +192,111 @@ export interface EmissionFactor {
   access_type?: string;
   data_quality_flags?: string[];
 }
+// new  types
+export interface ClassificationSearchParams {
+  query?: string;
+  results_per_page?: number;
+  page?: number;
+}
+
+export interface ClassificationResult {
+  id: string;
+  name: string;
+  description?: string;
+}
+
+export interface SearchParams {
+  query?: string;
+  data_version: string;
+  allowed_data_quality_flags?: string[];
+  region?: string;
+  category?: string;
+  results_per_page?: number;
+}
+
+export interface SearchResponse {
+  results: EmissionFactor[];
+  total_results: number;
+  current_page: number;
+  total_pages: number;
+}
+
+export interface EmissionFactor {
+  id: string;
+  name: string;
+  co2e: number;
+  unit?: string;
+  category: string;
+}
+
+export interface UnitType {
+  unit: string;
+  description: string;
+}
+
+export interface DataVersionsResponse {
+  versions: string[];
+  latest: string;
+}
+
+export interface FreightEmissionRequest {
+  distance_km: number;
+  weight_kg: number;
+  transport_mode: string;
+  legs?: { distance_km: number; transport_mode: string }[];
+}
+
+export interface FreightEmissionResponse {
+  co2e: number;
+  co2e_unit: string;
+  distance_km: number;
+}
+
+export interface EmissionResult {
+  co2e: number;
+  co2e_unit: string;
+  activity_id?: string;
+  parameters?: Record<string, any>;
+}
+
+export interface ProcurementData {
+  spend: number;
+  spend_unit: string;
+  category: string;
+}
+
+export interface ComputingData {
+  cpu_usage: number;
+  duration_seconds: number;
+  region: string;
+}
+
+export interface TravelData {
+  distance_km: number;
+  travel_mode: string;
+  passengers?: number;
+}
+
+export interface EnergyData {
+  energy_kwh: number;
+  region: string;
+  source?: string;
+}
+
+export interface CustomMappingData {
+  source_activity_id: string;
+  target_activity_id: string;
+  conversion_factor?: number;
+}
+
+export interface CBAMData {
+  product: string;
+  weight_kg: number;
+  region: string;
+}
+
+export interface AutopilotData {
+  description: string;
+  quantity: number;
+  unit: string;
+}

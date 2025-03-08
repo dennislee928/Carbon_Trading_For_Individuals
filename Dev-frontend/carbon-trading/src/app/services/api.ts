@@ -17,6 +17,11 @@ import {
   FreightEmissionRequest,
   FreightEmissionResponse,
   EmissionFactor,
+  TravelData,
+  EnergyData,
+  CustomMappingData,
+  CBAMData,
+  AutopilotData,
 } from "./types";
 // Utility to validate environment variables
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -60,7 +65,7 @@ const api = axios.create({
   paramsSerializer: (params) => serializeParams(params),
 });
 
-// Response interceptor for centralized error handling
+// Request interceptor for dynamic Authorization header
 api.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${CLIMATIQ_API_KEY}`;
   return config;
@@ -169,7 +174,7 @@ export const climatiqApi = {
       return response.data;
     } catch (error) {
       handleError(error);
-      return undefined; // Explicitly return undefined
+      throw new Error("Failed to fetch data versions");
     }
   },
 
@@ -190,6 +195,89 @@ export const climatiqApi = {
       throw new Error("Freight emissions calculation failed.");
     }
   },
+
+  /**
+   * Estimate emissions for generic data
+   */
+  async estimateEmissions(data: any): Promise<EmissionResult> {
+    try {
+      const response = await api.post(API_CONFIG.ENDPOINTS.ESTIMATE, data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("Emission estimation failed.");
+    }
+  },
+
+  /**
+   * Calculate emissions for travel data
+   */
+  async calculateTravelEmissions(data: TravelData): Promise<EmissionResult> {
+    try {
+      const response = await api.post(API_CONFIG.ENDPOINTS.TRAVEL, data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("Travel emissions calculation failed.");
+    }
+  },
+
+  /**
+   * Calculate emissions for energy data
+   */
+  async calculateEnergyEmissions(data: EnergyData): Promise<EmissionResult> {
+    try {
+      const response = await api.post(API_CONFIG.ENDPOINTS.ENERGY, data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("Energy emissions calculation failed.");
+    }
+  },
+
+  /**
+   * Create or update custom mappings
+   */
+  async createCustomMapping(data: CustomMappingData): Promise<EmissionResult> {
+    try {
+      const response = await api.post(
+        API_CONFIG.ENDPOINTS.CUSTOM_MAPPINGS,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("Custom mapping creation failed.");
+    }
+  },
+
+  /**
+   * Calculate CBAM embedded emissions
+   */
+  async calculateCBAMEmissions(data: CBAMData): Promise<EmissionResult> {
+    try {
+      const response = await api.post(API_CONFIG.ENDPOINTS.CBAM, data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("CBAM emissions calculation failed.");
+    }
+  },
+
+  /**
+   * Estimate emissions using Autopilot
+   */
+  async estimateAutopilotEmissions(
+    data: AutopilotData
+  ): Promise<EmissionResult> {
+    try {
+      const response = await api.post(API_CONFIG.ENDPOINTS.AUTOPILOT, data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("Autopilot emissions estimation failed.");
+    }
+  },
 };
 
 export default climatiqApi;
@@ -207,4 +295,9 @@ export type {
   DataVersionsResponse,
   FreightEmissionRequest,
   FreightEmissionResponse,
+  TravelData,
+  EnergyData,
+  CustomMappingData,
+  CBAMData,
+  AutopilotData,
 };

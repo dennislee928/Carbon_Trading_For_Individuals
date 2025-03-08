@@ -1,5 +1,7 @@
 // ... existing code ...
 import { useState } from "react";
+import { FreightEmissionRequest } from "../../services/types"; // 導入 FreightEmissionRequest
+//
 
 export default function FreightForm({
   onResult,
@@ -11,6 +13,10 @@ export default function FreightForm({
     weight_kg: 0,
     transport_mode: "road",
     route: [],
+    cargo: {
+      weight: 0,
+      weight_unit: "kg",
+    },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {

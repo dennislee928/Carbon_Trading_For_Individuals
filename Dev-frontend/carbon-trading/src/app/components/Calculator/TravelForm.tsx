@@ -1,3 +1,4 @@
+import { TravelData } from "@/app/services/types";
 import { useState } from "react";
 
 export default function TravelForm({
@@ -33,9 +34,9 @@ export default function TravelForm({
         placeholder="Distance (km)"
       />
       <select
-        value={formData.transport_mode}
+        value={formData.travel_mode}
         onChange={(e) =>
-          setFormData({ ...formData, transport_mode: e.target.value })
+          setFormData({ ...formData, travel_mode: e.target.value })
         }
       >
         <option value="car">Car</option>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { EnergyData } from "../../services/types"; // 導入 EnergyData
 
 export default function EnergyForm({
   onResult,

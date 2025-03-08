@@ -299,6 +299,7 @@ export interface EnergyData {
   energy_kwh: number;
   region: string;
   source?: string;
+  energy_type?: string;
 }
 
 export interface CustomMappingData {

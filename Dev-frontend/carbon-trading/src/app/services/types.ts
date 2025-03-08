@@ -62,6 +62,9 @@ export interface DataVersionsResponse {
 }
 
 export interface FreightEmissionRequest {
+  distance_km: number;
+  weight_kg: number;
+  transport_mode: string;
   route: Array<{
     location?: {
       query?: string;
@@ -239,7 +242,32 @@ export interface FreightEmissionRequest {
   distance_km: number;
   weight_kg: number;
   transport_mode: string;
-  legs?: { distance_km: number; transport_mode: string }[];
+  route: Array<{
+    location?: {
+      query?: string;
+      iata?: string;
+      locode?: string;
+      coordinates?: {
+        longitude: number;
+        latitude: number;
+      };
+    };
+    transport_mode?: "road" | "air" | "sea" | "rail";
+    leg_details?: {
+      rest_of_world?: {
+        vehicle_type: string;
+        vehicle_weight: string;
+        fuel_source: string;
+      };
+      north_america?: {
+        vehicle_type: string;
+      };
+    };
+  }>;
+  cargo: {
+    weight: number;
+    weight_unit: string;
+  };
 }
 
 export interface FreightEmissionResponse {
@@ -256,8 +284,8 @@ export interface EmissionResult {
 }
 
 export interface ComputingData {
-  cpu_usage: number;
-  duration_seconds: number;
+  cpu_hours: number;
+  provider: "aws" | "gcp" | "azure";
   region: string;
 }
 

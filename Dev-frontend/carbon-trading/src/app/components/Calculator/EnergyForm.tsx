@@ -5,9 +5,10 @@ export default function EnergyForm({
 }: {
   onResult: (data: any) => void;
 }) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<EnergyData>({
     energy_kwh: 0,
-    energy_type: "electricity",
+    region: "us-east-1",
+    source: "electricity",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { climatiqApi } from "../../services/api";
 import { ProcurementData } from "../../services/types";
 
+// ... existing code ...
 export default function ProcurementForm({
   onResult,
 }: {

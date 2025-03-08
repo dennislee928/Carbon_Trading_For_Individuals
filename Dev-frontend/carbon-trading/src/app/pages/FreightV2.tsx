@@ -131,6 +131,12 @@ const FreightV2 = () => {
         weight_unit: "t",
       },
     };
+    try {
+      const response = await climatiqApi.calculateFreightEmissions(payload);
+      console.log("Freight Emissions:", response);
+    } catch (error) {
+      console.error("Error calculating freight emissions:", error);
+    }
   };
   //
   {

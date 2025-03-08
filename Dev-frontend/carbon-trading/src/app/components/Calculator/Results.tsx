@@ -1,4 +1,3 @@
-// ... existing code ...
 export default function Results({ data }: { data: any }) {
   return (
     <div className="mt-4 p-4 border rounded">
@@ -7,4 +6,3 @@ export default function Results({ data }: { data: any }) {
     </div>
   );
 }
-// ... existing code ...

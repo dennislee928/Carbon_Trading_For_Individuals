@@ -5,9 +5,10 @@ export default function TravelForm({
 }: {
   onResult: (data: any) => void;
 }) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<TravelData>({
     distance_km: 0,
-    transport_mode: "car",
+    travel_mode: "car",
+    passengers: 1,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {

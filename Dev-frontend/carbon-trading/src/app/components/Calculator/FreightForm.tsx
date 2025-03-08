@@ -6,10 +6,11 @@ export default function FreightForm({
 }: {
   onResult: (data: any) => void;
 }) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FreightEmissionRequest>({
     distance_km: 0,
     weight_kg: 0,
     transport_mode: "road",
+    route: [],
   });
 
   const handleSubmit = async (e: React.FormEvent) => {

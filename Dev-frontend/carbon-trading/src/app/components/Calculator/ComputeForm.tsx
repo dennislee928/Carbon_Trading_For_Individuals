@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { ComputingData } from "../../services/types"; // 導入 ComputingData
+// ... existing code ...
 
 export default function ComputeForm({
   onResult,
 }: {
   onResult: (data: any) => void;
 }) {
-  const [formData, setFormData] = useState({
-    compute_hours: 0,
-    compute_type: "cloud",
+  const [formData, setFormData] = useState<ComputingData>({
+    cpu_hours: 0,
+    provider: "aws",
+    region: "us-east-1",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,20 +28,24 @@ export default function ComputeForm({
     <form onSubmit={handleSubmit}>
       <input
         type="number"
-        value={formData.compute_hours}
+        value={formData.cpu_hours}
         onChange={(e) =>
-          setFormData({ ...formData, compute_hours: Number(e.target.value) })
+          setFormData({ ...formData, cpu_hours: Number(e.target.value) })
         }
         placeholder="Compute Hours"
       />
       <select
-        value={formData.compute_type}
-        onChange={(e) =>
-          setFormData({ ...formData, compute_type: e.target.value })
-        }
+        value={formData.provider}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value === "aws" || value === "gcp" || value === "azure") {
+            setFormData({ ...formData, provider: value });
+          }
+        }}
       >
-        <option value="cloud">Cloud</option>
-        <option value="on_premises">On-Premises</option>
+        <option value="aws">AWS</option>
+        <option value="gcp">GCP</option>
+        <option value="azure">Azure</option>
       </select>
       <button type="submit">Calculate</button>
     </form>

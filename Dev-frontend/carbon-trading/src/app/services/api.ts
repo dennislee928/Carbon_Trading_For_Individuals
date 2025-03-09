@@ -257,6 +257,18 @@ export const climatiqApi = {
     }
   },
 };
+export const getUnitTypes = async (): Promise<UnitType[]> => {
+  try {
+    const response = await api.get(API_CONFIG.ENDPOINTS.UNIT_TYPES);
+    return response.data.unit_types;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.error || error.message;
+      throw new Error(`Failed to fetch unit types: ${errorMessage}`);
+    }
+    throw new Error("An unexpected error occurred while fetching unit types");
+  }
+};
 
 export default climatiqApi;
 

@@ -98,7 +98,8 @@ export default function Home() {
   const [updatingBlock, setUpdatingBlock] = useState(false);
 
   // 添加一個 state 來存儲動態導入的 iplookupapi
-  const [ipApi, setIpApi] = useState<{
+  // const [ipApi] = useState<{
+  const [ipApi] = useState<{
     lookup: (ip: string) => Promise<IpLookupResult>;
   } | null>(null);
 
@@ -174,26 +175,6 @@ export default function Home() {
 
   // Function to verify all IPs from the `ips` attribute using iplookupapi
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const verifyAllIPs = async () => {
-    if (ips.length === 0) {
-      alert("No IPs available for verification.");
-      return;
-    }
-
-    const verifiedIps: IpLookupResult[] = [];
-    for (const ip of ips) {
-      try {
-        if (ipApi) {
-          const result = await ipApi.lookup(ip);
-          console.log("All IPs Verification:", result);
-          verifiedIps.push(result);
-        }
-      } catch (error) {
-        console.error(`Error looking up IP ${ip}:`, error);
-      }
-    }
-    setVerifiedAllIpsInfo(verifiedIps);
-  };
 
   const startCountdown = () => {
     setCountdown(30);
@@ -211,43 +192,6 @@ export default function Home() {
     }, 1000);
   };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const fetchLogs = async () => {
-    setShowAISuggestions(false);
-    startCountdown();
-
-    try {
-      const response = await fetch("/api/fetch-logs");
-      if (response.ok) {
-        const data: {
-          ips?: string[];
-          aiSuggestions?: string;
-        } = await response.json();
-
-        setIps(data.ips || []);
-        setShowAISuggestions(true);
-
-        if (data.aiSuggestions) {
-          const suggestions = data.aiSuggestions.trim().split(/\n+/);
-          setAiSuggestions(suggestions);
-
-          console.log("AI Suggestions Received:", suggestions);
-
-          const allIpMatches = data.aiSuggestions.match(/[\w:.]+/g) || [];
-          setAllRecognizedIps(allIpMatches);
-          console.log("Valid Recognized IPs:", allIpMatches);
-        } else {
-          console.error("No valid AI suggestions found in the response");
-        }
-      } else {
-        console.error("Failed to fetch logs with status:", response.status);
-      }
-    } catch (error) {
-      console.error("Failed to fetch logs:", error);
-    } finally {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      setCountdown(null);
-    }
-  };
 
   // 新增一個函數來分割 IP 列表
   const splitIpsIntoChunks = (

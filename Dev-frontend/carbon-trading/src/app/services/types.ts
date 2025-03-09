@@ -233,16 +233,16 @@ export type EstimateDataInput =
   | AutopilotData;
 
 // 創建一個聯合類型，包含所有可能的資料類型
-type EmissionEstimateData =
-  | FreightEmissionRequest
-  | TravelData
-  | EnergyData
-  | ComputingData
-  | CBAMData
-  | AutopilotData
-  | CustomMappingData
-  | ProcurementData
-  | Record<string, any>; // 為了兼容性，添加 Record<string, any>
+// type EmissionEstimateData =
+//   | FreightEmissionRequest
+//   | TravelData
+//   | EnergyData
+//   | ComputingData
+//   | CBAMData
+//   | AutopilotData
+//   | CustomMappingData
+//   | ProcurementData
+//   | Record<string, any>; // 為了兼容性，添加 Record<string, any>
 
 // 介面定義，用於 api.ts 中的 estimateEmissions 函數
 interface EstimateEmissionsData {

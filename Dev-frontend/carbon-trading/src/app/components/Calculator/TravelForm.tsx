@@ -23,7 +23,7 @@ export default function TravelForm({ onResult }: TravelFormProps) {
       body: JSON.stringify(formData),
     });
     const data = await response.json();
-    // 使用 onResult 將結果傳遞給父元件
+    console.log("TravelForm API response:", data);
     onResult(data);
   };
 

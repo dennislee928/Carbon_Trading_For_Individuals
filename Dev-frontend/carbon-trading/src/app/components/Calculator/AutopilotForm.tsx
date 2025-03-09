@@ -20,8 +20,11 @@ export default function AutopilotForm({ onResult }: AutopilotFormProps) {
     e.preventDefault();
     try {
       const result = await climatiqApi.estimateAutopilotEmissions(formData);
+      console.log("AutopilotForm API response:", result);
+      // 確保 result 是可序列化的
+      const serializableResult = { ...result }; // 建立一個新的物件，只包含可序列化的屬性
       // 使用 onResult 將結果傳遞給父元件
-      onResult(result);
+      onResult(serializableResult);
     } catch (error) {
       console.error("Error estimating autopilot emissions:", error);
     }

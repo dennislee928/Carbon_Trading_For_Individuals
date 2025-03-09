@@ -272,7 +272,24 @@ export const climatiqApi = {
   ): Promise<EmissionResult> {
     try {
       const response = await api.post(API_CONFIG.ENDPOINTS.AUTOPILOT, data);
-      return response.data;
+      // 檢查並處理 parameters
+      const result = { ...response.data }; // 建立一個新的物件，避免修改原始資料
+      if (result.parameters) {
+        // 遍歷 parameters 的屬性
+        for (const key in result.parameters) {
+          if (result.parameters.hasOwnProperty(key)) {
+            const value = result.parameters[key];
+            // 檢查值的類型，並進行轉換
+            if (value instanceof Date) {
+              result.parameters[key] = value.toISOString(); // 將 Date 轉換為字串
+            } else if (typeof value === "function") {
+              delete result.parameters[key]; // 移除函數
+            }
+            // 可以根據需要添加更多類型的檢查和轉換
+          }
+        }
+      }
+      return result;
     } catch (error) {
       handleError(error);
       throw new Error("Autopilot emissions estimation failed.");

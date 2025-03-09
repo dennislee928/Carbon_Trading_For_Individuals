@@ -9,7 +9,8 @@ export default function Home() {
     <main className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-8">
-          Carbon Rights Estimating/Calculation Platform
+          Carbon Rights Estimating/Calculation Platform(Dataversion must be
+          choosen)
         </h1>
         {/* Emission Factors Search Section! */}
         <section className="mb-12">

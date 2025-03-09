@@ -1,8 +1,14 @@
 "use client";
 import { useState } from "react";
 import { EnergyData } from "../../services/types"; // 導入 EnergyData
+import { EmissionResult } from "../../services/types";
 
-export default function EnergyForm() {
+// 定義 EnergyForm 的 props
+interface EnergyFormProps {
+  onResult: (data: EmissionResult) => void;
+}
+
+export default function EnergyForm({ onResult }: EnergyFormProps) {
   const [formData, setFormData] = useState<EnergyData>({
     energy_kwh: 0,
     region: "us-east-1",
@@ -17,10 +23,9 @@ export default function EnergyForm() {
       body: JSON.stringify(formData),
     });
     const data = await response.json();
-    setResult(data);
+    // 使用 onResult 將結果傳遞給父元件
+    onResult(data);
   };
-
-  const [result, setResult] = useState<any>(null);
 
   return (
     <>
@@ -45,11 +50,6 @@ export default function EnergyForm() {
         </select>
         <button type="submit">Calculate</button>
       </form>
-      {result && (
-        <div>
-          <p>Result: {JSON.stringify(result)}</p>
-        </div>
-      )}
     </>
   );
 }

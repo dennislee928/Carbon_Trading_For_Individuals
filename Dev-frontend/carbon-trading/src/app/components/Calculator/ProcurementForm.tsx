@@ -2,9 +2,14 @@
 import { useState } from "react";
 import { climatiqApi } from "../../services/api";
 import { ProcurementData } from "../../services/types";
+import { EmissionResult } from "../../services/types";
 
-// ... existing code ...
-export default function ProcurementForm() {
+// 定義 ProcurementForm 的 props
+interface ProcurementFormProps {
+  onResult: (data: EmissionResult) => void;
+}
+
+export default function ProcurementForm({ onResult }: ProcurementFormProps) {
   const [formData, setFormData] = useState<ProcurementData>({
     spend: 0,
     spend_unit: "TWD",
@@ -16,13 +21,12 @@ export default function ProcurementForm() {
     e.preventDefault();
     try {
       const result = await climatiqApi.calculateProcurementEmissions(formData);
-      setResult(result);
+      // 使用 onResult 將結果傳遞給父元件
+      onResult(result);
     } catch (error) {
       console.error("Error calculating procurement emissions:", error);
     }
   };
-
-  const [result, setResult] = useState<any>(null);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -55,12 +59,6 @@ export default function ProcurementForm() {
       <button type="submit" className="bg-green-500 text-white px-4 py-2">
         Calculate
       </button>
-      {result && (
-        <div>
-          <p>Result: {JSON.stringify(result)}</p>
-        </div>
-      )}
     </form>
   );
 }
-// ... existing code ...

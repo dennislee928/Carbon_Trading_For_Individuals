@@ -1,9 +1,15 @@
 "use client";
 import { useState } from "react";
 import { FreightEmissionRequest } from "../../services/types"; // 導入 FreightEmissionRequest
-//
+import { EmissionResult } from "../../services/types";
 
-export default function FreightForm() {
+// 定義 FreightForm 的 props
+interface FreightFormProps {
+  onResult: (data: EmissionResult) => void; // 接收 onResult prop
+}
+
+// 修改 FreightForm 元件，接收 props
+export default function FreightForm({ onResult }: FreightFormProps) {
   const [formData, setFormData] = useState<FreightEmissionRequest>({
     distance_km: 0,
     weight_kg: 0,
@@ -22,11 +28,10 @@ export default function FreightForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
-    const data = await response.json();
-    setResult(data);
+    const data: EmissionResult = await response.json(); // 確保 data 的類型是 EmissionResult
+    // 使用 onResult 將結果傳遞給父元件
+    onResult(data);
   };
-
-  const [result, setResult] = useState<any>(null);
 
   return (
     <>
@@ -59,12 +64,6 @@ export default function FreightForm() {
         </select>
         <button type="submit">Calculate</button>
       </form>
-      {result && (
-        <div>
-          <p>Result: {JSON.stringify(result)}</p>
-        </div>
-      )}
     </>
   );
 }
-// ... existing code ...

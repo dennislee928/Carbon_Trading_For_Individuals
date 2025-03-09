@@ -1,5 +1,11 @@
 import axios from "axios";
 import { climatiqConfig } from "../config/climatiq.config";
+import {
+  FreightEmissionRequest,
+  TravelData,
+  EnergyData,
+  ComputingData,
+} from "./types";
 
 // 您的 API 金鑰
 const CLIMATIQ_API_KEY = "NKFZH0Y8Q15KKFS84BQZ3MXC0G";
@@ -26,7 +32,7 @@ const api = axios.create({
 });
 
 export const climatiqService = {
-  estimate: async (data: any) => {
+  estimate: async (data: { [key: string]: any }) => {
     try {
       const response = await api.post("/estimate", data);
       return response.data;
@@ -34,7 +40,7 @@ export const climatiqService = {
       handleError(error);
     }
   },
-  freight: async (data: any) => {
+  freight: async (data: FreightEmissionRequest) => {
     try {
       const response = await api.post("/freight/intermodal", data);
       return response.data;
@@ -42,7 +48,7 @@ export const climatiqService = {
       handleError(error);
     }
   },
-  travel: async (data: any) => {
+  travel: async (data: TravelData) => {
     try {
       const response = await api.post("/travel", data);
       return response.data;
@@ -50,7 +56,7 @@ export const climatiqService = {
       handleError(error);
     }
   },
-  energy: async (data: any) => {
+  energy: async (data: EnergyData) => {
     try {
       const response = await api.post("/energy", data);
       return response.data;
@@ -58,7 +64,7 @@ export const climatiqService = {
       handleError(error);
     }
   },
-  compute: async (data: any) => {
+  compute: async (data: ComputingData) => {
     try {
       const response = await api.post("/computing", data);
       return response.data;

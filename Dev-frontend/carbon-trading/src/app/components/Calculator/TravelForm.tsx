@@ -1,11 +1,14 @@
 import { TravelData } from "@/app/services/types";
 import { useState } from "react";
+import { EmissionResult } from "../../services/types";
+//
 
-export default function TravelForm({
-  onResult,
-}: {
-  onResult: (data: any) => void;
-}) {
+// 定義 TravelForm 的 props
+interface TravelFormProps {
+  onResult: (data: EmissionResult) => void;
+}
+
+export default function TravelForm({ onResult }: TravelFormProps) {
   const [formData, setFormData] = useState<TravelData>({
     distance_km: 0,
     travel_mode: "car",
@@ -20,6 +23,7 @@ export default function TravelForm({
       body: JSON.stringify(formData),
     });
     const data = await response.json();
+    // 使用 onResult 將結果傳遞給父元件
     onResult(data);
   };
 

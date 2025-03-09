@@ -1,9 +1,14 @@
 "use client";
 import { useState } from "react";
 import { ComputingData } from "../../services/types"; // 導入 ComputingData
-// ... existing code ...
+import { EmissionResult } from "../../services/types";
 
-export default function ComputeForm() {
+// 定義 ComputeForm 的 props
+interface ComputeFormProps {
+  onResult: (data: EmissionResult) => void;
+}
+
+export default function ComputeForm({ onResult }: ComputeFormProps) {
   const [formData, setFormData] = useState<ComputingData>({
     cpu_hours: 0,
     provider: "aws",
@@ -18,10 +23,9 @@ export default function ComputeForm() {
       body: JSON.stringify(formData),
     });
     const data = await response.json();
-    setResult(data);
+    // 使用 onResult 將結果傳遞給父元件
+    onResult(data);
   };
-
-  const [result, setResult] = useState<any>(null);
 
   return (
     <>
@@ -49,11 +53,6 @@ export default function ComputeForm() {
         </select>
         <button type="submit">Calculate</button>
       </form>
-      {result && (
-        <div>
-          <p>Result: {JSON.stringify(result)}</p>
-        </div>
-      )}
     </>
   );
 }

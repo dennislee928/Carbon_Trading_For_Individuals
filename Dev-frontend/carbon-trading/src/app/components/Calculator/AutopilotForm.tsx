@@ -2,8 +2,14 @@
 import { useState } from "react";
 import { climatiqApi } from "../../services/api";
 import { AutopilotData } from "../../services/types";
+import { EmissionResult } from "../../services/types";
 
-export default function AutopilotForm() {
+// 定義 AutopilotForm 的 props
+interface AutopilotFormProps {
+  onResult: (data: EmissionResult) => void;
+}
+
+export default function AutopilotForm({ onResult }: AutopilotFormProps) {
   const [formData, setFormData] = useState<AutopilotData>({
     description: "",
     quantity: 1,
@@ -14,15 +20,12 @@ export default function AutopilotForm() {
     e.preventDefault();
     try {
       const result = await climatiqApi.estimateAutopilotEmissions(formData);
-      //onResult(result);
-      // 使用一個狀態變數來儲存結果，並在父元件中處理結果
-      setResult(result);
+      // 使用 onResult 將結果傳遞給父元件
+      onResult(result);
     } catch (error) {
       console.error("Error estimating autopilot emissions:", error);
     }
   };
-
-  const [result, setResult] = useState<any>(null); // 新增狀態變數
 
   return (
     <>
@@ -56,12 +59,6 @@ export default function AutopilotForm() {
           Estimate
         </button>
       </form>
-      {/* 顯示結果 */}
-      {result && (
-        <div>
-          <p>Result: {JSON.stringify(result)}</p>
-        </div>
-      )}
     </>
   );
 }

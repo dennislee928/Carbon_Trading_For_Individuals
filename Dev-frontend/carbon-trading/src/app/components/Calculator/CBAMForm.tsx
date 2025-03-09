@@ -2,8 +2,14 @@
 import { useState } from "react";
 import { climatiqApi } from "../../services/api";
 import { CBAMData } from "../../services/types";
+import { EmissionResult } from "../../services/types";
 
-export default function CBAMForm() {
+// 定義 CBAMForm 的 props
+interface CBAMFormProps {
+  onResult: (data: EmissionResult) => void;
+}
+
+export default function CBAMForm({ onResult }: CBAMFormProps) {
   const [formData, setFormData] = useState<CBAMData>({
     product: "",
     weight_kg: 0,
@@ -14,13 +20,12 @@ export default function CBAMForm() {
     e.preventDefault();
     try {
       const result = await climatiqApi.calculateCBAMEmissions(formData);
-      setResult(result);
+      // 使用 onResult 將結果傳遞給父元件
+      onResult(result);
     } catch (error) {
       console.error("Error calculating CBAM emissions:", error);
     }
   };
-
-  const [result, setResult] = useState<any>(null);
 
   return (
     <>
@@ -55,11 +60,6 @@ export default function CBAMForm() {
           Calculate
         </button>
       </form>
-      {result && (
-        <div>
-          <p>Result: {JSON.stringify(result)}</p>
-        </div>
-      )}
     </>
   );
 }

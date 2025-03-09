@@ -1,0 +1,6 @@
+
+
+/src/app/components/Calculator/index.tsx
+/src/app/services/api.ts
+/src/app/services/climatiq.ts
+/src/app/services/types.ts

@@ -2,8 +2,16 @@
 import { useState } from "react";
 import { climatiqApi } from "../../services/api";
 import { CustomMappingData } from "../../services/types";
+import { EmissionResult } from "../../services/types";
 
-export default function CustomMappingForm() {
+// 定義 CustomMappingForm 的 props
+interface CustomMappingFormProps {
+  onResult: (data: EmissionResult) => void;
+}
+
+export default function CustomMappingForm({
+  onResult,
+}: CustomMappingFormProps) {
   const [formData, setFormData] = useState<CustomMappingData>({
     source_activity_id: "",
     target_activity_id: "",
@@ -14,13 +22,12 @@ export default function CustomMappingForm() {
     e.preventDefault();
     try {
       const result = await climatiqApi.createCustomMapping(formData);
-      setResult(result);
+      // 使用 onResult 將結果傳遞給父元件
+      onResult(result);
     } catch (error) {
       console.error("Error creating custom mapping:", error);
     }
   };
-
-  const [result, setResult] = useState<any>(null);
 
   return (
     <>
@@ -59,11 +66,6 @@ export default function CustomMappingForm() {
           Create Mapping
         </button>
       </form>
-      {result && (
-        <div>
-          <p>Result: {JSON.stringify(result)}</p>
-        </div>
-      )}
     </>
   );
 }

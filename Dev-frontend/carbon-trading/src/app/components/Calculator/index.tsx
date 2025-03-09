@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import FreightForm from "./FreightForm";
 import TravelForm from "./TravelForm";
 import EnergyForm from "./EnergyForm";
@@ -9,12 +9,15 @@ import CustomMappingForm from "./CustomMappingForm";
 import CBAMForm from "./CBAMForm";
 import AutopilotForm from "./AutopilotForm";
 import Results from "./Results";
+import { EmissionResult } from "../../services/types";
 
 export default function ClimatiqCalculator({ initialTab = "freight" }) {
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState<EmissionResult | null>(null);
   const [activeTab, setActiveTab] = useState(initialTab);
 
-  const handleResult = (data: any) => setResults(data);
+  const handleResult = useCallback((data: EmissionResult) => {
+    setResults(data);
+  }, []);
 
   const tabs = [
     "freight",
@@ -56,7 +59,7 @@ export default function ClimatiqCalculator({ initialTab = "freight" }) {
       {activeTab === "cbam" && <CBAMForm onResult={handleResult} />}
       {activeTab === "autopilot" && <AutopilotForm onResult={handleResult} />}
 
-      {results && <Results data={results} />}
+      {results && <Results data={results as EmissionResult} />}
     </div>
   );
 }

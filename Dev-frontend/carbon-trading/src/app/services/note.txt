@@ -41,3 +41,16 @@ filename
     error	"forbidden"
 error_code	null
 message	"This feature is not enabled for this project"
+
+//->url not found please check the docs from climatiq
+https://api.climatiq.io/cbam
+https://api.climatiq.io/custommapping
+https://api.climatiq.io/procurement
+https://api.climatiq.io/travel
+
+//->base url
+compute
+energy
+
+//https://api.climatiq.io/freight/intermodal
+{"error":"forbidden","error_code":null,"message":"This feature is not enabled for this project"}

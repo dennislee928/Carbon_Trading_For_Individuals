@@ -60,7 +60,7 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
   const handleUnitChange = (event: SelectChangeEvent<string>) => {
     const newUnit = event.target.value;
     setSelectedUnit(newUnit);
-    if (onUnitTypeSelect && selectedUnitType) {
+    if (onUnitTypeSelect && selectedUnitType && newUnit) {
       onUnitTypeSelect(selectedUnitType, newUnit);
     }
   };
@@ -85,7 +85,7 @@ const UnitTypesDisplay: React.FC<UnitTypesDisplayProps> = ({
     (type) => type.unit_type === selectedUnitType
   );
   const availableUnits = selectedTypeData
-    ? Object.values(selectedTypeData.units).flat()
+    ? Object.values(selectedTypeData.units ?? {}).flat()
     : [];
 
   return (

@@ -40,14 +40,19 @@ export default function EmissionFactorsSearch() {
         ]);
 
         if (unitTypesData) {
-          setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
+          setUnitTypes(
+            unitTypesData
+              .map((ut: UnitType) => ut.unit_type)
+              .filter((type): type is string => type !== undefined)
+          );
         }
 
         if (dataVersionsData) {
-          setDataVersions([
-            dataVersionsData.latest,
-            dataVersionsData.latest_release,
-          ]);
+          setDataVersions(
+            [dataVersionsData.latest, dataVersionsData.latest_release].filter(
+              (version): version is string => version !== undefined
+            )
+          );
         } else {
           console.error("dataVersionsData is undefined.");
         }

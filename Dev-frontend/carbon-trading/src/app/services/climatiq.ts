@@ -12,7 +12,7 @@ import {
 
 // Your API Key
 const CLIMATIQ_API_KEY = "NKFZH0Y8Q15KKFS84BQZ3MXC0G";
-const BASE_URL = "https://api.climatiq.io";
+//const BASE_URL = "https://api.climatiq.io";
 
 // Centralized error handler
 const handleError = (error: unknown): never => {

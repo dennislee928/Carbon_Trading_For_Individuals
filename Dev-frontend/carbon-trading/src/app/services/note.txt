@@ -48,9 +48,19 @@ https://api.climatiq.io/custommapping
 https://api.climatiq.io/procurement
 https://api.climatiq.io/travel
 
+
+
+//https://api.climatiq.io/freight/intermodal
+{"error":"forbidden","error_code":null,"message":"This feature is not enabled for this project"}
+
+
 //->base url
 compute
 energy
 
-//https://api.climatiq.io/freight/intermodal
-{"error":"forbidden","error_code":null,"message":"This feature is not enabled for this project"}
+curl -X GET "https://api.climatiq.io/search?query=electricity" \
+     -H "Authorization: Bearer NKFZH0Y8Q15KKFS84BQZ3MXC0G"
+
+     // admin panel
+     //unify api endpoint and baseurl
+     // combine with go-project

@@ -62,7 +62,11 @@ const FreightV2 = () => {
           typeof dataVersionsData?.latest_release
         );
 
-        setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
+        setUnitTypes(
+          unitTypesData
+            .map((ut: UnitType) => ut.unit_type)
+            .filter((ut): ut is string => ut !== undefined)
+        );
 
         if (dataVersionsData) {
           setDataVersions([
@@ -267,26 +271,6 @@ const FreightV2 = () => {
           <CircularProgress />
         </Box>
       )}
-      {/* Results Per Page */}
-      <Grid item xs={12} md={6}>
-        <FormControl fullWidth>
-          <InputLabel>Results Per Page</InputLabel>
-          <Select
-            value={String(searchParams.results_per_page)} // Convert to string
-            onChange={handleSelectChange("results_per_page")}
-            label="Results Per Page"
-          >
-            {[10, 20, 50, 100].map((num) => (
-              <MenuItem key={num} value={String(num)}>
-                {" "}
-                {/* Convert to string */}
-                {num}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
-
       {/* Search Results */}
       {results && (
         <Box sx={{ mt: 4 }}>

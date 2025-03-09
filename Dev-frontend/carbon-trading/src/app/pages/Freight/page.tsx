@@ -1,8 +1,10 @@
-"use client"; // 告訴 Next.js 這個元件是客戶端元件
+"use client"; //
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import climatiqApi from "@/app/services/api";
+// pages/search.tsx
 
+//
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -24,9 +26,9 @@ import {
   EmissionFactor,
   FreightEmissionRequest,
   //  calculateFreightEmissions,
-} from "@/app/services/api"; // 確保路徑正確
+} from "@/app/services/api";
 import { SelectChangeEvent } from "@mui/material";
-
+//
 interface SearchParams {
   data_version: string;
   results_per_page: number; // Keep as number in the interface
@@ -34,8 +36,8 @@ interface SearchParams {
   unit_type?: string;
   query?: string;
 }
-
-const FreightV2Client = () => {
+//
+const FreightV2 = () => {
   const [unitTypes, setUnitTypes] = useState<string[]>([]);
   const [dataVersions, setDataVersions] = useState<string[]>([]);
   const [searchParams, setSearchParams] = useState<SearchParams>({
@@ -53,11 +55,14 @@ const FreightV2Client = () => {
         const unitTypesData = await climatiqApi.getUnitTypes();
         const dataVersionsData = await climatiqApi.getDataVersions();
 
-        setUnitTypes(
-          unitTypesData
-            .map((ut: UnitType) => ut.unit_type)
-            .filter((type): type is string => type !== undefined)
+        console.log(
+          "latest type:",
+          typeof dataVersionsData?.latest,
+          "latest_release type:",
+          typeof dataVersionsData?.latest_release
         );
+
+        setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
 
         if (dataVersionsData) {
           setDataVersions([
@@ -66,9 +71,11 @@ const FreightV2Client = () => {
           ]);
         } else {
           console.warn("dataVersionsData is undefined.");
+          setDataVersions(["unknown", "unknown"]);
         }
       } catch (error) {
         console.error("Error fetching initial data:", error);
+        setDataVersions(["unknown", "unknown"]);
       }
     };
 
@@ -131,10 +138,9 @@ const FreightV2Client = () => {
         weight: 10,
         weight_unit: "t",
       },
-
-      distance_km: 500, // 增加 distance_km
-      weight_kg: 10000, // 增加 weight_kg
-      transport_mode: "road", // 增加 transport_mode
+      distance_km: 500,
+      weight_kg: 10000,
+      transport_mode: "road",
     };
 
     try {
@@ -302,4 +308,4 @@ const FreightV2Client = () => {
   );
 };
 
-export default FreightV2Client;
+export default FreightV2;

@@ -246,12 +246,14 @@ type EmissionEstimateData =
 
 // 介面定義，用於 api.ts 中的 estimateEmissions 函數
 interface EstimateEmissionsData {
-  data: EmissionEstimateData; // 使用聯合類型
+  data: {
+    [key: string]: string | number | boolean | object | null | undefined;
+  }; // 根據實際情況修改
 }
 
 // 介面定義，用於 climatiq.ts 中的 estimate 函數
 interface EstimateData {
-  [key: string]: any; // 根據實際情況修改
+  [key: string]: string | number | boolean | object | null | undefined; // 根據實際情況修改
 }
 
 export interface EmissionResult {

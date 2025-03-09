@@ -1,6 +1,9 @@
 // src/app/services/api.ts
-import axios, { AxiosError } from "axios";
-import { API_CONFIG } from "../config/api.config";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// import axios, { AxiosError } from "axios"; // 移除 AxiosError
+import axios from "axios"; // 僅匯入 axios
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { API_CONFIG, CLIMATIQ_CONFIG } from "../config/api.config";
 import {
   ClassificationSearchParams,
   ClassificationResult,

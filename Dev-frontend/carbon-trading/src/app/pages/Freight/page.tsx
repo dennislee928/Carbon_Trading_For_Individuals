@@ -53,7 +53,11 @@ const FreightV2Client = () => {
         const unitTypesData = await climatiqApi.getUnitTypes();
         const dataVersionsData = await climatiqApi.getDataVersions();
 
-        setUnitTypes(unitTypesData.map((ut: UnitType) => ut.unit_type));
+        setUnitTypes(
+          unitTypesData
+            .map((ut: UnitType) => ut.unit_type)
+            .filter((type): type is string => type !== undefined)
+        );
 
         if (dataVersionsData) {
           setDataVersions([

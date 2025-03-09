@@ -1,9 +1,6 @@
 // src/app/services/api.ts
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import axios, { AxiosError } from "axios";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { API_CONFIG, CLIMATIQ_CONFIG } from "../config/api.config";
-//
+import { API_CONFIG } from "../config/api.config";
 import {
   ClassificationSearchParams,
   ClassificationResult,
@@ -22,26 +19,24 @@ import {
   CustomMappingData,
   CBAMData,
   AutopilotData,
+  EstimateDataInput, // Import the new union type
 } from "./types";
+
 // Utility to validate environment variables
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const validateEnv = (key: string, defaultValue?: string): string => {
   const value = process.env[key] || defaultValue;
   if (!value) {
     console.warn(`Environment variable ${key} is not set.`);
-    console.log(
-      "CLIMATIQ_API_KEY in runtime:",
-      process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY
-    );
-
-    return ""; // Return an empty string instead of throwing
+    return "";
   }
   return value;
 };
-//
 
 // Validate CLIMATIQ API Key
-const CLIMATIQ_API_KEY = "NKFZH0Y8Q15KKFS84BQZ3MXC0G";
+const CLIMATIQ_API_KEY = validateEnv(
+  "NEXT_PUBLIC_CLIMATIQ_API_KEY",
+  "NKFZH0Y8Q15KKFS84BQZ3MXC0G"
+);
 
 // Centralized error handler
 const handleError = (error: unknown): never => {
@@ -83,9 +78,6 @@ const serializeParams = (params: Record<string, unknown>): string =>
 
 // API service functions
 export const climatiqApi = {
-  /**
-   * Search classifications based on parameters
-   */
   async searchClassifications(
     params: ClassificationSearchParams
   ): Promise<ClassificationResult[]> {
@@ -97,13 +89,10 @@ export const climatiqApi = {
       return response.data.results;
     } catch (error) {
       handleError(error);
-      throw new Error("Classification search failed."); // Ensure no undefined return
+      throw new Error("Classification search failed.");
     }
   },
 
-  /**
-   * Search for emission factors
-   */
   async searchEmissionFactors(params: SearchParams): Promise<SearchResponse> {
     try {
       const queryParams = {
@@ -123,21 +112,16 @@ export const climatiqApi = {
     }
   },
 
-  /**
-   * Fetch available unit types
-   */
   async getUnitTypes(): Promise<UnitType[]> {
     try {
       const response = await api.get(API_CONFIG.ENDPOINTS.UNIT_TYPES);
       return response.data.unit_types;
     } catch (error) {
-      handleError(error); // Handles the error
-      throw new Error("Failed to fetch unit types"); // Explicitly throw an error
+      handleError(error);
+      throw new Error("Failed to fetch unit types");
     }
   },
-  /**
-   * Calculate emissions for procurement data
-   */
+
   async calculateProcurementEmissions(
     data: ProcurementData
   ): Promise<EmissionResult> {
@@ -146,13 +130,10 @@ export const climatiqApi = {
       return response.data;
     } catch (error) {
       handleError(error);
-      throw new Error("Procurement emissions calculation failed."); // Ensure no undefined return
+      throw new Error("Procurement emissions calculation failed.");
     }
   },
 
-  /**
-   * Calculate emissions for computing data
-   */
   async calculateComputingEmissions(
     data: ComputingData
   ): Promise<EmissionResult> {
@@ -161,14 +142,11 @@ export const climatiqApi = {
       return response.data;
     } catch (error) {
       handleError(error);
-      throw new Error("Computing emissions calculation failed."); // Ensure no undefined return
+      throw new Error("Computing emissions calculation failed.");
     }
   },
 
-  /**
-   * Fetch available data versions
-   */
-  async getDataVersions(): Promise<DataVersionsResponse | undefined> {
+  async getDataVersions(): Promise<DataVersionsResponse> {
     try {
       const response = await api.get(API_CONFIG.ENDPOINTS.DATA_VERSIONS);
       return response.data;
@@ -178,9 +156,6 @@ export const climatiqApi = {
     }
   },
 
-  /**
-   * Calculate emissions for freight data
-   */
   async calculateFreightEmissions(
     payload: FreightEmissionRequest
   ): Promise<FreightEmissionResponse> {
@@ -196,10 +171,7 @@ export const climatiqApi = {
     }
   },
 
-  /**
-   * Estimate emissions for generic data
-   */
-  async estimateEmissions(data: any): Promise<EmissionResult> {
+  async estimateEmissions(data: EstimateDataInput): Promise<EmissionResult> {
     try {
       const response = await api.post(API_CONFIG.ENDPOINTS.ESTIMATE, data);
       return response.data;
@@ -209,9 +181,6 @@ export const climatiqApi = {
     }
   },
 
-  /**
-   * Calculate emissions for travel data
-   */
   async calculateTravelEmissions(data: TravelData): Promise<EmissionResult> {
     try {
       const response = await api.post(API_CONFIG.ENDPOINTS.TRAVEL, data);
@@ -222,9 +191,6 @@ export const climatiqApi = {
     }
   },
 
-  /**
-   * Calculate emissions for energy data
-   */
   async calculateEnergyEmissions(data: EnergyData): Promise<EmissionResult> {
     try {
       const response = await api.post(API_CONFIG.ENDPOINTS.ENERGY, data);
@@ -235,9 +201,6 @@ export const climatiqApi = {
     }
   },
 
-  /**
-   * Create or update custom mappings
-   */
   async createCustomMapping(data: CustomMappingData): Promise<EmissionResult> {
     try {
       const response = await api.post(
@@ -251,9 +214,6 @@ export const climatiqApi = {
     }
   },
 
-  /**
-   * Calculate CBAM embedded emissions
-   */
   async calculateCBAMEmissions(data: CBAMData): Promise<EmissionResult> {
     try {
       const response = await api.post(API_CONFIG.ENDPOINTS.CBAM, data);
@@ -264,28 +224,21 @@ export const climatiqApi = {
     }
   },
 
-  /**
-   * Estimate emissions using Autopilot
-   */
   async estimateAutopilotEmissions(
     data: AutopilotData
   ): Promise<EmissionResult> {
     try {
       const response = await api.post(API_CONFIG.ENDPOINTS.AUTOPILOT, data);
-      // 檢查並處理 parameters
-      const result = { ...response.data }; // 建立一個新的物件，避免修改原始資料
+      const result = { ...response.data };
       if (result.parameters) {
-        // 遍歷 parameters 的屬性
         for (const key in result.parameters) {
           if (result.parameters.hasOwnProperty(key)) {
             const value = result.parameters[key];
-            // 檢查值的類型，並進行轉換
             if (value instanceof Date) {
-              result.parameters[key] = value.toISOString(); // 將 Date 轉換為字串
+              result.parameters[key] = value.toISOString();
             } else if (typeof value === "function") {
-              delete result.parameters[key]; // 移除函數
+              delete result.parameters[key];
             }
-            // 可以根據需要添加更多類型的檢查和轉換
           }
         }
       }
@@ -298,7 +251,7 @@ export const climatiqApi = {
 };
 
 export default climatiqApi;
-// Type Exports
+
 export type {
   ClassificationResult,
   ClassificationSearchParams,
@@ -317,4 +270,5 @@ export type {
   CustomMappingData,
   CBAMData,
   AutopilotData,
+  EstimateDataInput,
 };

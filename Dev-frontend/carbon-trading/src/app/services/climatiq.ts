@@ -1,3 +1,4 @@
+// src/app/services/climatiq.ts
 import axios from "axios";
 import { climatiqConfig } from "../config/climatiq.config";
 import {
@@ -5,9 +6,11 @@ import {
   TravelData,
   EnergyData,
   ComputingData,
+  EmissionResult,
+  EstimateDataInput, // Import the new union type
 } from "./types";
 
-// 您的 API 金鑰
+// Your API Key
 const CLIMATIQ_API_KEY = "NKFZH0Y8Q15KKFS84BQZ3MXC0G";
 
 // Centralized error handler
@@ -32,45 +35,49 @@ const api = axios.create({
 });
 
 export const climatiqService = {
-  estimate: async (data: { [key: string]: any }) => {
+  estimate: async (data: EstimateDataInput): Promise<EmissionResult> => {
     try {
       const response = await api.post("/estimate", data);
       return response.data;
     } catch (error) {
       handleError(error);
+      throw new Error("Estimation failed."); // Ensure no undefined return
     }
   },
-  freight: async (data: FreightEmissionRequest) => {
+  freight: async (data: FreightEmissionRequest): Promise<EmissionResult> => {
     try {
       const response = await api.post("/freight/intermodal", data);
       return response.data;
     } catch (error) {
       handleError(error);
+      throw new Error("Freight estimation failed.");
     }
   },
-  travel: async (data: TravelData) => {
+  travel: async (data: TravelData): Promise<EmissionResult> => {
     try {
       const response = await api.post("/travel", data);
       return response.data;
     } catch (error) {
       handleError(error);
+      throw new Error("Travel estimation failed.");
     }
   },
-  energy: async (data: EnergyData) => {
+  energy: async (data: EnergyData): Promise<EmissionResult> => {
     try {
       const response = await api.post("/energy", data);
       return response.data;
     } catch (error) {
       handleError(error);
+      throw new Error("Energy estimation failed.");
     }
   },
-  compute: async (data: ComputingData) => {
+  compute: async (data: ComputingData): Promise<EmissionResult> => {
     try {
       const response = await api.post("/computing", data);
       return response.data;
     } catch (error) {
       handleError(error);
+      throw new Error("Compute estimation failed.");
     }
   },
-  // Add other endpoints (procurement, custom-mappings, etc.) as needed
 };

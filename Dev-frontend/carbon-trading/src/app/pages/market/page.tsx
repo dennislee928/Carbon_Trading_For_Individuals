@@ -8,10 +8,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import {
   Select,
@@ -46,7 +44,7 @@ export default function MarketPage() {
   useEffect(() => {
     const fetchCarbonCredits = async () => {
       try {
-        const params: any = {};
+        const params: Record<string, string | number> = {};
         if (filters.creditType) params.creditType = filters.creditType;
         if (filters.projectType) params.projectType = filters.projectType;
         if (filters.vintageYear)

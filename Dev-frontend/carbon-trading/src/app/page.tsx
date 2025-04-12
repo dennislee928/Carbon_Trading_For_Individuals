@@ -10,13 +10,13 @@ export default function Home() {
           <h1 className="text-xl font-bold">個人碳交易平台</h1>
           <nav className="flex gap-4 sm:gap-6">
             <Link
-              href="/login"
+              href="/pages/Login"
               className="text-sm font-medium hover:underline underline-offset-4"
             >
               登入
             </Link>
             <Link
-              href="/register"
+              href="/pages/Register"
               className="text-sm font-medium hover:underline underline-offset-4"
             >
               註冊
@@ -37,12 +37,12 @@ export default function Home() {
                 </p>
               </div>
               <div className="space-y-2 md:space-x-4 md:space-y-0">
-                <Link href="/register">
+                <Link href="/Register">
                   <Button size="lg" className="mr-4">
                     立即註冊
                   </Button>
                 </Link>
-                <Link href="/dashboard">
+                <Link href="/Dashboard">
                   <Button variant="outline" size="lg">
                     進入儀表板
                   </Button>

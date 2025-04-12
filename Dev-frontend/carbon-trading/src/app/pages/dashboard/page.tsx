@@ -50,7 +50,7 @@ export default function DashboardPage() {
           setError(err.message);
           // 如果是401錯誤，重定向到登入頁面
           if (err.message.includes("401")) {
-            router.push("/login");
+            router.push("/Login");
           }
         }
       } finally {
@@ -63,7 +63,7 @@ export default function DashboardPage() {
 
   const handleLogout = async () => {
     await carbonApi.logout();
-    router.push("/login");
+    router.push("/Login");
   };
 
   if (loading) {

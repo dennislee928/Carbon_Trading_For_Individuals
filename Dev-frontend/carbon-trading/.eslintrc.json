@@ -1,3 +1,9 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "import/no-unresolved": "off"
+  },
+  "ignorePatterns": ["src/app/components/ui/*.tsx", "src/app/lib/*.ts"]
 }

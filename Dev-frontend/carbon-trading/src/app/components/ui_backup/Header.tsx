@@ -40,7 +40,7 @@ export default function Header() {
           <div className="flex items-center space-x-4">
             <ThemeToggle />
             <Link
-              href="/pages/login"
+              href="/pages/Login"
               className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
             >
               登入

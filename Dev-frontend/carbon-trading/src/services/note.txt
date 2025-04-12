@@ -1,0 +1,66 @@
+api.climatiq.io/autopilot/estimate
+
+
+##
+api.climatiq.io/cbam/embedded
+
+api.climatiq.io/custom-mappings
+api.climatiq.io/procurement
+
+{"error":"not_found","error_code":null,"message":"The URL was not found."}
+
+##
+scheme
+	https
+host
+	carbontrading.dennisleehappy.org
+filename
+	/api/climatiq/compute
+    //
+
+    https
+host
+	carbontrading.dennisleehappy.org
+filename
+	/api/climatiq/energy
+https
+host
+	carbontrading.dennisleehappy.org
+filename
+	/api/climatiq/travel
+
+{"error":"unauthorized","error_code":null,"message":"No header named 'Authorization' was found"}
+
+##
+scheme
+	https
+host
+	api.climatiq.io
+filename
+	/freight/intermodal
+    error	"forbidden"
+error_code	null
+message	"This feature is not enabled for this project"
+
+//->url not found please check the docs from climatiq
+https://api.climatiq.io/cbam
+https://api.climatiq.io/custommapping
+https://api.climatiq.io/procurement
+https://api.climatiq.io/travel
+
+
+
+//https://api.climatiq.io/freight/intermodal
+{"error":"forbidden","error_code":null,"message":"This feature is not enabled for this project"}
+
+
+//->base url
+compute
+energy
+
+curl -X GET "https://api.climatiq.io/search?query=electricity" \
+     -H "Authorization: Bearer NKFZH0Y8Q15KKFS84BQZ3MXC0G"
+
+     // admin panel
+     //unify api endpoint and baseurl
+     // combine with go-project

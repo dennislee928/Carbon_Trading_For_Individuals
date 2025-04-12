@@ -2,7 +2,9 @@ import axios from "axios";
 
 // 定義API基本設定
 const API_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_CARBON_API_URL || "http://localhost:8080",
+  BASE_URL:
+    process.env.NEXT_PUBLIC_CARBON_API_URL ||
+    "https://carboon-trade-backend.onrender.com",
   VERSION: "v1",
 };
 

@@ -28,7 +28,7 @@ import {
 //
 
 // Dev-frontend/carbon-trading/src/app/services/api.ts
-const BASE_URL = "https://api.climatiq.io";
+const BASE_URL = API_CONFIG.BASE_URL || "https://api.climatiq.io";
 // ... existing code ...
 // Utility to validate environment variables
 const validateEnv = (key: string, defaultValue?: string): string => {

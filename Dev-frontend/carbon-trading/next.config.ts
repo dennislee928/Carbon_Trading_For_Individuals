@@ -49,7 +49,8 @@ const nextConfig: NextConfig = {
   // 環境變數設置
   env: {
     NEXT_PUBLIC_CARBON_API_URL:
-      process.env.NEXT_PUBLIC_CARBON_API_URL || "http://localhost:8080",
+      process.env.NEXT_PUBLIC_CARBON_API_URL ||
+      "https://carboon-trade-backend.onrender.com",
     NEXT_PUBLIC_CLIMATIQ_API_KEY:
       process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY || "",
   },

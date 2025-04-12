@@ -8,9 +8,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/app/components/ui/card";
+} from "../../components/ui/card";
 
-import { Button } from "@/app/components/ui/button";
+import { Button } from "../../components/ui/button";
 import {
   Table,
   TableBody,
@@ -18,9 +18,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/app/components/ui/table";
-import { ThemeToggle } from "@/app/components/theme-toggle";
-import { carbonApi, User, Asset, Trade } from "@/app/services/carbonApi";
+} from "../../components/ui/table";
+import { ThemeToggle } from "../../components/theme-toggle";
+import { carbonApi, User, Asset, Trade } from "../../services/carbonApi";
 
 export default function DashboardPage() {
   const router = useRouter();

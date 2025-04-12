@@ -9,17 +9,17 @@ import {
   CardHeader,
   CardTitle,
   CardFooter,
-} from "@/app/components/ui/card";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
+} from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/app/components/ui/select";
+} from "../../components/ui/select";
 import {
   Table,
   TableBody,
@@ -27,9 +27,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/app/components/ui/table";
-import { ThemeToggle } from "@/app/components/theme-toggle";
-import { carbonApi, CarbonCredit } from "@/app/services/carbonApi";
+} from "../../components/ui/table";
+import { ThemeToggle } from "../../components/theme-toggle";
+import { carbonApi, CarbonCredit } from "../../services/carbonApi";
 
 export default function MarketPage() {
   const router = useRouter();

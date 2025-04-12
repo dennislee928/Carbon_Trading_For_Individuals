@@ -1,8 +1,8 @@
 // app/page.tsx
 /* eslint-disable */
-import EmissionFactorsSearch from "@/app/components/EmissionFactorsSearch";
-import UnitTypesDisplay from "@/app/components/UnitTypesDisplay";
-import DataVersionsDisplay from "@/app/components/DataVersionsDisplay";
+import EmissionFactorsSearch from "../../components/EmissionFactorsSearch";
+import UnitTypesDisplay from "../../components/UnitTypesDisplay";
+import DataVersionsDisplay from "../../components/DataVersionsDisplay";
 
 export default function Home() {
   return (

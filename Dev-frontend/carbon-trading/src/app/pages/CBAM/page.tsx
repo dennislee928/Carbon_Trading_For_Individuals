@@ -1,6 +1,6 @@
 "use client";
 
-import ClimatiqCalculator from "@/app/components/Calculator";
+import ClimatiqCalculator from "../../components/Calculator";
 import React, { useState, useEffect } from "react";
 import {
   Dialog,

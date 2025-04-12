@@ -9,6 +9,7 @@
         "select-name": "off"
       }
     ],
-    "typescript-config/consistent-casing": "off"
+    "typescript-config/consistent-casing": "off",
+    "axe/name-role-value": "off"
   }
 }

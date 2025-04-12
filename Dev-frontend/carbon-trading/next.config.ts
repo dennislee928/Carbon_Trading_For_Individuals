@@ -8,9 +8,6 @@ const nextConfig: NextConfig = {
   // Enable React strict mode for better development experience
   reactStrictMode: true,
 
-  // 開啟SWC壓縮，提升構建性能
-  swcMinify: true,
-
   // Configure headers (e.g., CORS)
   async headers() {
     return [
@@ -40,11 +37,6 @@ const nextConfig: NextConfig = {
 
   // 輸出優化設置
   output: "standalone",
-
-  // 靜態頁面生成設置，僅為首頁
-  generateStaticParams: async () => {
-    return [{ slug: "/" }];
-  },
 
   // 環境變數設置
   env: {

@@ -1,57 +1,57 @@
 import type { NextConfig } from "next";
 import path from "path";
 
+/**
+ * 碳交易平台 Next.js 配置
+ */
 const nextConfig: NextConfig = {
   // Enable React strict mode for better development experience
   reactStrictMode: true,
+
+  // 開啟SWC壓縮，提升構建性能
+  swcMinify: true,
 
   // Configure headers (e.g., CORS)
   async headers() {
     return [
       {
-        source: "/api/:path*",
+        source: "/(.*)",
         headers: [
-          { key: "Access-Control-Allow-Credentials", value: "true" },
-          { key: "Access-Control-Allow-Origin", value: "*" },
           {
-            key: "Access-Control-Allow-Methods",
-            value: "GET,POST,PUT,DELETE,OPTIONS",
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: "Access-Control-Allow-Headers",
-            value:
-              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization",
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
         ],
       },
     ];
   },
 
-  // Configure redirects (example included)
-  async redirects() {
-    return [
-      {
-        source: "/old-route",
-        destination: "/new-route",
-        permanent: true, // Indicates a 301 redirect
-      },
-    ];
+  // 輸出優化設置
+  output: "standalone",
+
+  // 靜態頁面生成設置，僅為首頁
+  generateStaticParams: async () => {
+    return [{ slug: "/" }];
   },
 
-  // Configure rewrites for API proxying
-  async rewrites() {
-    return [
-      {
-        source: "/api/climatiq/:path*",
-        destination: "https://api.climatiq.io/:path*",
-      },
-    ];
-  },
-
-  // Environment variables configuration
+  // 環境變數設置
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_CLIMATIQ_API_KEY: process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY,
+    NEXT_PUBLIC_CARBON_API_URL:
+      process.env.NEXT_PUBLIC_CARBON_API_URL || "http://localhost:8080",
+    NEXT_PUBLIC_CLIMATIQ_API_KEY:
+      process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY || "",
   },
 
   // Image optimization configuration
@@ -81,9 +81,6 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false,
   },
 
-  // Optimize serverless output
-  output: "standalone",
-
   // Trailing slash configuration for URLs
   trailingSlash: false, // No trailing slash
 
@@ -93,9 +90,41 @@ const nextConfig: NextConfig = {
   // Enable gzip compression for responses
   compress: true,
 
-  // Experimental features (if required)
+  // 實驗性特性
   experimental: {
-    optimizeCss: true, // Minimize CSS during builds
+    // CSS優化
+    optimizeCss: true,
+  },
+
+  // 重定向設置
+  redirects: async () => {
+    return [
+      {
+        source: "/home",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/dashboard",
+        destination: "/pages/dashboard",
+        permanent: false,
+      },
+      {
+        source: "/login",
+        destination: "/pages/login",
+        permanent: false,
+      },
+      {
+        source: "/register",
+        destination: "/pages/register",
+        permanent: false,
+      },
+      {
+        source: "/market",
+        destination: "/pages/market",
+        permanent: false,
+      },
+    ];
   },
 };
 

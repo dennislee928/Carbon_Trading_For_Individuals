@@ -106,7 +106,7 @@ export interface CreateTradeRequest {
 
 // API客戶端設置
 const api = axios.create({
-  baseURL: `${API_CONFIG.BASE_URL}`,
+  baseURL: `${API_CONFIG.BASE_URL}/${API_CONFIG.VERSION}`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -197,11 +197,8 @@ export const carbonApi = {
   // 認證功能
   async login(data: LoginRequest): Promise<LoginResponse> {
     try {
-      // 根據測試結果，登入API是可用的
-      const response = await api.post(
-        `/${API_CONFIG.VERSION}/auth/login`,
-        data
-      );
+      // 根據新的API路徑格式
+      const response = await api.post(`/auth/login`, data);
       console.log("原始登入響應:", response.data);
 
       // 處理不同格式的登入響應
@@ -257,11 +254,8 @@ export const carbonApi = {
 
   async register(data: SignupRequest): Promise<SignupResponse> {
     try {
-      // 根據測試結果，註冊API是可用的
-      const response = await api.post(
-        `/${API_CONFIG.VERSION}/auth/register`,
-        data
-      );
+      // 根據新的API路徑格式
+      const response = await api.post(`/auth/register`, data);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -271,8 +265,8 @@ export const carbonApi = {
 
   async getCurrentUser(): Promise<User> {
     try {
-      // 根據測試結果，此API目前不可用，但我們保留實現
-      const response = await api.get(`/${API_CONFIG.VERSION}/auth/me`);
+      // 根據新的API路徑格式
+      const response = await api.get(`/auth/me`);
       console.warn("getCurrentUser API 可能不可用，請檢查後端實現");
       return response.data.data || response.data;
     } catch (error) {
@@ -325,8 +319,8 @@ export const carbonApi = {
 
   async getUserProfile(userId: string): Promise<UserProfile> {
     try {
-      // 根據測試結果，getUserProfile API 返回的數據是空的
-      const response = await api.get(`/${API_CONFIG.VERSION}/users/${userId}`);
+      // 根據新的API路徑格式
+      const response = await api.get(`/users/${userId}`);
       const profileData = response.data.data || response.data;
 
       // 檢查返回的數據是否有效
@@ -347,10 +341,8 @@ export const carbonApi = {
     data: UserProfileUpdate
   ): Promise<UserProfile> {
     try {
-      const response = await api.put(
-        `/${API_CONFIG.VERSION}/users/${userId}`,
-        data
-      );
+      // 根據新的API路徑格式
+      const response = await api.put(`/users/${userId}`, data);
       return response.data.data || response.data;
     } catch (error) {
       console.warn("updateUserProfile API 可能不可用，使用模擬數據:", error);
@@ -389,7 +381,8 @@ export const carbonApi = {
 
   async getCarbonCredits(): Promise<CarbonCredit[]> {
     try {
-      const response = await api.get(`/${API_CONFIG.VERSION}/carbonCredits`);
+      // 根據新的API路徑格式
+      const response = await api.get(`/carbonCredits`);
       return response.data.data || response.data || [];
     } catch (error) {
       console.warn("getCarbonCredits API 可能不可用，使用模擬數據:", error);
@@ -399,9 +392,8 @@ export const carbonApi = {
 
   async getCarbonCreditById(creditId: string): Promise<CarbonCredit> {
     try {
-      const response = await api.get(
-        `/${API_CONFIG.VERSION}/carbonCredits/${creditId}`
-      );
+      // 根據新的API路徑格式
+      const response = await api.get(`/carbonCredits/${creditId}`);
       return response.data.data || response.data;
     } catch (error) {
       console.warn("getCarbonCreditById API 可能不可用，使用模擬數據:", error);
@@ -423,10 +415,8 @@ export const carbonApi = {
   // 交易相關功能 - 模擬
   async createTrade(data: CreateTradeRequest): Promise<Trade> {
     try {
-      const response = await api.post(
-        `/${API_CONFIG.VERSION}/trades/create`,
-        data
-      );
+      // 根據新的API路徑格式
+      const response = await api.post(`/trades/create`, data);
       return response.data.data || response.data;
     } catch (error) {
       console.warn("createTrade API 可能不可用，使用模擬數據:", error);
@@ -478,9 +468,8 @@ export const carbonApi = {
 
   async getUserTradeOrders(userId: string): Promise<Trade[]> {
     try {
-      const response = await api.get(
-        `/${API_CONFIG.VERSION}/trades/orders/${userId}`
-      );
+      // 根據新的API路徑格式
+      const response = await api.get(`/trades/orders/${userId}`);
       return response.data.data || response.data || [];
     } catch (error) {
       console.warn("getUserTradeOrders API 可能不可用，使用模擬數據:", error);
@@ -490,9 +479,8 @@ export const carbonApi = {
 
   async getUserAssets(userId: string): Promise<Asset[]> {
     try {
-      const response = await api.get(
-        `/${API_CONFIG.VERSION}/users/${userId}/assets`
-      );
+      // 根據新的API路徑格式
+      const response = await api.get(`/users/${userId}/assets`);
       return response.data.data || response.data || [];
     } catch (error) {
       console.warn("getUserAssets API 可能不可用，使用模擬數據:", error);
@@ -502,9 +490,8 @@ export const carbonApi = {
 
   async getUserTradeHistory(userId: string): Promise<Trade[]> {
     try {
-      const response = await api.get(
-        `/${API_CONFIG.VERSION}/users/${userId}/tradeHistory`
-      );
+      // 根據新的API路徑格式
+      const response = await api.get(`/users/${userId}/tradeHistory`);
       return response.data.data || response.data || [];
     } catch (error) {
       console.warn("getUserTradeHistory API 可能不可用，使用模擬數據:", error);

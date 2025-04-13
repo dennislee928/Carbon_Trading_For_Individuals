@@ -197,7 +197,7 @@ export const carbonApi = {
   // 認證功能
   async login(data: LoginRequest): Promise<LoginResponse> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，登入需要使用/api/v1/auth/login
       const response = await api.post(`/auth/login`, data);
       console.log("原始登入響應:", response.data);
 
@@ -254,7 +254,7 @@ export const carbonApi = {
 
   async register(data: SignupRequest): Promise<SignupResponse> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，註冊需要使用/api/v1/auth/register
       const response = await api.post(`/auth/register`, data);
       return response.data;
     } catch (error) {
@@ -265,9 +265,9 @@ export const carbonApi = {
 
   async getCurrentUser(): Promise<User> {
     try {
-      // 根據新的API路徑格式
-      const response = await api.get(`/auth/me`);
-      console.warn("getCurrentUser API 可能不可用，請檢查後端實現");
+      // 根據測試結果，/api/v1/users/me 是可用的，/api/v1/auth/me 可能不可用
+      const response = await api.get(`/users/me`);
+      console.warn("getCurrentUser API 使用 /users/me 端點");
       return response.data.data || response.data;
     } catch (error) {
       console.error("獲取當前用戶信息失敗:", error);
@@ -319,7 +319,7 @@ export const carbonApi = {
 
   async getUserProfile(userId: string): Promise<UserProfile> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，使用/api/v1/users/:userID
       const response = await api.get(`/users/${userId}`);
       const profileData = response.data.data || response.data;
 
@@ -341,7 +341,7 @@ export const carbonApi = {
     data: UserProfileUpdate
   ): Promise<UserProfile> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，使用/api/v1/users/:userID
       const response = await api.put(`/users/${userId}`, data);
       return response.data.data || response.data;
     } catch (error) {
@@ -381,7 +381,7 @@ export const carbonApi = {
 
   async getCarbonCredits(): Promise<CarbonCredit[]> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，使用/api/v1/carbonCredits
       const response = await api.get(`/carbonCredits`);
       return response.data.data || response.data || [];
     } catch (error) {
@@ -392,7 +392,7 @@ export const carbonApi = {
 
   async getCarbonCreditById(creditId: string): Promise<CarbonCredit> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，使用/api/v1/carbonCredits/:creditId
       const response = await api.get(`/carbonCredits/${creditId}`);
       return response.data.data || response.data;
     } catch (error) {
@@ -415,7 +415,7 @@ export const carbonApi = {
   // 交易相關功能 - 模擬
   async createTrade(data: CreateTradeRequest): Promise<Trade> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，使用/api/v1/trades/create
       const response = await api.post(`/trades/create`, data);
       return response.data.data || response.data;
     } catch (error) {
@@ -468,7 +468,7 @@ export const carbonApi = {
 
   async getUserTradeOrders(userId: string): Promise<Trade[]> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，使用/api/v1/trades/orders/:userId
       const response = await api.get(`/trades/orders/${userId}`);
       return response.data.data || response.data || [];
     } catch (error) {
@@ -479,7 +479,7 @@ export const carbonApi = {
 
   async getUserAssets(userId: string): Promise<Asset[]> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，使用/api/v1/users/:userId/assets
       const response = await api.get(`/users/${userId}/assets`);
       return response.data.data || response.data || [];
     } catch (error) {
@@ -490,7 +490,7 @@ export const carbonApi = {
 
   async getUserTradeHistory(userId: string): Promise<Trade[]> {
     try {
-      // 根據新的API路徑格式
+      // 根據測試結果，使用/api/v1/users/:userId/tradeHistory
       const response = await api.get(`/users/${userId}/tradeHistory`);
       return response.data.data || response.data || [];
     } catch (error) {

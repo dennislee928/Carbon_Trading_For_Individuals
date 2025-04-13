@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "../../components/ui/button";
@@ -29,6 +29,20 @@ export default function LoginPage() {
     form?: string;
   }>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [apiStatus, setApiStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    // 頁面載入時檢查API狀態
+    const checkApiOnLoad = async () => {
+      const healthResult = await carbonApi.checkHealth();
+      setApiStatus(
+        healthResult.message ||
+          (healthResult.status === "ok" ? "API正常運行中" : "API可能不穩定")
+      );
+    };
+
+    checkApiOnLoad();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -76,10 +90,31 @@ export default function LoginPage() {
     setIsLoading(true);
     setErrors({});
 
+    // 首先檢查API是否可用
+    const healthResult = await carbonApi.checkHealth();
+    if (healthResult.status !== "ok") {
+      setIsLoading(false);
+      setErrors({
+        form: healthResult.message || "API服務不可用，請稍後再試",
+      });
+      return;
+    }
+
     try {
+      console.log("嘗試登入:", formData);
       const response = await carbonApi.login(formData);
-      router.push("/dashboard");
+      console.log("登入響應:", response);
+
+      if (response && response.token) {
+        // 登入成功，跳轉到儀表板
+        router.push("/dashboard");
+      } else {
+        setErrors({
+          form: "登入失敗：無效的回應格式",
+        });
+      }
     } catch (err) {
+      console.error("登入錯誤:", err);
       if (err instanceof Error) {
         setErrors({
           form: err.message,
@@ -102,6 +137,17 @@ export default function LoginPage() {
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
             歡迎回來！請登入您的帳戶
           </p>
+          {apiStatus && (
+            <p
+              className={`mt-2 text-xs ${
+                apiStatus.includes("正常")
+                  ? "text-green-500"
+                  : "text-yellow-500"
+              }`}
+            >
+              {apiStatus}
+            </p>
+          )}
         </div>
 
         <Card>
@@ -174,6 +220,10 @@ export default function LoginPage() {
             </div>
           </CardFooter>
         </Card>
+
+        <div className="mt-4 text-center text-xs text-gray-500">
+          若遇到登入問題，請確認API設定是否正確，或聯繫系統管理員
+        </div>
       </div>
     </div>
   );

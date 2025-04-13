@@ -626,7 +626,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/models.ErrorResponse"
 servers:
-  - url: //localhost:8080
+  - url: https://apiv1-carbontrading.dennisleehappy.org/
 components:
   securitySchemes:
     BearerAuth:

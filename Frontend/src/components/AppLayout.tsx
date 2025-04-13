@@ -17,6 +17,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [userName, setUserName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log("當前路徑:", pathname);
+
   // 判斷是否顯示側邊欄的路徑
   const publicPaths = [
     "/Login",
@@ -26,9 +28,19 @@ export default function AppLayout({ children }: AppLayoutProps) {
     "/reset-password",
   ];
   const isPublicPath = publicPaths.some(
-    (path) => pathname === path || pathname.startsWith(path)
+    (path) =>
+      pathname === path ||
+      pathname === `/pages${path}` ||
+      pathname.startsWith(path)
   );
+
+  // 強制顯示側邊欄用於調試
+  // const showSidebar = true;
   const showSidebar = !isPublicPath && isLoggedIn;
+
+  console.log("是否為公共路徑:", isPublicPath);
+  console.log("是否顯示側邊欄:", showSidebar);
+  console.log("是否已登入:", isLoggedIn);
 
   useEffect(() => {
     // 检查是否为根路径，如果是，则跳转到登录
@@ -41,6 +53,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
     const checkAuth = async () => {
       try {
         const token = localStorage.getItem("token");
+        console.log("Token存在:", !!token);
 
         if (!token) {
           setIsLoggedIn(false);
@@ -49,12 +62,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
           }
         } else {
           const user = await carbonApi.getCurrentUser();
+          console.log("獲取到的用戶:", user);
+
           if (user?.id) {
             setIsLoggedIn(true);
             setUserName(user?.name || user?.email || "使用者");
 
             // 如果用户已登录且访问公共路径，重定向到仪表板
-            if (isPublicPath) {
+            if (isPublicPath && pathname !== "/") {
               router.push("/pages/Dashboard");
             }
           } else {
@@ -65,6 +80,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
           }
         }
       } catch (error) {
+        console.error("驗證用戶時出錯:", error);
         setIsLoggedIn(false);
         if (!isPublicPath) {
           router.push("/Login");

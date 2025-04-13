@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -31,6 +31,10 @@ type MenuItem = {
 export default function SidebarMenu() {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    console.log("SidebarMenu 加載，當前路徑:", pathname);
+  }, [pathname]);
 
   const menuItems: MenuItem[] = [
     {

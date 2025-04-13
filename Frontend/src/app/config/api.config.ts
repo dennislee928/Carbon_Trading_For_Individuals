@@ -2,9 +2,9 @@
 
 export const API_CONFIG = {
   BASE_URL:
-    process.env.NEXT_PUBLIC_API_URL ||
-    "https://carboon-trade-backend.onrender.com",
-  CARBON_BACKEND_URL: "https://carboon-trade-backend.onrender.com",
+    process.env.NEXT_PUBLIC_CARBON_API_URL ||
+    "https://apiv1-carbontrading.dennisleehappy.org",
+  CARBON_BACKEND_URL: "https://apiv1-carbontrading.dennisleehappy.org",
   API_KEY: process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY,
   ENDPOINTS: {
     CLASSIFICATIONS: "/classifications/search",
@@ -25,7 +25,8 @@ export const API_CONFIG = {
 } as const;
 //
 export const CLIMATIQ_CONFIG = {
-  BASE_URL: process.env.NEXT_PUBLIC_API_URL || "https://api.climatiq.io",
+  BASE_URL:
+    process.env.NEXT_PUBLIC_CLIMATIQ_API_URL || "https://api.climatiq.io",
   API_KEY:
     process.env.NEXT_PUBLIC_CLIMATIQ_API_KEY || "NKFZH0Y8Q15KKFS84BQZ3MXC0G",
 };

@@ -4,7 +4,7 @@
 import axios from "axios"; // 僅匯入 axios
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 //import {  CLIMATIQ_CONFIG } from "../config/api.config";
-import { API_CONFIG } from "../config/api.config";
+import { API_CONFIG, CLIMATIQ_CONFIG } from "../config/api.config";
 import {
   ClassificationSearchParams,
   ClassificationResult,
@@ -28,7 +28,7 @@ import {
 //
 
 // Dev-frontend/carbon-trading/src/app/services/api.ts
-const BASE_URL = API_CONFIG.BASE_URL || "https://api.climatiq.io";
+const BASE_URL = CLIMATIQ_CONFIG.BASE_URL || "https://api.climatiq.io";
 // ... existing code ...
 // Utility to validate environment variables
 const validateEnv = (key: string, defaultValue?: string): string => {
@@ -41,10 +41,9 @@ const validateEnv = (key: string, defaultValue?: string): string => {
 };
 
 // Validate CLIMATIQ API Key
-const CLIMATIQ_API_KEY = validateEnv(
-  "NEXT_PUBLIC_CLIMATIQ_API_KEY",
-  "NKFZH0Y8Q15KKFS84BQZ3MXC0G"
-);
+const CLIMATIQ_API_KEY =
+  CLIMATIQ_CONFIG.API_KEY ||
+  validateEnv("NEXT_PUBLIC_CLIMATIQ_API_KEY", "NKFZH0Y8Q15KKFS84BQZ3MXC0G");
 
 // Centralized error handler
 const handleError = (error: unknown): never => {

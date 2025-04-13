@@ -5,7 +5,7 @@ export const climatiqConfig = {
 };
 
 export const carbonBackendConfig = {
-  baseUrl: "https://carboon-trade-backend.onrender.com",
+  baseUrl: "https://apiv1-carbontrading.dennisleehappy.org",
   apiVersion: "v1",
 };
 // ... existing code ...

@@ -4,7 +4,7 @@ import axios from "axios";
 const API_CONFIG = {
   BASE_URL:
     process.env.NEXT_PUBLIC_CARBON_API_URL ||
-    "https://carboon-trade-backend.onrender.com",
+    "https://apiv1-carbontrading.dennisleehappy.org",
   VERSION: "v1",
 };
 

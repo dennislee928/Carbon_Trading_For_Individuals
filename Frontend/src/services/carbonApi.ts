@@ -4,7 +4,7 @@ import axios from "axios";
 const API_CONFIG = {
   BASE_URL:
     process.env.NEXT_PUBLIC_CARBON_API_URL ||
-    "https://carboon-trade-backend.onrender.com",
+    "https://apiv1-carbontrading.dennisleehappy.org",
   VERSION: "api/v1",
 };
 
@@ -180,7 +180,7 @@ export const carbonApi = {
   // API健康檢查
   async checkHealth(): Promise<{ status: string; message?: string }> {
     try {
-      // 根據測試結果，只有主要健康檢查端點可用
+      // 根據測試結果，只有不帶前綴的健康檢查端點可用
       const response = await fetch(`${API_CONFIG.BASE_URL}/health`);
       if (response.ok) {
         const data = await response.json();

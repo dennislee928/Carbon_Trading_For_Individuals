@@ -30,15 +30,24 @@ export default function LoginPage() {
   }>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [apiStatus, setApiStatus] = useState<string | null>(null);
+  const [debugInfo, setDebugInfo] = useState<string | null>(null);
 
   useEffect(() => {
     // 頁面載入時檢查API狀態
     const checkApiOnLoad = async () => {
-      const healthResult = await carbonApi.checkHealth();
-      setApiStatus(
-        healthResult.message ||
-          (healthResult.status === "ok" ? "API正常運行中" : "API可能不穩定")
-      );
+      try {
+        console.log("正在檢查API健康狀態...");
+        const healthResult = await carbonApi.checkHealth();
+        console.log("API健康檢查結果:", healthResult);
+
+        setApiStatus(
+          healthResult.message ||
+            (healthResult.status === "ok" ? "API正常運行中" : "API可能不穩定")
+        );
+      } catch (error) {
+        console.error("API健康檢查錯誤:", error);
+        setApiStatus("無法連接到API服務");
+      }
     };
 
     checkApiOnLoad();
@@ -82,43 +91,82 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("表單已提交");
+    setDebugInfo("表單已提交");
 
     if (!validateForm()) {
+      console.log("表單驗證失敗");
+      setDebugInfo("表單驗證失敗");
       return;
     }
 
     setIsLoading(true);
     setErrors({});
-
-    // 首先檢查API是否可用
-    const healthResult = await carbonApi.checkHealth();
-    if (healthResult.status !== "ok") {
-      setIsLoading(false);
-      setErrors({
-        form: healthResult.message || "API服務不可用，請稍後再試",
-      });
-      return;
-    }
+    setDebugInfo("驗證通過，準備登入...");
 
     try {
       console.log("嘗試登入:", formData);
+      setDebugInfo("正在發送登入請求...");
+
+      // 直接發送登入請求，不再預先檢查API健康狀態
       const response = await carbonApi.login(formData);
+
       console.log("登入響應:", response);
+      setDebugInfo(`登入響應: ${JSON.stringify(response)}`);
 
       if (response && response.token) {
+        // 登入成功，儲存token
+        localStorage.setItem("token", response.token);
+
+        // 嘗試解析JWT獲取用戶ID
+        try {
+          const payload = response.token.split(".")[1];
+          const decodedData = JSON.parse(atob(payload));
+          if (decodedData.user_id) {
+            localStorage.setItem("userId", decodedData.user_id);
+            console.log("已儲存用戶ID:", decodedData.user_id);
+          }
+        } catch (parseError) {
+          console.error("無法解析JWT:", parseError);
+        }
+
         // 登入成功，跳轉到儀表板
+        setDebugInfo("登入成功，準備跳轉...");
         router.push("/dashboard");
       } else {
         setErrors({
           form: "登入失敗：無效的回應格式",
         });
+        setDebugInfo("登入失敗：無效的回應格式");
       }
     } catch (err) {
       console.error("登入錯誤:", err);
+      setDebugInfo(
+        `登入錯誤: ${err instanceof Error ? err.message : String(err)}`
+      );
+
       if (err instanceof Error) {
-        setErrors({
-          form: err.message,
-        });
+        // 提供更友好的錯誤訊息
+        if (
+          err.message.includes("Network Error") ||
+          err.message.includes("CORS")
+        ) {
+          setErrors({
+            form: "無法連接到伺服器，可能是網絡問題或CORS設定錯誤",
+          });
+        } else if (err.message.includes("404")) {
+          setErrors({
+            form: "API端點不存在，請檢查後端設定",
+          });
+        } else if (err.message.includes("401")) {
+          setErrors({
+            form: "帳號或密碼不正確",
+          });
+        } else {
+          setErrors({
+            form: err.message,
+          });
+        }
       } else {
         setErrors({
           form: "登入時發生未知錯誤",
@@ -126,6 +174,26 @@ export default function LoginPage() {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // 手動測試API連接按鈕
+  const testApiConnection = async () => {
+    setDebugInfo("測試API連接...");
+    try {
+      const healthResult = await carbonApi.checkHealth();
+      setDebugInfo(`API健康檢查結果: ${JSON.stringify(healthResult)}`);
+
+      // 測試API基礎URL
+      setDebugInfo(
+        `API基礎URL: ${(carbonApi as any).API_CONFIG?.BASE_URL || "未設定"}`
+      );
+    } catch (error) {
+      setDebugInfo(
+        `API連接測試失敗: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
     }
   };
 
@@ -207,6 +275,27 @@ export default function LoginPage() {
                 {isLoading ? "登入中..." : "登入"}
               </Button>
             </form>
+
+            {/* 測試連接按鈕 */}
+            <div className="mt-4">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full"
+                onClick={testApiConnection}
+                type="button"
+              >
+                測試API連接
+              </Button>
+            </div>
+
+            {/* 調試信息 */}
+            {debugInfo && (
+              <div className="mt-4 border border-gray-200 rounded p-2 text-xs text-gray-500 bg-gray-50">
+                <p className="font-bold">調試信息:</p>
+                <p className="whitespace-pre-wrap">{debugInfo}</p>
+              </div>
+            )}
           </CardContent>
           <CardFooter className="flex justify-center">
             <div className="text-center text-sm">

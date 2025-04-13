@@ -1,10 +1,9 @@
 // src/app/layout.tsx
 import { ReactNode } from "react";
-import Header from "./components/ui_backup/Header";
-import Footer from "./components/ui_backup/Footer";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/app/components/theme-provider";
+import ClientLayout from "./ClientLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,11 +27,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-          </div>
+          <ClientLayout>{children}</ClientLayout>
         </ThemeProvider>
       </body>
     </html>

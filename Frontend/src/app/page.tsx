@@ -7,6 +7,11 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <header className="px-4 lg:px-6 h-16 flex items-center">
         <div className="container mx-auto flex items-center justify-between">
+          <div
+            className="cf-turnstile"
+            data-sitekey="0x4AAAAAABK93bNlJDg5SXDg"
+            data-callback="javascriptCallback"
+          ></div>
           <h1 className="text-xl font-bold">個人碳交易平台</h1>
           <nav className="flex gap-4 sm:gap-6">
             <Link

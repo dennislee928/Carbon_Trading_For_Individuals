@@ -36,6 +36,7 @@ export default function SidebarMenu() {
     console.log("SidebarMenu 加載，當前路徑:", pathname);
   }, [pathname]);
 
+  // 僅顯示指定的頁面
   const menuItems: MenuItem[] = [
     {
       name: "儀表板",

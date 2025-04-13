@@ -16,6 +16,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [useLocalMode, setUseLocalMode] = useState(false);
 
   console.log("當前路徑:", pathname);
 
@@ -34,13 +35,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
       pathname.startsWith(path)
   );
 
-  // 強制顯示側邊欄用於調試
-  // const showSidebar = true;
-  const showSidebar = !isPublicPath && isLoggedIn;
+  // 判斷是否顯示側邊欄
+  // 修改為：在非公共路徑上都顯示側邊欄，不管是否登入
+  const showSidebar = !isPublicPath;
 
   console.log("是否為公共路徑:", isPublicPath);
   console.log("是否顯示側邊欄:", showSidebar);
   console.log("是否已登入:", isLoggedIn);
+  console.log("是否使用本地模式:", useLocalMode);
 
   useEffect(() => {
     // 检查是否为根路径，如果是，则跳转到登录
@@ -57,32 +59,38 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
         if (!token) {
           setIsLoggedIn(false);
-          if (!isPublicPath) {
+          if (!isPublicPath && !useLocalMode) {
             router.push("/Login");
           }
         } else {
-          const user = await carbonApi.getCurrentUser();
-          console.log("獲取到的用戶:", user);
+          try {
+            const user = await carbonApi.getCurrentUser();
+            console.log("獲取到的用戶:", user);
 
-          if (user?.id) {
-            setIsLoggedIn(true);
-            setUserName(user?.name || user?.email || "使用者");
+            if (user?.id) {
+              setIsLoggedIn(true);
+              setUserName(user?.name || user?.email || "使用者");
 
-            // 如果用户已登录且访问公共路径，重定向到仪表板
-            if (isPublicPath && pathname !== "/") {
-              router.push("/pages/Dashboard");
+              // 如果用户已登录且访问公共路径，重定向到仪表板
+              if (isPublicPath && pathname !== "/") {
+                router.push("/pages/Dashboard");
+              }
+            } else {
+              setIsLoggedIn(false);
+              console.warn("無法獲取用戶資料，使用本地模式");
+              setUseLocalMode(true);
             }
-          } else {
+          } catch (error) {
+            console.error("獲取用戶資料失敗:", error);
             setIsLoggedIn(false);
-            if (!isPublicPath) {
-              router.push("/Login");
-            }
+            console.warn("API 連接失敗，使用本地模式");
+            setUseLocalMode(true);
           }
         }
       } catch (error) {
         console.error("驗證用戶時出錯:", error);
         setIsLoggedIn(false);
-        if (!isPublicPath) {
+        if (!isPublicPath && !useLocalMode) {
           router.push("/Login");
         }
       } finally {
@@ -91,12 +99,16 @@ export default function AppLayout({ children }: AppLayoutProps) {
     };
 
     checkAuth();
-  }, [pathname, router, isPublicPath]);
+  }, [pathname, router, isPublicPath, useLocalMode]);
 
   const handleLogout = async () => {
     await carbonApi.logout();
     setIsLoggedIn(false);
     router.push("/Login");
+  };
+
+  const handleEnableLocalMode = () => {
+    setUseLocalMode(true);
   };
 
   if (isLoading) {
@@ -116,11 +128,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
           showSidebar ? "ml-64" : "ml-0"
         }`}
       >
-        {isLoggedIn && !isPublicPath && (
+        {(isLoggedIn || useLocalMode) && !isPublicPath && (
           <header className="border-b dark:border-gray-800">
             <div className="container flex items-center justify-end h-16 mx-auto px-4">
               <div className="flex items-center gap-4">
                 {userName && <span className="text-sm">您好，{userName}</span>}
+                {useLocalMode && (
+                  <span className="text-xs text-yellow-500">本地模式</span>
+                )}
                 <Button variant="outline" onClick={handleLogout}>
                   登出
                 </Button>
@@ -131,9 +146,23 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
         <main
           className={`container py-8 mx-auto px-4 ${
-            isLoggedIn && !isPublicPath ? "pt-8" : "pt-0"
+            (isLoggedIn || useLocalMode) && !isPublicPath ? "pt-8" : "pt-0"
           }`}
         >
+          {!isLoggedIn && !isPublicPath && !useLocalMode && (
+            <div className="mb-4 p-4 bg-yellow-100 rounded-md">
+              <p className="text-yellow-800">
+                您尚未登入或API連接失敗。您可以{" "}
+                <Button variant="link" onClick={() => router.push("/Login")}>
+                  登入
+                </Button>{" "}
+                或{" "}
+                <Button variant="link" onClick={handleEnableLocalMode}>
+                  使用本地模式
+                </Button>
+              </p>
+            </div>
+          )}
           {children}
         </main>
       </div>

@@ -1,46 +1,46 @@
 # 碳交易平台 API 端點與前端實現對應關係
 
-本文檔記錄了 `https://apiv1-carbontrading.dennisleehappy.org/` 和 `https://api.climatiq.io` 這兩個 API 的端點在前端的實現情況。
+本文檔記錄了 `https://carboon-trade-backend.onrender.com` 和 `https://api.climatiq.io` 這兩個 API 的端點在前端的實現情況。
 
-## 1. 自訂碳交易 API (`https://apiv1-carbontrading.dennisleehappy.org/`)
+## 1. 自訂碳交易 API (`https://carboon-trade-backend.onrender.com`)
 
 ### 1.1 用戶認證和管理
 
-| API 端點         | 前端實現   | 檔案路徑                                    | 相關函數                                                 |
-| ---------------- | ---------- | ------------------------------------------- | -------------------------------------------------------- |
-| `/auth/login`    | 登入頁面   | `Frontend/src/app/pages/Login/page.tsx`     | `handleSubmit()` 調用 `carbonApi.login()`                |
-| `/auth/register` | 註冊頁面   | `Frontend/src/app/pages/Register/page.tsx`  | `handleSubmit()` 調用 `carbonApi.register()`             |
-| `/auth/me`       | 儀表板頁面 | `Frontend/src/app/pages/Dashboard/page.tsx` | `fetchDashboardData()` 調用 `carbonApi.getCurrentUser()` |
-| 登出功能         | 儀表板頁面 | `Frontend/src/app/pages/Dashboard/page.tsx` | `handleLogout()` 調用 `carbonApi.logout()`               |
+| API 端點                | 前端實現   | 檔案路徑                                    | 相關函數                                                 |
+| ----------------------- | ---------- | ------------------------------------------- | -------------------------------------------------------- |
+| `/api/v1/auth/login`    | 登入頁面   | `Frontend/src/app/pages/Login/page.tsx`     | `handleSubmit()` 調用 `carbonApi.login()`                |
+| `/api/v1/auth/register` | 註冊頁面   | `Frontend/src/app/pages/Register/page.tsx`  | `handleSubmit()` 調用 `carbonApi.register()`             |
+| `/api/v1/auth/me`       | 儀表板頁面 | `Frontend/src/app/pages/Dashboard/page.tsx` | `fetchDashboardData()` 調用 `carbonApi.getCurrentUser()` |
+| 登出功能                | 儀表板頁面 | `Frontend/src/app/pages/Dashboard/page.tsx` | `handleLogout()` 調用 `carbonApi.logout()`               |
 
 ### 1.2 碳信用額相關
 
-| API 端點              | 前端實現 | 檔案路徑                                 | 相關函數                                                   |
-| --------------------- | -------- | ---------------------------------------- | ---------------------------------------------------------- |
-| `/carbonCredits`      | 市場頁面 | `Frontend/src/app/pages/Market/page.tsx` | `fetchCarbonCredits()` 調用 `carbonApi.getCarbonCredits()` |
-| `/carbonCredits/{id}` | 交易頁面 | `Frontend/src/app/pages/Trades/page.tsx` | `fetchCreditData()` 調用 `carbonApi.getCarbonCreditById()` |
+| API 端點                     | 前端實現 | 檔案路徑                                 | 相關函數                                                   |
+| ---------------------------- | -------- | ---------------------------------------- | ---------------------------------------------------------- |
+| `/api/v1/carbonCredits`      | 市場頁面 | `Frontend/src/app/pages/Market/page.tsx` | `fetchCarbonCredits()` 調用 `carbonApi.getCarbonCredits()` |
+| `/api/v1/carbonCredits/{id}` | 交易頁面 | `Frontend/src/app/pages/Trades/page.tsx` | `fetchCreditData()` 調用 `carbonApi.getCarbonCreditById()` |
 
 ### 1.3 交易相關
 
-| API 端點                  | 前端實現   | 檔案路徑                                    | 相關函數                                                     |
-| ------------------------- | ---------- | ------------------------------------------- | ------------------------------------------------------------ |
-| `/trades/create`          | 交易頁面   | `Frontend/src/app/pages/Trades/page.tsx`    | `handleSubmit()` 調用 `carbonApi.createTrade()`              |
-| `/trades/orders/{userId}` | 儀表板頁面 | `Frontend/src/app/pages/Dashboard/page.tsx` | `fetchDashboardData()` 調用 `carbonApi.getUserTradeOrders()` |
+| API 端點                         | 前端實現   | 檔案路徑                                    | 相關函數                                                     |
+| -------------------------------- | ---------- | ------------------------------------------- | ------------------------------------------------------------ |
+| `/api/v1/trades/create`          | 交易頁面   | `Frontend/src/app/pages/Trades/page.tsx`    | `handleSubmit()` 調用 `carbonApi.createTrade()`              |
+| `/api/v1/trades/orders/{userId}` | 儀表板頁面 | `Frontend/src/app/pages/Dashboard/page.tsx` | `fetchDashboardData()` 調用 `carbonApi.getUserTradeOrders()` |
 
 ### 1.4 用戶資產相關
 
-| API 端點                       | 前端實現     | 檔案路徑                                        | 相關函數                                                     |
-| ------------------------------ | ------------ | ----------------------------------------------- | ------------------------------------------------------------ |
-| `/users/{userId}/assets`       | 儀表板頁面   | `Frontend/src/app/pages/Dashboard/page.tsx`     | `fetchDashboardData()` 調用 `carbonApi.getUserAssets()`      |
-| `/users/{userId}/profile`      | 用戶資料頁面 | `Frontend/src/app/pages/profile/page.tsx`       | `handleSubmit()` 調用 `carbonApi.updateUserProfile()`        |
-| `/users/{userId}/tradeHistory` | 交易歷史頁面 | `Frontend/src/app/pages/trade-history/page.tsx` | `fetchTradeHistory()` 調用 `carbonApi.getUserTradeHistory()` |
+| API 端點                              | 前端實現     | 檔案路徑                                        | 相關函數                                                     |
+| ------------------------------------- | ------------ | ----------------------------------------------- | ------------------------------------------------------------ |
+| `/api/v1/users/{userId}/assets`       | 儀表板頁面   | `Frontend/src/app/pages/Dashboard/page.tsx`     | `fetchDashboardData()` 調用 `carbonApi.getUserAssets()`      |
+| `/api/v1/users/{userId}`              | 用戶資料頁面 | `Frontend/src/app/pages/profile/page.tsx`       | `handleSubmit()` 調用 `carbonApi.updateUserProfile()`        |
+| `/api/v1/users/{userId}/tradeHistory` | 交易歷史頁面 | `Frontend/src/app/pages/trade-history/page.tsx` | `fetchTradeHistory()` 調用 `carbonApi.getUserTradeHistory()` |
 
 ### 1.5 管理員功能
 
-| API 端點            | 前端實現   | 檔案路徑                                | 相關函數                                                                                               |
-| ------------------- | ---------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `/admin/users`      | 管理員頁面 | `Frontend/src/app/pages/admin/page.tsx` | `fetchAdminData()` 調用 `carbonApi.getAllUsers()`                                                      |
-| `/admin/users/{id}` | 管理員頁面 | `Frontend/src/app/pages/admin/page.tsx` | `handleUpdateUser()` 調用 `carbonApi.updateUser()`; `handleDeleteUser()` 調用 `carbonApi.deleteUser()` |
+| API 端點                   | 前端實現   | 檔案路徑                                | 相關函數                                                                                               |
+| -------------------------- | ---------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `/api/v1/admin/users`      | 管理員頁面 | `Frontend/src/app/pages/admin/page.tsx` | `fetchAdminData()` 調用 `carbonApi.getAllUsers()`                                                      |
+| `/api/v1/admin/users/{id}` | 管理員頁面 | `Frontend/src/app/pages/admin/page.tsx` | `handleUpdateUser()` 調用 `carbonApi.updateUser()`; `handleDeleteUser()` 調用 `carbonApi.deleteUser()` |
 
 ## 2. Climatiq API (`https://api.climatiq.io`)
 
@@ -70,10 +70,11 @@
   const API_CONFIG = {
     BASE_URL:
       process.env.NEXT_PUBLIC_CARBON_API_URL ||
-      "https://apiv1-carbontrading.dennisleehappy.org",
-    VERSION: "v1",
+      "https://carboon-trade-backend.onrender.com",
+    VERSION: "api/v1",
   };
   ```
+- **完整 API URL**: `https://carboon-trade-backend.onrender.com`
 - **攔截器設置**: 為每個請求添加 `Authorization` 頭部以進行用戶身份驗證
 - **錯誤處理**: 集中式錯誤處理邏輯，提供有意義的錯誤信息
 
@@ -117,7 +118,7 @@
 
 1. 正確設定 base URL 分離:
 
-   - 碳交易 API: `https://apiv1-carbontrading.dennisleehappy.org`
+   - 碳交易 API: `https://carboon-trade-backend.onrender.com`
    - Climatiq API: `https://api.climatiq.io`
 
 2. API 密鑰安全管理:
@@ -169,3 +170,25 @@
   - 編輯用戶資訊(姓名和角色)
   - 刪除用戶功能(帶確認對話框)
   - 權限控制，僅允許管理員訪問
+
+## 7. API 端點測試與修復
+
+通過測試腳本驗證，我們對 API 配置進行了以下修改：
+
+1. **原始問題**: API 端點返回 404 錯誤
+2. **解決方案**:
+
+   - 更新 API 基本路徑為 `https://carboon-trade-backend.onrender.com`
+   - 將所有 API 請求路徑更新為使用 `/api/v1/` 前綴格式
+   - 更新個人資料 API 端點從 `/users/{userId}/profile` 到 `/users/{userId}`
+
+3. **測試結果**:
+
+   - 健康檢查 ✅ `/health`
+   - 用戶註冊 ✅ `/api/v1/auth/register`
+   - 用戶登入 ✅ `/api/v1/auth/login`
+   - 獲取用戶資料 ✅ `/api/v1/users/{userId}`
+
+4. **注意事項**:
+   - `/api/v1/auth/me` 端點在測試中返回 "Route not found"，但前端仍保留此 API 呼叫，等待後端實現
+   - 一些其他端點可能需要後端進一步實現

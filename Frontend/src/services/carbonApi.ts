@@ -4,8 +4,8 @@ import axios from "axios";
 const API_CONFIG = {
   BASE_URL:
     process.env.NEXT_PUBLIC_CARBON_API_URL ||
-    "https://apiv1-carbontrading.dennisleehappy.org",
-  VERSION: "v1",
+    "https://carboon-trade-backend.onrender.com",
+  VERSION: "api/v1",
 };
 
 // 類型定義
@@ -100,7 +100,7 @@ export interface CreateTradeRequest {
 
 // API客戶端設置
 const api = axios.create({
-  baseURL: API_CONFIG.BASE_URL,
+  baseURL: `${API_CONFIG.BASE_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -132,7 +132,7 @@ export const carbonApi = {
   // 認證功能
   async login(data: LoginRequest): Promise<LoginResponse> {
     try {
-      const response = await api.post("/auth/login", data);
+      const response = await api.post("/api/v1/auth/login", data);
       // 保存token到localStorage
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
@@ -146,7 +146,7 @@ export const carbonApi = {
 
   async register(data: SignupRequest): Promise<SignupResponse> {
     try {
-      const response = await api.post("/auth/register", data);
+      const response = await api.post("/api/v1/auth/register", data);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -156,7 +156,7 @@ export const carbonApi = {
 
   async getCurrentUser(): Promise<User> {
     try {
-      const response = await api.get("/auth/me");
+      const response = await api.get("/api/v1/auth/me");
       return response.data.data;
     } catch (error) {
       handleError(error);
@@ -175,7 +175,7 @@ export const carbonApi = {
     projectType?: string;
   }): Promise<CarbonCredit[]> {
     try {
-      const response = await api.get("/carbonCredits", { params });
+      const response = await api.get("/api/v1/carbonCredits", { params });
       return response.data;
     } catch (error) {
       handleError(error);
@@ -185,7 +185,7 @@ export const carbonApi = {
 
   async getCarbonCreditById(creditId: string): Promise<CarbonCredit> {
     try {
-      const response = await api.get(`/carbonCredits/${creditId}`);
+      const response = await api.get(`/api/v1/carbonCredits/${creditId}`);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -196,7 +196,7 @@ export const carbonApi = {
   // 交易相關功能
   async createTrade(data: CreateTradeRequest): Promise<Trade> {
     try {
-      const response = await api.post("/trades/create", data);
+      const response = await api.post("/api/v1/trades/create", data);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -206,7 +206,7 @@ export const carbonApi = {
 
   async getUserTradeOrders(userId: string): Promise<Trade[]> {
     try {
-      const response = await api.get(`/trades/orders/${userId}`);
+      const response = await api.get(`/api/v1/trades/orders/${userId}`);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -217,7 +217,7 @@ export const carbonApi = {
   // 用戶相關功能
   async getUserAssets(userId: string): Promise<Asset[]> {
     try {
-      const response = await api.get(`/users/${userId}/assets`);
+      const response = await api.get(`/api/v1/users/${userId}/assets`);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -227,8 +227,8 @@ export const carbonApi = {
 
   async getUserProfile(userId: string): Promise<UserProfile> {
     try {
-      const response = await api.get(`/users/${userId}/profile`);
-      return response.data;
+      const response = await api.get(`/api/v1/users/${userId}`);
+      return response.data.data || response.data;
     } catch (error) {
       handleError(error);
       throw new Error("獲取用戶資料失敗");
@@ -240,8 +240,8 @@ export const carbonApi = {
     data: UserProfileUpdate
   ): Promise<UserProfile> {
     try {
-      const response = await api.put(`/users/${userId}/profile`, data);
-      return response.data;
+      const response = await api.put(`/api/v1/users/${userId}`, data);
+      return response.data.data || response.data;
     } catch (error) {
       handleError(error);
       throw new Error("更新用戶資料失敗");
@@ -250,7 +250,7 @@ export const carbonApi = {
 
   async getUserTradeHistory(userId: string): Promise<Trade[]> {
     try {
-      const response = await api.get(`/users/${userId}/tradeHistory`);
+      const response = await api.get(`/api/v1/users/${userId}/tradeHistory`);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -261,7 +261,7 @@ export const carbonApi = {
   // 管理員相關功能
   async getAllUsers(): Promise<User[]> {
     try {
-      const response = await api.get("/admin/users");
+      const response = await api.get("/api/v1/admin/users");
       return response.data;
     } catch (error) {
       handleError(error);
@@ -271,7 +271,7 @@ export const carbonApi = {
 
   async createUser(user: User): Promise<User> {
     try {
-      const response = await api.post("/admin/users", user);
+      const response = await api.post("/api/v1/admin/users", user);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -281,7 +281,7 @@ export const carbonApi = {
 
   async getUserById(id: string): Promise<User> {
     try {
-      const response = await api.get(`/admin/users/${id}`);
+      const response = await api.get(`/api/v1/admin/users/${id}`);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -294,7 +294,7 @@ export const carbonApi = {
     data: { name?: string; role?: string }
   ): Promise<User> {
     try {
-      const response = await api.put(`/admin/users/${id}`, data);
+      const response = await api.put(`/api/v1/admin/users/${id}`, data);
       return response.data;
     } catch (error) {
       handleError(error);
@@ -304,7 +304,7 @@ export const carbonApi = {
 
   async deleteUser(id: string): Promise<void> {
     try {
-      await api.delete(`/admin/users/${id}`);
+      await api.delete(`/api/v1/admin/users/${id}`);
     } catch (error) {
       handleError(error);
       throw new Error("刪除用戶失敗");

@@ -11,7 +11,7 @@ export default function Hero() {
           planet.
         </p>
         <a
-          href="/pages/Freight"
+          href="/freight"
           className="inline-block bg-white text-green-600 font-semibold px-6 py-3 rounded-md shadow hover:bg-gray-100 transition"
         >
           Get Started

@@ -22,17 +22,14 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
   // 判斷是否顯示側邊欄的路徑
   const publicPaths = [
-    "/Login",
-    "/Signup",
+    "/login",
+    "/register",
     "/",
     "/forgot-password",
     "/reset-password",
   ];
   const isPublicPath = publicPaths.some(
-    (path) =>
-      pathname === path ||
-      pathname === `/pages${path}` ||
-      pathname.startsWith(path)
+    (path) => pathname === path || pathname.startsWith(path)
   );
 
   // 判斷是否顯示側邊欄
@@ -47,7 +44,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   useEffect(() => {
     // 检查是否为根路径，如果是，则跳转到登录
     if (pathname === "/") {
-      router.push("/Login");
+      router.push("/login");
       return;
     }
 
@@ -60,7 +57,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         if (!token) {
           setIsLoggedIn(false);
           if (!isPublicPath && !useLocalMode) {
-            router.push("/Login");
+            router.push("/login");
           }
         } else {
           try {
@@ -91,7 +88,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         console.error("驗證用戶時出錯:", error);
         setIsLoggedIn(false);
         if (!isPublicPath && !useLocalMode) {
-          router.push("/Login");
+          router.push("/login");
         }
       } finally {
         setIsLoading(false);
@@ -104,7 +101,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const handleLogout = async () => {
     await carbonApi.logout();
     setIsLoggedIn(false);
-    router.push("/Login");
+    router.push("/login");
   };
 
   const handleEnableLocalMode = () => {
@@ -153,7 +150,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             <div className="mb-4 p-4 bg-yellow-100 rounded-md">
               <p className="text-yellow-800">
                 您尚未登入或API連接失敗。您可以{" "}
-                <Button variant="link" onClick={() => router.push("/Login")}>
+                <Button variant="link" onClick={() => router.push("/login")}>
                   登入
                 </Button>{" "}
                 或{" "}

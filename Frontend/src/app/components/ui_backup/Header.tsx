@@ -38,9 +38,9 @@ export default function Header() {
 
   const navItems = [
     { name: "首頁", href: "/" },
-    { name: "交易市場", href: "/pages/Market" },
-    { name: "我的資產", href: "/pages/Dashboard" },
-    { name: "交易歷史", href: "/pages/trade-history" },
+    { name: "交易市場", href: "/market" },
+    { name: "我的資產", href: "/dashboard" },
+    { name: "交易歷史", href: "/trade-history" },
   ];
 
   return (
@@ -90,7 +90,7 @@ export default function Header() {
                   </div>
                 ) : (
                   <Link
-                    href="/pages/Login"
+                    href="/login"
                     className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
                   >
                     登入

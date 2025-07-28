@@ -261,7 +261,7 @@ export default function Home() {
                             <div className="text-sm">汽車旅行</div>
                           </div>
                         </Button>
-                        <Link href="/pages/Energy">
+                        <Link href="/energy">
                           <Button variant="outline" className="h-20 w-full">
                             <div className="text-center">
                               <div className="text-lg">⚡</div>
@@ -269,7 +269,7 @@ export default function Home() {
                             </div>
                           </Button>
                         </Link>
-                        <Link href="/pages/Travel">
+                        <Link href="/travel">
                           <Button variant="outline" className="h-20 w-full">
                             <div className="text-center">
                               <div className="text-lg">✈️</div>
@@ -277,7 +277,7 @@ export default function Home() {
                             </div>
                           </Button>
                         </Link>
-                        <Link href="/pages/Computing">
+                        <Link href="/computing">
                           <Button variant="outline" className="h-20 w-full">
                             <div className="text-center">
                               <div className="text-lg">💻</div>
@@ -326,12 +326,12 @@ export default function Home() {
 
                   {/* 行動按鈕 */}
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/pages/Market">
+                    <Link href="/market">
                       <Button size="lg" className="w-full sm:w-auto">
                         前往交易市場
                       </Button>
                     </Link>
-                    <Link href="/pages/Dashboard">
+                    <Link href="/dashboard">
                       <Button
                         variant="outline"
                         size="lg"
@@ -344,12 +344,12 @@ export default function Home() {
                 </div>
               ) : (
                 <div className="space-y-2 md:space-x-4 md:space-y-0">
-                  <Link href="/pages/Register">
+                  <Link href="/register">
                     <Button size="lg" className="mr-4">
                       立即註冊
                     </Button>
                   </Link>
-                  <Link href="/pages/Login">
+                  <Link href="/login">
                     <Button variant="outline" size="lg">
                       登入帳戶
                     </Button>

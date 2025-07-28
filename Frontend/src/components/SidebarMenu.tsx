@@ -40,63 +40,63 @@ export default function SidebarMenu() {
   const menuItems: MenuItem[] = [
     {
       name: "儀表板",
-      path: "/pages/Dashboard",
+      path: "/dashboard",
       icon: <Home className="h-5 w-5" />,
     },
     {
       name: "個人資料",
-      path: "/pages/profile",
+      path: "/profile",
       icon: <User className="h-5 w-5" />,
     },
     {
       name: "交易市場",
-      path: "/pages/Market",
+      path: "/market",
       icon: <ShoppingCart className="h-5 w-5" />,
     },
     {
       name: "交易歷史",
-      path: "/pages/trade-history",
+      path: "/trade-history",
       icon: <History className="h-5 w-5" />,
     },
     {
       name: "我的交易",
-      path: "/pages/Trades",
+      path: "/trades",
       icon: <BarChart2 className="h-5 w-5" />,
     },
     {
       name: "自動駕駛",
-      path: "/pages/Autopilot",
+      path: "/autopilot",
       icon: <Wind className="h-5 w-5" />,
     },
     {
       name: "CBAM",
-      path: "/pages/CBAM",
+      path: "/cbam",
       icon: <Activity className="h-5 w-5" />,
     },
     {
       name: "電腦計算",
-      path: "/pages/Computing",
+      path: "/computing",
       icon: <Server className="h-5 w-5" />,
     },
     {
       name: "自定義映射",
-      path: "/pages/CustomMappings",
+      path: "/custom-mappings",
       icon: <Map className="h-5 w-5" />,
     },
-    { name: "能源", path: "/pages/Energy", icon: <Zap className="h-5 w-5" /> },
+    { name: "能源", path: "/energy", icon: <Zap className="h-5 w-5" /> },
     {
       name: "貨運",
-      path: "/pages/Freight",
+      path: "/freight",
       icon: <Truck className="h-5 w-5" />,
     },
     {
       name: "採購",
-      path: "/pages/Procurement",
+      path: "/procurement",
       icon: <Briefcase className="h-5 w-5" />,
     },
     {
       name: "旅行",
-      path: "/pages/Travel",
+      path: "/travel",
       icon: <Globe className="h-5 w-5" />,
     },
   ];

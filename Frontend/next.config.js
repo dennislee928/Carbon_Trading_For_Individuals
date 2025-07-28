@@ -19,35 +19,7 @@ const nextConfig = {
     ],
   },
   // 不使用 setupDevBindings，因為可能缺少依賴
-  async redirects() {
-    return [
-      {
-        source: "/login",
-        destination: "/pages/Login",
-        permanent: false,
-      },
-      {
-        source: "/register",
-        destination: "/pages/Register",
-        permanent: false,
-      },
-      {
-        source: "/dashboard",
-        destination: "/pages/Dashboard",
-        permanent: false,
-      },
-      {
-        source: "/market",
-        destination: "/pages/Market",
-        permanent: false,
-      },
-      {
-        source: "/trades",
-        destination: "/pages/Trades",
-        permanent: false,
-      },
-    ];
-  },
+  // 移除重定向，因為我們已經重構了路由結構
 };
 
 module.exports = nextConfig;

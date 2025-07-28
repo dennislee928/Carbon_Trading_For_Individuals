@@ -73,7 +73,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
               // 如果用户已登录且访问公共路径，重定向到仪表板
               if (isPublicPath && pathname !== "/") {
-                router.push("/pages/Dashboard");
+                router.push("/dashboard");
               }
             } else {
               setIsLoggedIn(false);

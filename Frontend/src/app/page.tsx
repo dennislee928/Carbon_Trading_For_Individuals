@@ -441,22 +441,22 @@ export default function Home() {
         </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link
-            href="/about"
+            href="/dashboard"
             className="text-xs hover:underline underline-offset-4"
           >
-            關於我們
+            儀表板
           </Link>
           <Link
-            href="/privacy"
+            href="/market"
             className="text-xs hover:underline underline-offset-4"
           >
-            隱私政策
+            交易市場
           </Link>
           <Link
-            href="/terms"
+            href="/trade-history"
             className="text-xs hover:underline underline-offset-4"
           >
-            使用條款
+            交易歷史
           </Link>
         </nav>
       </footer>

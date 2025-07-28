@@ -31,7 +31,7 @@ export default function ComputingPage() {
                 計算碳排放
               </h1>
               <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                計算您的計算活動產生的碳排放
+                計算您的計算活動產生的碳排放.
               </p>
             </div>
             <Link href="/dashboard">

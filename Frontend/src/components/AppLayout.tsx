@@ -29,10 +29,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
     "/reset-password",
   ];
   const isPublicPath = publicPaths.some(
-    (path) =>
-      pathname === path ||
-      pathname.toLowerCase() === path.toLowerCase() ||
-      pathname.startsWith(path)
+    (path) => pathname === path || pathname.toLowerCase() === path.toLowerCase()
   );
 
   // 判斷是否顯示側邊欄

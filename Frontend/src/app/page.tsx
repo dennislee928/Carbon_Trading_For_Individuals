@@ -26,14 +26,21 @@ export default function Home() {
       try {
         const token = localStorage.getItem("token");
         if (token) {
-          const userData = await carbonApi.getCurrentUser();
-          setUser(userData);
-          // 載入用戶的排放數據
-          await loadUserEmissions();
+          try {
+            const userData = await carbonApi.getCurrentUser();
+            setUser(userData);
+            // 載入用戶的排放數據
+            await loadUserEmissions();
+          } catch (authError) {
+            console.warn("認證檢查失敗，清除token:", authError);
+            localStorage.removeItem("token");
+            setUser(null);
+          }
         }
       } catch (error) {
         console.error("Auth check failed:", error);
         localStorage.removeItem("token");
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -95,6 +102,8 @@ export default function Home() {
       setTotalEmissions((prev) => prev + result.co2e);
     } catch (error) {
       console.error("Quick calculation failed:", error);
+      // 顯示用戶友好的錯誤信息
+      alert("碳足跡計算暫時無法使用，請稍後再試");
     }
   };
 
@@ -108,6 +117,77 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      {/* 添加Header */}
+      <header className="bg-green-600 dark:bg-green-800 text-white shadow-md">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex-shrink-0">
+              <Link href="/" className="text-2xl font-bold">
+                碳交易平台
+              </Link>
+            </div>
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-4">
+                <Link
+                  href="/"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
+                >
+                  首頁
+                </Link>
+                <Link
+                  href="/pages/Market"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
+                >
+                  交易市場
+                </Link>
+                <Link
+                  href="/pages/Dashboard"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
+                >
+                  我的資產
+                </Link>
+                <Link
+                  href="/pages/trade-history"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
+                >
+                  交易歷史
+                </Link>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              {!loading && (
+                <>
+                  {user ? (
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm">
+                        您好，{user.name || user.email}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          carbonApi.logout();
+                          window.location.href = "/";
+                        }}
+                        className="text-white border-white hover:bg-green-700"
+                      >
+                        登出
+                      </Button>
+                    </div>
+                  ) : (
+                    <Link
+                      href="/pages/Login"
+                      className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
+                    >
+                      登入
+                    </Link>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </nav>
+      </header>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="container px-4 md:px-6 mx-auto">
@@ -354,6 +434,32 @@ export default function Home() {
           </div>
         </section>
       </main>
+      {/* 添加Footer */}
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          © 2023 個人碳交易平台. 保留所有權利.
+        </p>
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <Link
+            href="/about"
+            className="text-xs hover:underline underline-offset-4"
+          >
+            關於我們
+          </Link>
+          <Link
+            href="/privacy"
+            className="text-xs hover:underline underline-offset-4"
+          >
+            隱私政策
+          </Link>
+          <Link
+            href="/terms"
+            className="text-xs hover:underline underline-offset-4"
+          >
+            使用條款
+          </Link>
+        </nav>
+      </footer>
     </div>
   );
 }

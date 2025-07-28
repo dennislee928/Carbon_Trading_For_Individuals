@@ -67,19 +67,57 @@ export default function TradeHistoryPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="border-b dark:border-gray-800">
-        <div className="container flex items-center justify-between h-16 mx-auto">
-          <h1 className="text-xl font-bold">交易歷史</h1>
-          <div className="flex items-center gap-4">
-            {user && (
-              <span className="text-sm">您好，{user.name || user.email}</span>
-            )}
-            <ThemeToggle />
-            <Button variant="outline" onClick={handleBackToDashboard}>
-              返回儀表板
-            </Button>
+      <header className="bg-green-600 dark:bg-green-800 text-white shadow-md">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex-shrink-0">
+              <Link href="/" className="text-2xl font-bold">
+                碳交易平台
+              </Link>
+            </div>
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-4">
+                <Link
+                  href="/"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
+                >
+                  首頁
+                </Link>
+                <Link
+                  href="/pages/Market"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
+                >
+                  交易市場
+                </Link>
+                <Link
+                  href="/pages/Dashboard"
+                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
+                >
+                  我的資產
+                </Link>
+                <Link
+                  href="/pages/trade-history"
+                  className="px-3 py-2 rounded-md text-sm font-medium bg-green-700 dark:bg-green-900 transition"
+                >
+                  交易歷史
+                </Link>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              {user && (
+                <span className="text-sm">您好，{user.name || user.email}</span>
+              )}
+              <ThemeToggle />
+              <Button
+                variant="outline"
+                onClick={handleBackToDashboard}
+                className="text-white border-white hover:bg-green-700"
+              >
+                返回儀表板
+              </Button>
+            </div>
           </div>
-        </div>
+        </nav>
       </header>
 
       <main className="container py-8 mx-auto">

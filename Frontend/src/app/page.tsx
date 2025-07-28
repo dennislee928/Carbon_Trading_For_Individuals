@@ -326,11 +326,7 @@ export default function Home() {
 
                   {/* 行動按鈕 */}
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/market">
-                      <Button size="lg" className="w-full sm:w-auto">
-                        前往交易市場
-                      </Button>
-                    </Link>
+                    <Link href="/market"></Link>
                     <Link href="/dashboard">
                       <Button
                         variant="outline"

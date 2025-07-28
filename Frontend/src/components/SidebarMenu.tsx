@@ -48,11 +48,7 @@ export default function SidebarMenu() {
       path: "/profile",
       icon: <User className="h-5 w-5" />,
     },
-    {
-      name: "交易市場",
-      path: "/market",
-      icon: <ShoppingCart className="h-5 w-5" />,
-    },
+
     {
       name: "交易歷史",
       path: "/trade-history",

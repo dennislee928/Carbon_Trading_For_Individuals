@@ -190,9 +190,6 @@ export default function TradeHistoryPage() {
             ) : (
               <div className="text-center py-8">
                 <p className="text-muted-foreground">您目前沒有任何交易記錄</p>
-                <Button className="mt-4" onClick={() => router.push("/market")}>
-                  前往交易市場
-                </Button>
               </div>
             )}
           </CardContent>

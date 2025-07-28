@@ -132,7 +132,7 @@ export default function LoginPage() {
 
         // 登入成功，跳轉到儀表板
         setDebugInfo("登入成功，準備跳轉...");
-        router.push("/pages/Dashboard");
+        router.push("/dashboard");
       } else {
         setErrors({
           form: "登入失敗：無效的回應格式",
@@ -301,7 +301,7 @@ export default function LoginPage() {
             <div className="text-center text-sm">
               還沒有帳戶？{" "}
               <Link
-                href="/pages/Register"
+                href="/register"
                 className="text-blue-500 hover:text-blue-700 hover:underline"
               >
                 立即註冊

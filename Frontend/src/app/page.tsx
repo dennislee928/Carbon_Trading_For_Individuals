@@ -135,19 +135,19 @@ export default function Home() {
                   首頁
                 </Link>
                 <Link
-                  href="/pages/Market"
+                  href="/market"
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
                 >
                   交易市場
                 </Link>
                 <Link
-                  href="/pages/Dashboard"
+                  href="/dashboard"
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
                 >
                   我的資產
                 </Link>
                 <Link
-                  href="/pages/trade-history"
+                  href="/trade-history"
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
                 >
                   交易歷史
@@ -176,7 +176,7 @@ export default function Home() {
                     </div>
                   ) : (
                     <Link
-                      href="/pages/Login"
+                      href="/login"
                       className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
                     >
                       登入

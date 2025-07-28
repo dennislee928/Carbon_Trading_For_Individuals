@@ -97,7 +97,7 @@ export default function RegisterPage() {
       setSuccess(true);
       // 註冊成功後延遲導航至登入頁面
       setTimeout(() => {
-        router.push("/pages/Login");
+        router.push("/login");
       }, 3000);
     } catch (err) {
       if (err instanceof Error) {
@@ -206,7 +206,7 @@ export default function RegisterPage() {
             <div className="text-center text-sm">
               已有帳戶？{" "}
               <Link
-                href="/pages/Login"
+                href="/login"
                 className="text-blue-500 hover:text-blue-700 hover:underline"
               >
                 立即登入

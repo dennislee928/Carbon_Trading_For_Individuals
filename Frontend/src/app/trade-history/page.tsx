@@ -42,7 +42,7 @@ export default function TradeHistoryPage() {
         if (err instanceof Error) {
           setError(err.message);
           if (err.message.includes("401")) {
-            router.push("/pages/Login");
+            router.push("/login");
           }
         }
       } finally {
@@ -54,7 +54,7 @@ export default function TradeHistoryPage() {
   }, [router]);
 
   const handleBackToDashboard = () => {
-    router.push("/pages/Dashboard");
+    router.push("/dashboard");
   };
 
   if (loading) {
@@ -84,19 +84,19 @@ export default function TradeHistoryPage() {
                   首頁
                 </Link>
                 <Link
-                  href="/pages/Market"
+                  href="/market"
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
                 >
                   交易市場
                 </Link>
                 <Link
-                  href="/pages/Dashboard"
+                  href="/dashboard"
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
                 >
                   我的資產
                 </Link>
                 <Link
-                  href="/pages/trade-history"
+                  href="/trade-history"
                   className="px-3 py-2 rounded-md text-sm font-medium bg-green-700 dark:bg-green-900 transition"
                 >
                   交易歷史
@@ -189,10 +189,7 @@ export default function TradeHistoryPage() {
             ) : (
               <div className="text-center py-8">
                 <p className="text-muted-foreground">您目前沒有任何交易記錄</p>
-                <Button
-                  className="mt-4"
-                  onClick={() => router.push("/pages/Market")}
-                >
+                <Button className="mt-4" onClick={() => router.push("/market")}>
                   前往交易市場
                 </Button>
               </div>

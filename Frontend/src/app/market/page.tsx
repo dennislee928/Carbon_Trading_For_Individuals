@@ -66,7 +66,7 @@ export default function MarketPage() {
 
   // 處理購買按鈕點擊
   const handleBuy = (creditId: string) => {
-    router.push(`/pages/Trades?creditId=${creditId}&type=buy`);
+    router.push(`/trades?creditId=${creditId}&type=buy`);
   };
 
   const handleFilterChange = (name: string, value: string) => {
@@ -78,7 +78,7 @@ export default function MarketPage() {
 
   // 處理返回儀表板
   const handleBackToDashboard = () => {
-    router.push("/pages/Dashboard");
+    router.push("/dashboard");
   };
 
   if (loading) {
@@ -108,19 +108,19 @@ export default function MarketPage() {
                   首頁
                 </Link>
                 <Link
-                  href="/pages/Market"
+                  href="/market"
                   className="px-3 py-2 rounded-md text-sm font-medium bg-green-700 dark:bg-green-900 transition"
                 >
                   交易市場
                 </Link>
                 <Link
-                  href="/pages/Dashboard"
+                  href="/dashboard"
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
                 >
                   我的資產
                 </Link>
                 <Link
-                  href="/pages/trade-history"
+                  href="/trade-history"
                   className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
                 >
                   交易歷史

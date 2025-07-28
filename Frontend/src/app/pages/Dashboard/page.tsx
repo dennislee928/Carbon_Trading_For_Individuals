@@ -134,7 +134,7 @@ export default function DashboardPage() {
                 <p className="text-muted-foreground">您目前沒有任何碳資產</p>
               )}
               <div className="mt-6">
-                <Button onClick={() => router.push("/market")}>
+                <Button onClick={() => router.push("/pages/Market")}>
                   前往交易市場
                 </Button>
               </div>
@@ -196,7 +196,7 @@ export default function DashboardPage() {
                 <p className="text-muted-foreground">您目前沒有任何交易訂單</p>
               )}
               <div className="mt-6">
-                <Button onClick={() => router.push("/trades/new")}>
+                <Button onClick={() => router.push("/pages/Trades")}>
                   建立新交易
                 </Button>
               </div>

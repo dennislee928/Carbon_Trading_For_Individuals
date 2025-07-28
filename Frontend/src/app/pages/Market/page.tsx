@@ -66,7 +66,7 @@ export default function MarketPage() {
 
   // 處理購買按鈕點擊
   const handleBuy = (creditId: string) => {
-    router.push(`/trades/new?creditId=${creditId}&type=buy`);
+    router.push(`/pages/Trades?creditId=${creditId}&type=buy`);
   };
 
   const handleFilterChange = (name: string, value: string) => {
@@ -78,7 +78,7 @@ export default function MarketPage() {
 
   // 處理返回儀表板
   const handleBackToDashboard = () => {
-    router.push("/dashboard");
+    router.push("/pages/Dashboard");
   };
 
   if (loading) {

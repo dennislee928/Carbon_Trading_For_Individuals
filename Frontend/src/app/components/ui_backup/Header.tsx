@@ -1,13 +1,46 @@
 // src/app/components/Header.tsx
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ThemeToggle } from "../theme-toggle";
+import { carbonApi, User } from "../../services/carbonApi";
+import { Button } from "../ui/button";
 
 export default function Header() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const userData = await carbonApi.getCurrentUser();
+          setUser(userData);
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        localStorage.removeItem("token");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
+
+  const handleLogout = async () => {
+    await carbonApi.logout();
+    setUser(null);
+    window.location.href = "/";
+  };
+
   const navItems = [
     { name: "首頁", href: "/" },
-    { name: "交易市場", href: "/pages/market" },
-    { name: "我的資產", href: "/pages/dashboard" },
-    { name: "交易歷史", href: "/pages/dashboard" },
+    { name: "交易市場", href: "/pages/Market" },
+    { name: "我的資產", href: "/pages/Dashboard" },
+    { name: "交易歷史", href: "/pages/trade-history" },
   ];
 
   return (
@@ -39,12 +72,32 @@ export default function Header() {
           {/* User actions and theme toggle */}
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            <Link
-              href="/pages/Login"
-              className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
-            >
-              登入
-            </Link>
+            {!loading && (
+              <>
+                {user ? (
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm">
+                      您好，{user.name || user.email}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleLogout}
+                      className="text-white border-white hover:bg-green-700"
+                    >
+                      登出
+                    </Button>
+                  </div>
+                ) : (
+                  <Link
+                    href="/pages/Login"
+                    className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
+                  >
+                    登入
+                  </Link>
+                )}
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button (Placeholder) */}

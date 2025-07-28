@@ -379,10 +379,12 @@ export const carbonApi = {
     }));
   },
 
-  async getCarbonCredits(): Promise<CarbonCredit[]> {
+  async getCarbonCredits(
+    params?: Record<string, string | number>
+  ): Promise<CarbonCredit[]> {
     try {
       // 根據測試結果，使用/api/v1/carbonCredits
-      const response = await api.get(`/carbonCredits`);
+      const response = await api.get(`/carbonCredits`, { params });
       return response.data.data || response.data || [];
     } catch (error) {
       console.warn("getCarbonCredits API 可能不可用，使用模擬數據:", error);

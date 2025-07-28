@@ -1,7 +1,17 @@
+"use client";
 import { TravelData } from "@/app/services/types";
 import { useState } from "react";
 import { EmissionResult } from "../../services/types";
-//
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Label } from "../../../components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
 
 // 定義 TravelForm 的 props
 interface TravelFormProps {
@@ -28,26 +38,68 @@ export default function TravelForm({ onResult }: TravelFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="number"
-        value={formData.distance_km}
-        onChange={(e) =>
-          setFormData({ ...formData, distance_km: Number(e.target.value) })
-        }
-        placeholder="Distance (km)"
-      />
-      <select
-        value={formData.travel_mode}
-        onChange={(e) =>
-          setFormData({ ...formData, travel_mode: e.target.value })
-        }
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="distance">距離 (公里)</Label>
+        <Input
+          id="distance"
+          type="number"
+          value={formData.distance_km}
+          onChange={(e) =>
+            setFormData({ ...formData, distance_km: Number(e.target.value) })
+          }
+          placeholder="請輸入旅行距離"
+          className="w-full"
+          min="0"
+          step="0.1"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="travel_mode">交通方式</Label>
+        <Select
+          value={formData.travel_mode}
+          onValueChange={(value) =>
+            setFormData({ ...formData, travel_mode: value })
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="選擇交通方式" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="car">汽車</SelectItem>
+            <SelectItem value="train">火車</SelectItem>
+            <SelectItem value="plane">飛機</SelectItem>
+            <SelectItem value="bus">公車</SelectItem>
+            <SelectItem value="motorcycle">機車</SelectItem>
+            <SelectItem value="bicycle">自行車</SelectItem>
+            <SelectItem value="walking">步行</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="passengers">乘客數量</Label>
+        <Input
+          id="passengers"
+          type="number"
+          value={formData.passengers}
+          onChange={(e) =>
+            setFormData({ ...formData, passengers: Number(e.target.value) })
+          }
+          placeholder="請輸入乘客數量"
+          className="w-full"
+          min="1"
+          step="1"
+        />
+      </div>
+
+      <Button
+        type="submit"
+        className="w-full bg-green-600 hover:bg-green-700 text-white"
       >
-        <option value="car">Car</option>
-        <option value="train">Train</option>
-        <option value="plane">Plane</option>
-      </select>
-      <button type="submit">Calculate</button>
+        計算碳排放
+      </Button>
     </form>
   );
 }

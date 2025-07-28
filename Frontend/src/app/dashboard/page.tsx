@@ -95,7 +95,6 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <header className="bg-green-600 dark:bg-green-800 text-white shadow-md">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <EmissionFactorsSearch />
           <div className="flex items-center justify-between h-16">
             <div className="flex-shrink-0">
               <Link href="/" className="text-2xl font-bold">

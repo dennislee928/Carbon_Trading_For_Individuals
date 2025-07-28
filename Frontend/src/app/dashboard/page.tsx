@@ -110,12 +110,7 @@ export default function DashboardPage() {
                 >
                   首頁
                 </Link>
-                <Link
-                  href="/market"
-                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
-                >
-                  交易市場
-                </Link>
+
                 <Link
                   href="/dashboard"
                   className="px-3 py-2 rounded-md text-sm font-medium bg-green-700 dark:bg-green-900 transition"

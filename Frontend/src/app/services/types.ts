@@ -170,8 +170,8 @@ export interface ProcurementData {
 
 // Computing Data
 export interface ComputingData {
-  cpu_hours: number;
-  provider: "aws" | "gcp" | "azure";
+  duration_hours: number;
+  compute_type: string;
   region: string;
 }
 

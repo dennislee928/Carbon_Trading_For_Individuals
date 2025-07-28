@@ -13,7 +13,7 @@ export const API_CONFIG = {
     DATA_VERSIONS: "/data-versions",
     ESTIMATE: "/estimate",
     FREIGHT_CALCULATE: "/freight/intermodal",
-    COMPUTING: "/computing",
+    // COMPUTING: "/computing", // 移除不存在的端點
     TRAVEL: "/travel",
     PROCUREMENT: "/procurement",
     ENERGY: "/energy",

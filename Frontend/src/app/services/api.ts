@@ -141,17 +141,8 @@ export const climatiqApi = {
     }
   },
 
-  async calculateComputingEmissions(
-    data: ComputingData
-  ): Promise<EmissionResult> {
-    try {
-      const response = await api.post(API_CONFIG.ENDPOINTS.COMPUTING, data);
-      return response.data;
-    } catch (error) {
-      handleError(error);
-      throw new Error("Computing emissions calculation failed.");
-    }
-  },
+  // 移除 calculateComputingEmissions 函數，因為 Climatiq API 沒有 /computing 端點
+  // 計算碳排放應該使用 estimateEmissions 函數
 
   async getDataVersions(): Promise<DataVersionsResponse> {
     try {

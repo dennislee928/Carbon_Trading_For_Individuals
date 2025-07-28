@@ -25,19 +25,45 @@ export default function ComputingForm({ onResult }: ComputingFormProps) {
     compute_type: "cloud",
     region: "us-east-1",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
+
     try {
-      const result = await climatiqApi.calculateComputingEmissions(formData);
+      // 使用 estimate 端點來計算計算碳排放
+      // 根據 Climatiq API 文檔，使用適當的 emission factor
+      const estimateData = {
+        emission_factor: {
+          activity_id: "electricity-supply_grid-mix",
+          data_version: "^3",
+        },
+        parameters: {
+          energy: formData.duration_hours * 0.5, // 假設每小時消耗 0.5 kWh
+          energy_unit: "kWh",
+        },
+      };
+
+      const result = await climatiqApi.estimateEmissions(estimateData as any);
       onResult(result);
     } catch (error) {
       console.error("Error calculating computing emissions:", error);
+      setError("計算碳排放時發生錯誤，請稍後再試");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+          {error}
+        </div>
+      )}
       <div className="space-y-2">
         <Label htmlFor="duration">計算時長 (小時)</Label>
         <Input
@@ -94,9 +120,10 @@ export default function ComputingForm({ onResult }: ComputingFormProps) {
 
       <Button
         type="submit"
+        disabled={loading}
         className="w-full bg-green-600 hover:bg-green-700 text-white"
       >
-        計算碳排放
+        {loading ? "計算中..." : "計算碳排放"}
       </Button>
     </form>
   );

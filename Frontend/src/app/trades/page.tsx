@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "../../components/ui/select";
 import { Alert, AlertDescription } from "../../components/ui/alert";
-import { ThemeToggle } from "../../components/theme-toggle";
+import { ThemeToggle } from "@/app/components/theme-toggle";
 import {
   carbonApi,
   CarbonCredit,

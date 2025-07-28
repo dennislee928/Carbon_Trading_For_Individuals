@@ -1,6 +1,6 @@
 // src/app/services/climatiq.ts
 import axios from "axios";
-import { climatiqConfig } from "../config/climatiq.config";
+import { climatiqConfig } from "../config/climatiq.config.js";
 import {
   FreightEmissionRequest,
   TravelData,

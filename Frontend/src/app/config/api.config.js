@@ -1,4 +1,4 @@
-// src/app/config/api.config.ts
+// src/app/config/api.config.js
 
 export const API_CONFIG = {
   BASE_URL:
@@ -22,8 +22,8 @@ export const API_CONFIG = {
     AUTOPILOT: "/autopilot/estimate",
   },
   VERSION: "v1",
-} as const;
-//
+};
+
 export const CLIMATIQ_CONFIG = {
   BASE_URL:
     process.env.NEXT_PUBLIC_CLIMATIQ_API_URL || "https://api.climatiq.io",

@@ -26,7 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { ThemeToggle } from "../../components/theme-toggle";
+import { ThemeToggle } from "@/app/components/theme-toggle";
 import { carbonApi, CarbonCredit } from "../../services/carbonApi";
 
 export default function MarketPage() {

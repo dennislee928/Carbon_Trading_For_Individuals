@@ -4,7 +4,7 @@
 import axios from "axios"; // 僅匯入 axios
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 //import {  CLIMATIQ_CONFIG } from "../config/api.config";
-import { API_CONFIG, CLIMATIQ_CONFIG } from "../config/api.config";
+import { API_CONFIG, CLIMATIQ_CONFIG } from "../config/api.config.js";
 import {
   ClassificationSearchParams,
   ClassificationResult,

@@ -22,7 +22,20 @@ export class EmailJSService {
    */
   static async sendOTPEmail(params: EmailTemplateParams): Promise<void> {
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-      throw new Error("EmailJS 配置不完整，請檢查環境變數");
+      // 如果 EmailJS 未配置，使用模擬模式
+      console.log("EmailJS 未配置，使用模擬模式");
+      console.log("模擬發送 OTP 到:", params.to_email);
+      console.log("OTP 驗證碼:", params.otp_code);
+
+      // 模擬網絡延遲
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // 將 OTP 存儲到 localStorage 用於測試
+      localStorage.setItem("mock_otp", params.otp_code);
+      localStorage.setItem("mock_email", params.to_email);
+      localStorage.setItem("mock_otp_timestamp", Date.now().toString());
+
+      return;
     }
 
     try {

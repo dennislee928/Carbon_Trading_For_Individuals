@@ -42,10 +42,6 @@ export default function ForgotPasswordPage() {
     setError(null);
 
     try {
-      if (!isEmailJSConfigured) {
-        throw new Error("EmailJS 未配置，請聯繫管理員");
-      }
-
       const otpCode = EmailJSService.generateOTP();
 
       // 儲存 OTP 到 localStorage (在實際應用中應該儲存到後端)
@@ -62,7 +58,11 @@ export default function ForgotPasswordPage() {
       await EmailJSService.sendOTPEmail(templateParams);
 
       setOtpSent(true);
-      setSuccess("OTP 已發送到您的電子郵件地址");
+      if (!isEmailJSConfigured) {
+        setSuccess("OTP 已生成（模擬模式）。請檢查瀏覽器控制台查看 OTP 驗證碼");
+      } else {
+        setSuccess("OTP 已發送到您的電子郵件地址");
+      }
       setStep("otp");
     } catch (err) {
       console.error("發送 OTP 失敗:", err);

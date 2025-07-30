@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "../../components/ui/button";
@@ -28,9 +28,17 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [otpSent, setOtpSent] = useState(false);
+  const [configStatus, setConfigStatus] = useState<any>(null);
 
   // 檢查 EmailJS 配置
   const isEmailJSConfigured = EmailJSService.validateConfig();
+
+  useEffect(() => {
+    // 獲取配置狀態用於調試
+    const status = EmailJSService.getConfigStatus();
+    setConfigStatus(status);
+    console.log("EmailJS 配置狀態:", status);
+  }, []);
 
   const sendOTP = async () => {
     if (!email) {
@@ -38,15 +46,28 @@ export default function ForgotPasswordPage() {
       return;
     }
 
+    // 驗證郵箱格式
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("請輸入有效的電子郵件地址");
+      return;
+    }
+
     setLoading(true);
     setError(null);
+    setSuccess(null);
 
     try {
+      console.log("開始發送 OTP 到:", email);
+      console.log("EmailJS 配置狀態:", configStatus);
+
       const otpCode = EmailJSService.generateOTP();
+      console.log("生成的 OTP:", otpCode);
 
       // 儲存 OTP 到 localStorage (在實際應用中應該儲存到後端)
       localStorage.setItem("resetOTP", otpCode);
       localStorage.setItem("resetEmail", email);
+      localStorage.setItem("resetOTPTimestamp", Date.now().toString());
 
       // 使用 EmailJS 發送 OTP
       const templateParams = {
@@ -55,18 +76,39 @@ export default function ForgotPasswordPage() {
         user_name: email.split("@")[0], // 簡單的用戶名提取
       };
 
+      console.log("EmailJS 模板參數:", templateParams);
+
       await EmailJSService.sendOTPEmail(templateParams);
 
       setOtpSent(true);
       if (!isEmailJSConfigured) {
-        setSuccess("OTP 已生成（模擬模式）。請檢查瀏覽器控制台查看 OTP 驗證碼");
+        const mockMessage = `OTP 已生成（模擬模式）。請檢查瀏覽器控制台查看 OTP 驗證碼：${otpCode}`;
+        setSuccess(mockMessage);
+        console.log("模擬模式 - OTP:", otpCode);
       } else {
         setSuccess("OTP 已發送到您的電子郵件地址");
+        console.log("EmailJS 模式 - OTP 已發送");
       }
       setStep("otp");
-    } catch (err) {
+    } catch (err: any) {
       console.error("發送 OTP 失敗:", err);
-      setError("發送 OTP 失敗，請檢查您的電子郵件地址或稍後再試");
+
+      // 提供更詳細的錯誤信息
+      let errorMessage = "發送 OTP 失敗，請檢查您的電子郵件地址或稍後再試";
+
+      if (err.message) {
+        if (err.message.includes("recipients address is empty")) {
+          errorMessage =
+            "EmailJS 模板設定錯誤：收件人地址為空。請檢查 EmailJS 模板設定";
+        } else if (err.message.includes("insufficient authentication")) {
+          errorMessage =
+            "Gmail API 認證問題。請重新設定 EmailJS 服務或使用其他郵件服務商";
+        } else {
+          errorMessage = `發送失敗：${err.message}`;
+        }
+      }
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -84,9 +126,22 @@ export default function ForgotPasswordPage() {
     try {
       const storedOTP = localStorage.getItem("resetOTP");
       const storedEmail = localStorage.getItem("resetEmail");
+      const storedTimestamp = localStorage.getItem("resetOTPTimestamp");
 
       if (!storedOTP || !storedEmail) {
         setError("OTP 已過期，請重新發送");
+        setStep("email");
+        return;
+      }
+
+      // 檢查 OTP 是否過期（10分鐘）
+      const now = Date.now();
+      const otpTime = parseInt(storedTimestamp || "0");
+      const timeDiff = now - otpTime;
+      const tenMinutes = 10 * 60 * 1000; // 10分鐘
+
+      if (timeDiff > tenMinutes) {
+        setError("OTP 已過期（超過10分鐘），請重新發送");
         setStep("email");
         return;
       }
@@ -136,6 +191,7 @@ export default function ForgotPasswordPage() {
       // 清除儲存的 OTP 和郵箱
       localStorage.removeItem("resetOTP");
       localStorage.removeItem("resetEmail");
+      localStorage.removeItem("resetOTPTimestamp");
 
       setSuccess("密碼重置成功！請使用新密碼登入");
 
@@ -192,10 +248,30 @@ export default function ForgotPasswordPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {!isEmailJSConfigured && (
-              <Alert variant="destructive">
+            {/* EmailJS 配置狀態顯示 */}
+            {configStatus && (
+              <Alert
+                variant={configStatus.isComplete ? "default" : "destructive"}
+              >
                 <AlertDescription>
-                  EmailJS 未配置，無法發送郵件。請聯繫管理員配置 EmailJS 服務。
+                  EmailJS 配置狀態：
+                  {configStatus.isComplete ? (
+                    "✅ 已完整配置，可以發送郵件"
+                  ) : (
+                    <div>
+                      ❌ 配置不完整：
+                      {!configStatus.serviceId && " Service ID 未設定"}
+                      {!configStatus.templateId && " Template ID 未設定"}
+                      {!configStatus.publicKey && " Public Key 未設定"}
+                      <br />
+                      <Link
+                        href="/emailjs-debug"
+                        className="text-blue-600 dark:text-blue-400 underline"
+                      >
+                        前往調試頁面
+                      </Link>
+                    </div>
+                  )}
                 </AlertDescription>
               </Alert>
             )}
@@ -225,11 +301,7 @@ export default function ForgotPasswordPage() {
                     required
                   />
                 </div>
-                <Button
-                  onClick={sendOTP}
-                  disabled={loading || !isEmailJSConfigured}
-                  className="w-full"
-                >
+                <Button onClick={sendOTP} disabled={loading} className="w-full">
                   {loading ? "發送中..." : "發送 OTP"}
                 </Button>
               </div>

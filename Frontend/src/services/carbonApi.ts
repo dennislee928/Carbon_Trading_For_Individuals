@@ -5,7 +5,7 @@ const API_CONFIG = {
   BASE_URL:
     process.env.NEXT_PUBLIC_CARBON_API_URL ||
     "https://apiv1-carbontrading.dennisleehappy.org",
-  //  VERSION: "api/v1",
+  //VERSION: "api/v1",
 };
 
 // 類型定義
@@ -106,7 +106,7 @@ export interface CreateTradeRequest {
 
 // API客戶端設置
 const api = axios.create({
-  baseURL: `${API_CONFIG.BASE_URL}/${API_CONFIG.VERSION}`,
+  baseURL: `${API_CONFIG.BASE_URL}/`,
   headers: {
     "Content-Type": "application/json",
   },

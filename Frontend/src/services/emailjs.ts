@@ -14,6 +14,7 @@ export interface EmailTemplateParams {
   to_email: string;
   user_name: string;
   otp_code: string;
+  to_name?: string; // 添加可選的收件人姓名
 }
 
 export class EmailJSService {
@@ -21,6 +22,11 @@ export class EmailJSService {
    * 發送 OTP 驗證碼郵件
    */
   static async sendOTPEmail(params: EmailTemplateParams): Promise<void> {
+    // 驗證輸入參數
+    if (!params.to_email || !params.to_email.trim()) {
+      throw new Error("收件人電子郵件地址不能為空");
+    }
+
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
       // 如果 EmailJS 未配置，使用模擬模式
       console.log("EmailJS 未配置，使用模擬模式");
@@ -39,15 +45,49 @@ export class EmailJSService {
     }
 
     try {
-      await emailjs.send(
+      console.log("EmailJS 配置檢查:", {
+        serviceId: EMAILJS_SERVICE_ID,
+        templateId: EMAILJS_TEMPLATE_ID,
+        publicKey: EMAILJS_PUBLIC_KEY ? "已設定" : "未設定",
+        recipient: params.to_email,
+      });
+
+      // 準備模板參數，確保包含收件人地址
+      const templateParams = {
+        to_email: params.to_email,
+        to_name: params.to_name || params.user_name,
+        user_name: params.user_name,
+        otp_code: params.otp_code,
+        // 某些 EmailJS 模板可能需要這些額外參數
+        reply_to: params.to_email,
+        from_name: "碳交易平台",
+        message: `您的 OTP 驗證碼是: ${params.otp_code}`,
+      };
+
+      console.log("發送 EmailJS 郵件，參數:", templateParams);
+
+      const response = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        params,
+        templateParams,
         EMAILJS_PUBLIC_KEY
       );
-    } catch (error) {
+
+      console.log("EmailJS 發送成功:", response);
+    } catch (error: any) {
       console.error("EmailJS 發送失敗:", error);
-      throw new Error("發送郵件失敗，請稍後再試");
+
+      // 提供更詳細的錯誤信息
+      if (error.status === 422) {
+        if (error.text?.includes("recipients address is empty")) {
+          throw new Error(
+            "EmailJS 模板設定錯誤：收件人地址為空。請檢查 EmailJS 模板設定"
+          );
+        }
+        throw new Error(`EmailJS 請求錯誤 (${error.status}): ${error.text}`);
+      }
+
+      throw new Error(`發送郵件失敗：${error.message || "請稍後再試"}`);
     }
   }
 
@@ -75,6 +115,28 @@ export class EmailJSService {
       publicKey: !!EMAILJS_PUBLIC_KEY,
       isComplete: this.validateConfig(),
     };
+  }
+
+  /**
+   * 測試 EmailJS 連接
+   */
+  static async testConnection(): Promise<boolean> {
+    if (!this.validateConfig()) {
+      return false;
+    }
+
+    try {
+      // 發送測試郵件
+      await this.sendOTPEmail({
+        to_email: "test@example.com",
+        user_name: "Test User",
+        otp_code: "123456",
+      });
+      return true;
+    } catch (error) {
+      console.error("EmailJS 連接測試失敗:", error);
+      return false;
+    }
   }
 }
 

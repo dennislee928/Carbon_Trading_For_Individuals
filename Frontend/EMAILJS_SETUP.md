@@ -77,6 +77,27 @@
 </html>
 ```
 
+### 重要：模板設定
+
+在 EmailJS 模板設定中，您需要：
+
+1. **設定收件人欄位**：
+
+   - 在模板的 "To Email" 欄位中，輸入：`{{to_email}}`
+   - 或者使用：`{{to_name}} <{{to_email}}>`
+
+2. **設定發件人欄位**：
+
+   - 在 "From Name" 欄位中，輸入：`{{from_name}}` 或直接輸入 "碳交易平台"
+   - 在 "From Email" 欄位中，使用您的 Email Service 地址
+
+3. **模板變數**：
+   確保模板包含以下變數：
+   - `{{to_email}}` - 收件人郵箱地址
+   - `{{user_name}}` - 用戶名稱
+   - `{{otp_code}}` - OTP 驗證碼
+   - `{{from_name}}` - 發件人名稱（可選）
+
 ## 4. 獲取配置信息
 
 1. **Service ID**: 在 "Email Services" 頁面找到您的服務 ID
@@ -93,12 +114,79 @@ NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
 ```
 
-## 6. 測試
+## 6. 測試和調試
+
+### 使用調試頁面
 
 1. 啟動開發服務器：`npm run dev`
-2. 訪問 `/forgot-password` 頁面
-3. 輸入測試郵箱地址
-4. 檢查是否收到包含 OTP 的郵件
+2. 訪問 `/emailjs-debug` 頁面
+3. 檢查配置狀態
+4. 發送測試郵件
+
+### 手動測試
+
+1. 訪問 `/forgot-password` 頁面
+2. 輸入測試郵箱地址
+3. 檢查是否收到包含 OTP 的郵件
+
+## 7. 故障排除
+
+### 常見錯誤和解決方案
+
+#### "The recipients address is empty" 錯誤
+
+**原因**：EmailJS 模板中沒有正確設定收件人欄位
+
+**解決方案**：
+
+1. 在 EmailJS 控制台中編輯您的模板
+2. 在 "To Email" 欄位中輸入：`{{to_email}}`
+3. 確保模板變數名稱正確
+
+#### "Template not found" 錯誤
+
+**原因**：Template ID 不正確或模板不存在
+
+**解決方案**：
+
+1. 檢查 Template ID 是否正確
+2. 確認模板是否已發布
+3. 重新複製 Template ID
+
+#### "Service not found" 錯誤
+
+**原因**：Service ID 不正確或服務未設定
+
+**解決方案**：
+
+1. 檢查 Service ID 是否正確
+2. 確認 Email Service 是否已連接
+3. 重新設定 Email Service
+
+### 調試步驟
+
+1. **檢查環境變數**：
+
+   ```bash
+   # 在瀏覽器控制台中檢查
+   console.log(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID);
+   console.log(process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID);
+   console.log(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+   ```
+
+2. **檢查 EmailJS 配置**：
+
+   ```javascript
+   import EmailJSService from "./services/emailjs";
+   console.log(EmailJSService.getConfigStatus());
+   ```
+
+3. **測試連接**：
+   ```javascript
+   EmailJSService.testConnection().then((result) => {
+     console.log("連接測試結果:", result);
+   });
+   ```
 
 ## 注意事項
 
@@ -106,3 +194,4 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
 - 確保郵件服務商允許第三方應用訪問
 - 在生產環境中，建議使用更安全的 OTP 存儲方式（如後端數據庫）
 - 考慮添加 OTP 過期時間和重試次數限制
+- 定期檢查 EmailJS 帳戶狀態和郵件發送限制

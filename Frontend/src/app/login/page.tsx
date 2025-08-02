@@ -113,7 +113,7 @@ export default function LoginPage() {
       // 直接發送登入請求，不再預先檢查API健康狀態
       console.log("準備發送登入請求", {
         url: "https://apiv1-carbontrading.dennisleehappy.org/api/v1/auth/login",
-        data: formData
+        data: formData,
       });
       const response = await carbonApi.login(formData);
 

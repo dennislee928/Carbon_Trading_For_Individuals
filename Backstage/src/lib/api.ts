@@ -26,7 +26,7 @@ import {
 } from "@/types/api";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
+  //process.env.NEXT_PUBLIC_API_URL ||
   "https://apiv1-carbontrading.dennisleehappy.org/api/v1";
 
 class ApiService {

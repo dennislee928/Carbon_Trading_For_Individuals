@@ -2,7 +2,7 @@ import axios from "axios";
 
 // 碳交易 API 基礎配置
 const CARBON_API_BASE_URL =
-  process.env.NEXT_PUBLIC_CARBON_API_URL ||
+  //process.env.NEXT_PUBLIC_CARBON_API_URL ||
   "https://apiv1-carbontrading.dennisleehappy.org/api/v1";
 
 // 創建 axios 實例

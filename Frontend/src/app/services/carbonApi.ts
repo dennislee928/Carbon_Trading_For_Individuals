@@ -132,9 +132,9 @@ const handleError = (error: unknown): never => {
         url: error.config?.url,
         method: error.config?.method,
         baseURL: error.config?.baseURL,
-      }
+      },
     });
-    
+
     const errorMessage = error.response?.data?.error || error.message;
     const statusCode = error.response?.status || "Unknown";
     throw new Error(`API Error (${statusCode}): ${errorMessage}`);

@@ -10,7 +10,11 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue>({ session: null });
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+interface AuthProviderProps {
+  children?: React.ReactNode;
+}
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {

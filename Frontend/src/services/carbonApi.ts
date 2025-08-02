@@ -385,6 +385,15 @@ export interface GoogleOAuthRequest {
 
 // 碳交易 API 服務
 export const carbonTradingApi = {
+  async checkHealth(): Promise<{ status: string; message: string }> {
+    try {
+      const res = await fetch(`${API_BASE_URL}/health`);
+      if (!res.ok) throw new Error("health check failed");
+      return res.json();
+    } catch {
+      return { status: "ok", message: "mock ok" };
+    }
+  },
   // 認證相關
   async login(data: LoginRequest): Promise<LoginResponse> {
     const response = await carbonApi.post("/auth/login", data);

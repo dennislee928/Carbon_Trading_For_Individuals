@@ -15,8 +15,10 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { Alert, AlertDescription } from "../../components/ui/alert";
-import { carbonApi, LoginRequest } from "../../services/carbonApi";
-
+import carbonApi, { LoginRequest } from "../../services/carbonApi";
+import { carbonTradingApi as carbonApiHelper } from "../../services/carbonApi";
+import { AuthProvider } from "../components/AuthProvider";
+//
 export default function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState<LoginRequest>({
@@ -37,7 +39,7 @@ export default function LoginPage() {
     const checkApiOnLoad = async () => {
       try {
         console.log("正在檢查API健康狀態...");
-        const healthResult = await carbonApi.checkHealth();
+        const healthResult = await carbonApiHelper.checkHealth();
         console.log("API健康檢查結果:", healthResult);
 
         setApiStatus(
@@ -181,7 +183,7 @@ export default function LoginPage() {
   const testApiConnection = async () => {
     setDebugInfo("測試API連接...");
     try {
-      const healthResult = await carbonApi.checkHealth();
+      const healthResult = await carbonApiHelper.checkHealth();
       setDebugInfo(`API健康檢查結果: ${JSON.stringify(healthResult)}`);
 
       // 測試API基礎URL
@@ -275,7 +277,6 @@ export default function LoginPage() {
                 {isLoading ? "登入中..." : "登入"}
               </Button>
             </form>
-
             {/* 測試連接按鈕 */}
             <div className="mt-4">
               <Button

@@ -1,5 +1,6 @@
 // src/app/layout.tsx
 import { ReactNode } from "react";
+import { AuthProvider } from "@/app/components/AuthProvider";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/app/components/theme-provider";
@@ -29,6 +30,7 @@ export default function RootLayout({
         >
           <ClientLayout>{children}</ClientLayout>
         </ThemeProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

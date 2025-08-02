@@ -10,10 +10,10 @@ interface ErrorBannerProps {
   showLocalModeMessage?: boolean;
 }
 
-export default function ErrorBanner({ 
-  error, 
-  onClose, 
-  showLocalModeMessage = false 
+export default function ErrorBanner({
+  error,
+  onClose,
+  showLocalModeMessage = false,
 }: ErrorBannerProps) {
   if (!error) return null;
 
@@ -42,4 +42,4 @@ export default function ErrorBanner({
       </div>
     </Alert>
   );
-} 
+}

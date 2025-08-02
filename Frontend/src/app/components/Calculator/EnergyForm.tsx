@@ -21,7 +21,7 @@ interface EnergyFormProps {
 export default function EnergyForm({ onResult }: EnergyFormProps) {
   const [formData, setFormData] = useState<EnergyData>({
     energy_kwh: 0,
-    region: "us-east-1",
+    region: "TW",
     source: "electricity",
   });
 
@@ -88,11 +88,14 @@ export default function EnergyForm({ onResult }: EnergyFormProps) {
             <SelectValue placeholder="選擇地區" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="us-east-1">美國東部</SelectItem>
-            <SelectItem value="us-west-2">美國西部</SelectItem>
-            <SelectItem value="eu-west-1">歐洲</SelectItem>
-            <SelectItem value="ap-southeast-1">亞太 (新加坡)</SelectItem>
-            <SelectItem value="ap-northeast-1">亞太 (東京)</SelectItem>
+            <SelectItem value="TW">台灣</SelectItem>
+            <SelectItem value="US">美國</SelectItem>
+            <SelectItem value="CN">中國</SelectItem>
+            <SelectItem value="JP">日本</SelectItem>
+            <SelectItem value="KR">韓國</SelectItem>
+            <SelectItem value="EU">歐洲</SelectItem>
+            <SelectItem value="AU">澳洲</SelectItem>
+            <SelectItem value="CA">加拿大</SelectItem>
           </SelectContent>
         </Select>
       </div>

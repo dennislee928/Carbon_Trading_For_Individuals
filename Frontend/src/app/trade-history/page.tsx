@@ -21,6 +21,8 @@ import {
 } from "../../components/ui/table";
 import { ThemeToggle } from "@/app/components/theme-toggle";
 import { carbonApi, User, Trade } from "../services/carbonApi";
+import ErrorBanner from "../../components/ErrorBanner";
+import LocalModeIndicator from "../../components/LocalModeIndicator";
 
 export default function TradeHistoryPage() {
   const router = useRouter();
@@ -37,7 +39,9 @@ export default function TradeHistoryPage() {
 
         if (userData.id && userData.id !== "local-user") {
           try {
-            const tradeHistory = await carbonApi.getUserTradeHistory(userData.id);
+            const tradeHistory = await carbonApi.getUserTradeHistory(
+              userData.id
+            );
             setTrades(tradeHistory);
           } catch (tradeErr) {
             console.warn("無法獲取交易歷史，使用空數據:", tradeErr);
@@ -126,13 +130,12 @@ export default function TradeHistoryPage() {
       </header>
 
       <main className="container py-8 mx-auto">
-        {error && (
-          <div className="mb-6 p-4 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded-lg">
-            <p className="font-medium">載入失敗</p>
-            <p className="text-sm mt-1">{error}</p>
-            <p className="text-sm mt-2">您目前處於本地模式，無法連接到伺服器。</p>
-          </div>
-        )}
+        <LocalModeIndicator />
+        <ErrorBanner
+          error={error}
+          showLocalModeMessage={true}
+          onClose={() => setError(null)}
+        />
 
         <Card>
           <CardHeader>

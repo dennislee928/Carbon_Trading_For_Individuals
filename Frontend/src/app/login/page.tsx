@@ -40,9 +40,11 @@ export default function LoginPage() {
         console.log("正在檢查API健康狀態...");
         // 簡單的健康檢查，測試基本 URL 是否可訪問
         const baseUrl = "https://apiv1-carbontrading.dennisleehappy.org";
-        const res = await fetch(`${baseUrl}/api/v1/health`, { mode: 'no-cors' });
+        const res = await fetch(`${baseUrl}/api/v1/health`, {
+          mode: "no-cors",
+        });
         console.log("API健康檢查狀態:", res.status);
-        
+
         setApiStatus("API可訪問");
       } catch (error) {
         console.error("API健康檢查錯誤:", error);
@@ -109,6 +111,10 @@ export default function LoginPage() {
       setDebugInfo("正在發送登入請求...");
 
       // 直接發送登入請求，不再預先檢查API健康狀態
+      console.log("準備發送登入請求", {
+        url: "https://apiv1-carbontrading.dennisleehappy.org/api/v1/auth/login",
+        data: formData
+      });
       const response = await carbonApi.login(formData);
 
       console.log("登入響應:", response);
@@ -182,7 +188,9 @@ export default function LoginPage() {
     setDebugInfo("測試API連接...");
     try {
       const baseUrl = "https://apiv1-carbontrading.dennisleehappy.org";
-      const healthResult = await fetch(`${baseUrl}/api/v1/health`, { mode: 'no-cors' });
+      const healthResult = await fetch(`${baseUrl}/api/v1/health`, {
+        mode: "no-cors",
+      });
       setDebugInfo(`API健康檢查結果: ${JSON.stringify(healthResult)}`);
 
       // 測試API基礎URL

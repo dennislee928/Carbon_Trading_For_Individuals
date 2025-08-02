@@ -4,7 +4,7 @@ import axios from "axios";
 const API_CONFIG = {
   BASE_URL:
     process.env.NEXT_PUBLIC_CARBON_API_URL ||
-    "https://apiv1-carbontrading.dennisleehappy.org",
+    "https://apiv1-carbontrading.dennisleehappy.org/api/v1",
   VERSION: "v1",
 };
 
@@ -118,13 +118,24 @@ api.interceptors.request.use((config) => {
 // 錯誤處理函數
 const handleError = (error: unknown): never => {
   if (axios.isAxiosError(error)) {
+    // 詳細記錄錯誤信息以便於調試
+    console.error("API錯誤詳情:", {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      config: {
+        url: error.config?.url,
+        method: error.config?.method,
+        baseURL: error.config?.baseURL,
+      }
+    });
+    
     const errorMessage = error.response?.data?.error || error.message;
     const statusCode = error.response?.status || "Unknown";
-    console.error(`API Error (${statusCode}): ${errorMessage}`);
     throw new Error(`API Error (${statusCode}): ${errorMessage}`);
   }
-  console.error("An unexpected error occurred:", error);
-  throw new Error("An unexpected error occurred.");
+  console.error("發生未預期的錯誤:", error);
+  throw new Error("發生未預期的錯誤，請稍後再試。");
 };
 
 // API服務功能
@@ -132,13 +143,17 @@ export const carbonApi = {
   // 認證功能
   async login(data: LoginRequest): Promise<LoginResponse> {
     try {
+      console.log("API BASE_URL:", API_CONFIG.BASE_URL);
+      console.log("發送登入請求到:", `${API_CONFIG.BASE_URL}/auth/login`);
       const response = await api.post("/auth/login", data);
+      console.log("登入API響應:", response.data);
       // 保存token到localStorage
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
       }
       return response.data;
     } catch (error) {
+      console.log("登入請求失敗:", error);
       handleError(error);
       throw new Error("登入失敗");
     }

@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table";
 import { apiService } from "@/lib/api";
 import { OrderBookEntry } from "@/types/api";
-import { formatNumber, formatCurrency } from "@/lib/utils";
+import { formatNumber, formatCurrency, formatDate } from "@/lib/utils";
 import { Search, TrendingUp, TrendingDown } from "lucide-react";
 
 export default function MarketPage() {

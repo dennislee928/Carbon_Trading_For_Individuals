@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
+import SignInButtons from "../components/SignInButtons";
 import {
   Card,
   CardContent,
@@ -316,6 +317,8 @@ export default function LoginPage() {
             </div>
           </CardFooter>
         </Card>
+        <p className="text-center text-sm">or</p>
+        <SignInButtons />
 
         <div className="mt-4 text-center text-xs text-gray-500">
           若遇到登入問題，請確認API設定是否正確，或聯繫系統管理員

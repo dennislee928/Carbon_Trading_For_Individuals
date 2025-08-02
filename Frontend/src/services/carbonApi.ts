@@ -13,6 +13,8 @@ export const carbonApi = axios.create({
   },
 });
 
+export default carbonApi;
+
 // 請求攔截器 - 添加認證 token
 carbonApi.interceptors.request.use((config) => {
   const token = localStorage.getItem("authToken");

@@ -1,5 +1,8 @@
 "use client";
 
+// 禁止靜態生成，避免 useSearchParams SSG 錯誤
+export const dynamic = "force-dynamic";
+
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";

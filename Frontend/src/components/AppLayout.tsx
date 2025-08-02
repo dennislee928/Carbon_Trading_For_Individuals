@@ -4,7 +4,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import SidebarMenu from "./SidebarMenu";
 import { Button } from "./ui/button";
-import { carbonApi } from "../services/carbonApi";
+import { carbonApi } from "../app/services/carbonApi";
 
 interface AppLayoutProps {
   children: ReactNode;

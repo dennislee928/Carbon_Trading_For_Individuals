@@ -21,7 +21,13 @@ import {
   TableRow,
 } from "../../components/ui/table";
 import { ThemeToggle } from "@/app/components/theme-toggle";
-import { carbonApi, User, Asset, Trade } from "../services/carbonApi";
+import {
+  carbonApi,
+  User,
+  Asset,
+  Trade,
+  StatsOverview,
+} from "../services/carbonApi";
 import EmissionFactorsSearch from "../components/EmissionFactorsSearch";
 
 export default function DashboardPage() {
@@ -29,6 +35,7 @@ export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [trades, setTrades] = useState<Trade[]>([]);
+  const [stats, setStats] = useState<StatsOverview | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,19 +55,22 @@ export default function DashboardPage() {
 
         if (userData.id) {
           try {
-            // 使用 carbonApi 的方法來獲取資產和交易數據
-            const [assetsData, tradesData] = await Promise.all([
+            // 使用 carbonApi 的方法來獲取資產、交易數據和統計數據
+            const [assetsData, tradesData, statsData] = await Promise.all([
               carbonApi.getUserAssets(userData.id),
               carbonApi.getUserTradeOrders(userData.id),
+              carbonApi.getStatsOverview(),
             ]);
 
             setAssets(assetsData);
             setTrades(tradesData);
+            setStats(statsData.data);
           } catch (apiErr) {
             console.warn("API調用失敗，使用模擬數據:", apiErr);
             // 使用模擬數據作為降級
             setAssets([]);
             setTrades([]);
+            setStats(null);
           }
         }
       } catch (err) {

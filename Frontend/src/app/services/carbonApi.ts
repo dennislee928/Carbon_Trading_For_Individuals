@@ -71,6 +71,79 @@ export interface CarbonCredit {
   created_at?: string;
 }
 
+export interface CarbonOffsetPurchase {
+  price_per_token: number;
+  total_price_usd: number;
+  estimated_fees: number;
+  final_price_usd: number;
+  transaction_id: string;
+  offset_equivalent: {
+    car_km: number;
+    flights: number;
+    tree_months: number;
+  };
+}
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: string;
+  read: boolean;
+  created_at: string;
+}
+
+export interface NotificationResponse {
+  status: string;
+  data: {
+    notifications: Notification[] | null;
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+    };
+  };
+}
+
+export interface StatsOverview {
+  total_users: number;
+  active_users: number;
+  total_trades: number;
+  completed_trades: number;
+  total_points: number;
+  total_carbon_credits: number;
+  new_users_today: number;
+  trades_today: number;
+}
+
+export interface TradeStats {
+  by_status: Array<{
+    status: string;
+    count: number;
+    total_value: number;
+  }>;
+  daily_trades: Array<{
+    date: string;
+    count: number;
+  }>;
+  total_volume: number;
+}
+
+export interface UserStats {
+  by_role: Array<{
+    role: string;
+    count: number;
+  }>;
+  by_status: Array<{
+    status: string;
+    count: number;
+  }>;
+  daily_registrations: Array<{
+    date: string;
+    count: number;
+  }>;
+}
+
 export interface Asset {
   id: string;
   user_id: string;
@@ -335,6 +408,87 @@ export const carbonApi = {
     } catch (error) {
       handleError(error);
       throw new Error("刪除用戶失敗");
+    }
+  },
+
+  // 碳權抵消購買
+  async purchaseCarbonOffset(quantity: number): Promise<CarbonOffsetPurchase> {
+    try {
+      const response = await api.post("/carbonOffset/purchase", { quantity });
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("購買碳權抵消失敗");
+    }
+  },
+
+  // 獲取通知列表
+  async getNotifications(): Promise<Notification[]> {
+    try {
+      const response = await api.get("/notifications");
+      return response.data;
+    } catch (error) {
+      console.error("獲取通知失敗:", error);
+      return [];
+    }
+  },
+
+  // 獲取概覽統計
+  async getStatsOverview(): Promise<{ status: string; data: StatsOverview }> {
+    try {
+      const response = await api.get("/stats/overview");
+      return response.data;
+    } catch (error) {
+      console.error("獲取統計概覽失敗:", error);
+      return {
+        status: "error",
+        data: {
+          total_users: 0,
+          active_users: 0,
+          total_trades: 0,
+          completed_trades: 0,
+          total_points: 0,
+          total_carbon_credits: 0,
+          new_users_today: 0,
+          trades_today: 0,
+        },
+      };
+    }
+  },
+
+  // 獲取交易統計
+  async getTradeStats(): Promise<{ status: string; data: TradeStats }> {
+    try {
+      const response = await api.get("/stats/trades");
+      return response.data;
+    } catch (error) {
+      console.error("獲取交易統計失敗:", error);
+      return {
+        status: "error",
+        data: {
+          by_status: [],
+          daily_trades: [],
+          total_volume: 0
+        }
+      };
+    }
+  },
+
+  // 獲取用戶統計
+  async getUserStats(): Promise<{ status: string; data: UserStats }> {
+    try {
+      const response = await api.get("/stats/users");
+      return response.data;
+    } catch (error) {
+      console.error("獲取用戶統計失敗:", error);
+      return {
+        status: "error",
+        data: {
+          by_role: [],
+          by_status: [],
+          daily_registrations: []
+        }
+      };
     }
   },
 };

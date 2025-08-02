@@ -20,6 +20,7 @@ import {
   BarChart2,
   Map,
   Wind,
+  Bell,
 } from "lucide-react";
 
 type MenuItem = {
@@ -48,7 +49,16 @@ export default function SidebarMenu() {
       path: "/profile",
       icon: <User className="h-5 w-5" />,
     },
-
+    {
+      name: "交易市場",
+      path: "/market",
+      icon: <ShoppingCart className="h-5 w-5" />,
+    },
+    {
+      name: "通知中心",
+      path: "/notifications",
+      icon: <Bell className="h-5 w-5" />,
+    },
     {
       name: "交易歷史",
       path: "/trade-history",
@@ -94,6 +104,11 @@ export default function SidebarMenu() {
       name: "旅行",
       path: "/travel",
       icon: <Globe className="h-5 w-5" />,
+    },
+    {
+      name: "市場",
+      path: "/market",
+      icon: <BarChart2 className="h-5 w-5" />,
     },
   ];
 

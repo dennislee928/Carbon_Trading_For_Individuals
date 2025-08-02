@@ -18,8 +18,28 @@ const nextConfig = {
       { protocol: "https", hostname: "**" },
     ],
   },
-  // 不使用 setupDevBindings，因為可能缺少依賴
-  // 移除重定向，因為我們已經重構了路由結構
+  // 添加 CORS 配置
+  async headers() {
+    return [
+      {
+        // 為所有 API 路由添加 CORS 標頭
+        source: "/api/:path*",
+        headers: [
+          { key: "Access-Control-Allow-Credentials", value: "true" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "GET,DELETE,PATCH,POST,PUT",
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value:
+              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization",
+          },
+        ],
+      },
+    ];
+  },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

@@ -15,8 +15,7 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { Alert, AlertDescription } from "../../components/ui/alert";
-import carbonApi, { LoginRequest } from "../../services/carbonApi";
-import { carbonTradingApi as carbonApiHelper } from "../../services/carbonApi";
+import carbonApi, { LoginRequest } from "../services/carbonApi";
 import { AuthProvider } from "../components/AuthProvider";
 //
 export default function LoginPage() {
@@ -39,13 +38,12 @@ export default function LoginPage() {
     const checkApiOnLoad = async () => {
       try {
         console.log("正在檢查API健康狀態...");
-        const healthResult = await carbonApiHelper.checkHealth();
-        console.log("API健康檢查結果:", healthResult);
-
-        setApiStatus(
-          healthResult.message ||
-            (healthResult.status === "ok" ? "API正常運行中" : "API可能不穩定")
-        );
+        // 簡單的健康檢查，測試基本 URL 是否可訪問
+        const baseUrl = "https://apiv1-carbontrading.dennisleehappy.org";
+        const res = await fetch(`${baseUrl}/api/v1/health`, { mode: 'no-cors' });
+        console.log("API健康檢查狀態:", res.status);
+        
+        setApiStatus("API可訪問");
       } catch (error) {
         console.error("API健康檢查錯誤:", error);
         setApiStatus("無法連接到API服務");
@@ -183,13 +181,13 @@ export default function LoginPage() {
   const testApiConnection = async () => {
     setDebugInfo("測試API連接...");
     try {
-      const healthResult = await carbonApiHelper.checkHealth();
+      const baseUrl = "https://apiv1-carbontrading.dennisleehappy.org";
+      const healthResult = await fetch(`${baseUrl}/api/v1/health`, { mode: 'no-cors' });
       setDebugInfo(`API健康檢查結果: ${JSON.stringify(healthResult)}`);
 
       // 測試API基礎URL
-      setDebugInfo(
-        `API基礎URL: ${(carbonApi as any).API_CONFIG?.BASE_URL || "未設定"}`
-      );
+      const baseUrlDisplay = "https://apiv1-carbontrading.dennisleehappy.org";
+      setDebugInfo(`API基礎URL: ${baseUrlDisplay}`);
     } catch (error) {
       setDebugInfo(
         `API連接測試失敗: ${

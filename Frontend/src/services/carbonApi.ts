@@ -6,7 +6,7 @@ const CARBON_API_BASE_URL =
   "https://apiv1-carbontrading.dennisleehappy.org/api/v1";
 
 // 創建 axios 實例
-const carbonApi = axios.create({
+export const carbonApi = axios.create({
   baseURL: CARBON_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
@@ -387,7 +387,7 @@ export interface GoogleOAuthRequest {
 export const carbonTradingApi = {
   async checkHealth(): Promise<{ status: string; message: string }> {
     try {
-      const res = await fetch(`${API_BASE_URL}/health`);
+      const res = await fetch(`${CARBON_API_BASE_URL}/health`);
       if (!res.ok) throw new Error("health check failed");
       return res.json();
     } catch {
@@ -585,5 +585,3 @@ export const carbonTradingApi = {
     return response.data;
   },
 };
-
-export default carbonTradingApi;

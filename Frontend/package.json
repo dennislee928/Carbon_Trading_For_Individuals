@@ -11,6 +11,7 @@
     "vercel-build": "mkdir -p src/components/ui && cp -r src/app/components/ui/* src/components/ui/ 2>/dev/null || true && mkdir -p src/lib && cp -r src/app/lib/* src/lib/ 2>/dev/null || true && mkdir -p src/services && cp -r src/app/services/* src/services/ 2>/dev/null || true && next build"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.39.5",
     "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",

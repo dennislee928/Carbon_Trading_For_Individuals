@@ -22,7 +22,6 @@ import {
   MarkReadRequest,
   SuccessResponse,
   User,
-  Admin,
 } from "@/types/api";
 
 const API_BASE_URL =

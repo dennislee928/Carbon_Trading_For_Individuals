@@ -122,6 +122,7 @@ export interface ErrorLogWithUser {
   created_at: string;
   user?: UserBasicInfo;
   resolved_by_user?: UserBasicInfo;
+  resolved?: boolean;
 }
 
 export interface UserBasicInfo {

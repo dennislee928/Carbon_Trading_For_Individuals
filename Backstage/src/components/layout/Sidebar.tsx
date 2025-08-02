@@ -14,10 +14,12 @@ import {
   Settings,
   Menu,
   X,
+  Activity,
 } from "lucide-react";
 
 const navigation = [
   { name: "總覽", href: "/", icon: BarChart3 },
+  { name: "戰情局", href: "/war-room", icon: Activity },
   { name: "用戶管理", href: "/users", icon: Users },
   { name: "積分管理", href: "/balances", icon: CreditCard },
   { name: "錯誤記錄", href: "/error-logs", icon: AlertTriangle },

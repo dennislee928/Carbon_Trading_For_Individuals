@@ -42,11 +42,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
   console.log("是否使用本地模式:", useLocalMode);
 
   useEffect(() => {
-    // 检查是否为根路径，如果是，则跳转到登录
-    if (pathname === "/") {
-      router.push("/login");
-      return;
-    }
+    // 不再自動將根路徑重定向到登入頁面
+    // if (pathname === "/") {
+    //   router.push("/login");
+    //   return;
+    // }
 
     // 檢查使用者是否已登入
     const checkAuth = async () => {

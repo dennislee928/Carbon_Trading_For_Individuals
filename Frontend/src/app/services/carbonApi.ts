@@ -108,9 +108,14 @@ const api = axios.create({
 
 // 請求攔截器處理授權
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      console.log("已添加授權頭:", `Bearer ${token.substring(0, 15)}...`);
+    }
+  } catch (error) {
+    console.error("處理授權頭時出錯:", error);
   }
   return config;
 });

@@ -61,6 +61,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
           }
         } else {
           try {
+            // 確保使用正確的引入方式
             const user = await carbonApi.getCurrentUser();
             console.log("獲取到的用戶:", user);
 

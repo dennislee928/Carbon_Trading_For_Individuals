@@ -54,7 +54,9 @@ function TradePageContent() {
     const fetchCreditData = async () => {
       if (creditId) {
         try {
-          const data = await carbonApi.getCarbonCreditById(creditId);
+          // 修正：getCarbonCreditById 應為 carbonApi.get(`/carbon-credits/${creditId}`)
+          const response = await carbonApi.get(`/carbon-credits/${creditId}`);
+          const data = response.data;
           setCredit(data);
           setFormData((prev) => ({
             ...prev,
@@ -97,8 +99,9 @@ function TradePageContent() {
     setSubmitting(true);
 
     try {
-      // 獲取當前用戶
-      const user = await carbonApi.getCurrentUser();
+      // 取得當前用戶資訊
+      const userResponse = await carbonApi.get("/auth/me");
+      const user = userResponse.data;
 
       // 創建交易請求
       const tradeRequest: CreateTradeRequest = {
@@ -108,7 +111,8 @@ function TradePageContent() {
         price: formData.price,
       };
 
-      await carbonApi.createTrade(tradeRequest);
+      // 修正：直接使用 axios 實例的 post 方法來呼叫 API
+      await carbonApi.post("/trades", tradeRequest);
       router.push("/dashboard?tradeCreated=true");
     } catch (err) {
       if (err instanceof Error) {
@@ -135,56 +139,6 @@ function TradePageContent() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="bg-green-600 dark:bg-green-800 text-white shadow-md">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex-shrink-0">
-              <Link href="/" className="text-2xl font-bold">
-                碳交易平台
-              </Link>
-            </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <Link
-                  href="/"
-                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
-                >
-                  首頁
-                </Link>
-                <Link
-                  href="/market"
-                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
-                >
-                  交易市場
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
-                >
-                  我的資產
-                </Link>
-                <Link
-                  href="/trade-history"
-                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
-                >
-                  交易歷史
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <ThemeToggle />
-              <Button
-                variant="outline"
-                onClick={() => router.back()}
-                className="text-white border-white hover:bg-green-700"
-              >
-                返回
-              </Button>
-            </div>
-          </div>
-        </nav>
-      </header>
-
       <main className="container py-8 mx-auto">
         {error && (
           <Alert variant="destructive" className="mb-6">

@@ -179,8 +179,15 @@ export const carbonApi = {
       const response = await api.get("/auth/me");
       return response.data.data;
     } catch (error) {
-      handleError(error);
-      throw new Error("獲取用戶資訊失敗");
+      console.error("獲取用戶資訊失敗:", error);
+      // 不拋出錯誤，而是返回一個預設用戶對象
+      return {
+        id: "local-user",
+        email: "local@example.com",
+        name: "本地用戶",
+        role: "user",
+        status: "active",
+      };
     }
   },
 

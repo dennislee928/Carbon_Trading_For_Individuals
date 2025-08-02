@@ -1,42 +1,43 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const data = await req.json();
-    const { sourceActivityId, targetActivityId, ratio } = data;
+    const body = await request.json();
+    const { sourceActivityId, targetActivityId, ratio } = body;
 
     if (!sourceActivityId || !targetActivityId || ratio === undefined) {
       return NextResponse.json(
-        {
-          error:
-            "缺少必要參數: 源活動ID(sourceActivityId), 目標活動ID(targetActivityId), 或比率(ratio)",
-        },
+        { error: "缺少必要參數：sourceActivityId, targetActivityId, ratio" },
         { status: 400 }
       );
     }
 
-    // 這裡只是模擬存儲自定義映射
-    // 在實際環境中，應該將映射存儲到資料庫
-    const mapping = {
-      id: Math.random().toString(36).substring(2, 11),
-      source_activity_id: sourceActivityId,
-      target_activity_id: targetActivityId,
-      ratio: parseFloat(ratio.toString()),
-      created_at: new Date().toISOString(),
+    // 本地計算方法
+    const calculateCustomMapping = (sourceActivityId: string, targetActivityId: string, ratio: number) => {
+      // 模擬計算結果
+      const baseEmission = 100; // 基礎排放量
+      const convertedEmission = baseEmission * ratio;
+      
+      return {
+        co2e: Math.round(convertedEmission * 100) / 100,
+        co2e_unit: "kg CO2e",
+        activity_id: targetActivityId,
+        parameters: { 
+          sourceActivityId, 
+          targetActivityId, 
+          ratio, 
+          baseEmission,
+          convertedEmission 
+        },
+      };
     };
 
-    return NextResponse.json({
-      mapping,
-      status: "success",
-      message: "自定義映射已成功創建",
-    });
+    const result = calculateCustomMapping(sourceActivityId, targetActivityId, ratio);
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("Custom mapping creation error:", error);
+    console.error("自訂映射創建錯誤:", error);
     return NextResponse.json(
-      {
-        error: "創建自定義映射失敗",
-        details: error instanceof Error ? error.message : "未知錯誤",
-      },
+      { error: "創建失敗，請稍後再試" },
       { status: 500 }
     );
   }

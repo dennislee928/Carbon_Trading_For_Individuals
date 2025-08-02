@@ -35,7 +35,11 @@ export default function FreightForm({ onResult }: FreightFormProps) {
     const response = await fetch("/api/climatiq/freight", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        distance: formData.distance_km,
+        weight: formData.weight_kg,
+        mode: formData.transport_mode,
+      }),
     });
     const data: EmissionResult = await response.json();
     onResult(data);

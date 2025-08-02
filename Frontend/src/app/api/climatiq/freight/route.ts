@@ -1,41 +1,50 @@
-import { NextResponse } from "next/server";
-import { climatiqApi } from "@/app/services/climatiq";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const data = await req.json();
-    const { distance, weight, mode } = data;
+    const body = await request.json();
+    const { distance, weight, mode } = body;
 
     if (!distance || !weight || !mode) {
       return NextResponse.json(
-        {
-          error: "缺少必要參數: 距離(distance), 重量(weight), 或運輸方式(mode)",
-        },
+        { error: "缺少必要參數：distance, weight, mode" },
         { status: 400 }
       );
     }
 
-    // 將前端數據轉換為Climatiq API格式
-    const freightParams = {
-      distance_km: parseFloat(distance),
-      weight_kg: parseFloat(weight),
-      transport_mode: mode,
+    // 本地計算方法
+    const calculateFreightEmissions = (
+      distance: number,
+      weight: number,
+      mode: string
+    ) => {
+      const emissionFactors = {
+        road: 0.15, // kg CO2e per km per kg
+        rail: 0.03,
+        air: 0.85,
+        sea: 0.02,
+        inland_waterway: 0.01,
+      };
+
+      const factor =
+        emissionFactors[mode as keyof typeof emissionFactors] ||
+        emissionFactors.road;
+      const co2e = distance * weight * factor;
+
+      return {
+        co2e: Math.round(co2e * 100) / 100,
+        co2e_unit: "kg CO2e",
+        activity_id: `freight-${mode}`,
+        parameters: { distance, weight, mode, factor },
+      };
     };
 
-    // 調用Climatiq API計算碳足跡
-    const result = await climatiqApi.freight(freightParams);
-
-    return NextResponse.json({
-      result,
-      status: "success",
-    });
+    const result = calculateFreightEmissions(distance, weight, mode);
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("Freight calculation error:", error);
+    console.error("運輸碳排計算錯誤:", error);
     return NextResponse.json(
-      {
-        error: "碳足跡計算失敗",
-        details: error instanceof Error ? error.message : "未知錯誤",
-      },
+      { error: "計算失敗，請稍後再試" },
       { status: 500 }
     );
   }

@@ -30,7 +30,12 @@ export default function EnergyForm({ onResult }: EnergyFormProps) {
     const response = await fetch("/api/climatiq/energy", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        energy: formData.energy_kwh,
+        energy_unit: "kWh",
+        energy_type: formData.source,
+        country: formData.region,
+      }),
     });
     const data = await response.json();
     onResult(data);

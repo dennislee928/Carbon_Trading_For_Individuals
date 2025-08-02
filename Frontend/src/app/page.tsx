@@ -249,7 +249,7 @@ export default function Home() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                  <ul className="space-y-2 text-gray-600 dark:text-gray-400 mb-4">
                     <li className="flex items-center">
                       <svg
                         className="h-4 w-4 mr-2 text-green-500"
@@ -293,6 +293,11 @@ export default function Home() {
                       飲食碳排放
                     </li>
                   </ul>
+                  <Link href="/travel">
+                    <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                      開始計算
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
 
@@ -320,7 +325,7 @@ export default function Home() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                  <ul className="space-y-2 text-gray-600 dark:text-gray-400 mb-4">
                     <li className="flex items-center">
                       <svg
                         className="h-4 w-4 mr-2 text-green-500"
@@ -364,6 +369,11 @@ export default function Home() {
                       支持環保項目
                     </li>
                   </ul>
+                  <Link href="/market">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                      進入市場
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
 
@@ -391,7 +401,7 @@ export default function Home() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+                  <ul className="space-y-2 text-gray-600 dark:text-gray-400 mb-4">
                     <li className="flex items-center">
                       <svg
                         className="h-4 w-4 mr-2 text-green-500"
@@ -435,6 +445,11 @@ export default function Home() {
                       與社區比較
                     </li>
                   </ul>
+                  <Link href="/dashboard">
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+                      查看儀表板
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </div>

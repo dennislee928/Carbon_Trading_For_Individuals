@@ -55,7 +55,7 @@ export default function SidebarMenu() {
       icon: <History className="h-5 w-5" />,
     },
     {
-      name: "我的交易",
+      name: "交易訂單",
       path: "/trades",
       icon: <BarChart2 className="h-5 w-5" />,
     },

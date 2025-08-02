@@ -21,7 +21,7 @@ import {
   TableRow,
 } from "../../components/ui/table";
 import { ThemeToggle } from "@/app/components/theme-toggle";
-import { carbonApi, User, Asset, Trade } from "../../services/carbonApi";
+import { carbonApi, User, Asset, Trade } from "../services/carbonApi";
 import EmissionFactorsSearch from "../components/EmissionFactorsSearch";
 
 export default function DashboardPage() {
@@ -42,11 +42,13 @@ export default function DashboardPage() {
           return;
         }
 
+        // 使用 carbonApi 的 getCurrentUser 方法
         const userData = await carbonApi.getCurrentUser();
         setUser(userData);
 
         if (userData.id) {
           try {
+            // 使用 carbonApi 的方法來獲取資產和交易數據
             const [assetsData, tradesData] = await Promise.all([
               carbonApi.getUserAssets(userData.id),
               carbonApi.getUserTradeOrders(userData.id),
@@ -78,9 +80,17 @@ export default function DashboardPage() {
     fetchDashboardData();
   }, [router]);
 
+  // 使用 carbonApi 的 logout 方法
   const handleLogout = async () => {
-    await carbonApi.logout();
-    router.push("/login");
+    try {
+      await carbonApi.logout();
+    } catch (err) {
+      // 即使登出 API 失敗，也要清除本地 token 並導向登入頁
+      console.warn("登出 API 失敗:", err);
+    } finally {
+      localStorage.removeItem("token");
+      router.push("/login");
+    }
   };
 
   if (loading) {
@@ -93,54 +103,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="bg-green-600 dark:bg-green-800 text-white shadow-md">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex-shrink-0">
-              <Link href="/" className="text-2xl font-bold">
-                碳交易平台
-              </Link>
-            </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <Link
-                  href="/"
-                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
-                >
-                  首頁
-                </Link>
-
-                <Link
-                  href="/dashboard"
-                  className="px-3 py-2 rounded-md text-sm font-medium bg-green-700 dark:bg-green-900 transition"
-                >
-                  我的資產
-                </Link>
-                <Link
-                  href="/trade-history"
-                  className="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 dark:hover:bg-green-900 transition"
-                >
-                  交易歷史
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              {user && (
-                <span className="text-sm">您好，{user.name || user.email}</span>
-              )}
-              <ThemeToggle />
-              <Button
-                variant="outline"
-                onClick={handleLogout}
-                className="text-white border-white hover:bg-green-700"
-              >
-                登出
-              </Button>
-            </div>
-          </div>
-        </nav>
-      </header>
-
       <main className="container py-8 mx-auto">
         {error && (
           <div className="mb-6 p-4 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded-lg">
@@ -149,6 +111,7 @@ export default function DashboardPage() {
         )}
 
         <div className="grid gap-6 md:grid-cols-2">
+          <EmissionFactorsSearch />
           <Card>
             <CardHeader>
               <CardTitle>我的碳資產</CardTitle>
@@ -182,64 +145,6 @@ export default function DashboardPage() {
                 </Table>
               ) : (
                 <p className="text-muted-foreground">您目前沒有任何碳資產</p>
-              )}
-              <div className="mt-6"></div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>我的交易訂單</CardTitle>
-              <CardDescription>您的買賣訂單狀態</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {trades.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>訂單類型</TableHead>
-                      <TableHead className="text-right">數量</TableHead>
-                      <TableHead className="text-right">價格</TableHead>
-                      <TableHead>狀態</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {trades.map((trade) => (
-                      <TableRow key={trade.id}>
-                        <TableCell>
-                          {trade.order_type === "buy" ? "購買" : "出售"}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {trade.quantity}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          ${trade.price}
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={`px-2 py-1 text-xs rounded-full ${
-                              trade.status === "completed"
-                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                : trade.status === "pending"
-                                ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                            }`}
-                          >
-                            {trade.status === "completed"
-                              ? "已完成"
-                              : trade.status === "pending"
-                              ? "處理中"
-                              : trade.status === "cancelled"
-                              ? "已取消"
-                              : trade.status}
-                          </span>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              ) : (
-                <p className="text-muted-foreground">目前不開放交易</p>
               )}
               <div className="mt-6"></div>
             </CardContent>

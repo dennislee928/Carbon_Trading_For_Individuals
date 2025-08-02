@@ -120,6 +120,64 @@ export default function DashboardPage() {
           </div>
         )}
 
+        {/* 統計概覽卡片 */}
+        {stats && (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">總用戶數</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {stats.total_users?.toLocaleString() || 0}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  活躍用戶: {stats.active_users?.toLocaleString() || 0}
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">總交易數</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {stats.total_trades?.toLocaleString() || 0}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  今日交易: {stats.trades_today || 0}
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">總碳權數</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {stats.total_carbon_credits?.toLocaleString() || 0}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  今日新增用戶: {stats.new_users_today || 0}
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">總積分</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {stats.total_points?.toLocaleString() || 0}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  完成交易: {stats.completed_trades || 0}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         <div className="grid gap-6 md:grid-cols-2">
           <EmissionFactorsSearch />
           <Card>

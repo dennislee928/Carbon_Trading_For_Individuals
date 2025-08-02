@@ -1,78 +1,167 @@
 "use client";
 
-import { useState } from "react";
-import { carbonTradingApi } from "@/services/carbonApi";
+import React, { useState } from "react";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { carbonApi } from "../services/carbonApi";
 
 export default function ApiTestPage() {
   const [results, setResults] = useState<any>({});
   const [loading, setLoading] = useState<string | null>(null);
 
-  const testApi = async (apiName: string, apiCall: () => Promise<any>) => {
-    setLoading(apiName);
+  const testEndpoints = [
+    {
+      name: "認證檢查",
+      test: async () => {
+        const result = await carbonApi.getCurrentUser();
+        return result;
+      },
+    },
+    {
+      name: "碳權列表",
+      test: async () => {
+        const result = await carbonApi.getCarbonCredits();
+        return result;
+      },
+    },
+    {
+      name: "用戶資產",
+      test: async () => {
+        const result = await carbonApi.getUserAssets("user-123");
+        return result;
+      },
+    },
+    {
+      name: "用戶交易歷史",
+      test: async () => {
+        const result = await carbonApi.getUserTradeHistory("user-123");
+        return result;
+      },
+    },
+    {
+      name: "通知列表",
+      test: async () => {
+        const result = await carbonApi.getNotifications();
+        return result;
+      },
+    },
+    {
+      name: "統計概覽",
+      test: async () => {
+        const result = await carbonApi.getStatsOverview();
+        return result;
+      },
+    },
+    {
+      name: "交易統計",
+      test: async () => {
+        const result = await carbonApi.getTradeStats();
+        return result;
+      },
+    },
+    {
+      name: "用戶統計",
+      test: async () => {
+        const result = await carbonApi.getUserStats();
+        return result;
+      },
+    },
+    {
+      name: "碳權購買",
+      test: async () => {
+        const result = await carbonApi.purchaseCarbonOffset(10);
+        return result;
+      },
+    },
+  ];
+
+  const runTest = async (endpoint: (typeof testEndpoints)[0]) => {
+    setLoading(endpoint.name);
     try {
-      const result = await apiCall();
-      setResults((prev) => ({
+      const result = await endpoint.test();
+      setResults((prev: any) => ({
         ...prev,
-        [apiName]: { success: true, data: result },
+        [endpoint.name]: { success: true, data: result },
       }));
-    } catch (error: any) {
-      setResults((prev) => ({
+    } catch (error) {
+      setResults((prev: any) => ({
         ...prev,
-        [apiName]: {
-          success: false,
-          error: error.message || "Unknown error",
-        },
+        [endpoint.name]: { success: false, error: error },
       }));
     } finally {
       setLoading(null);
     }
   };
 
-  const testApis = {
-    "Market Stats": () => carbonTradingApi.getMarketStats(),
-    "Carbon Projects": () =>
-      carbonTradingApi.getCarbonProjects({ page: 1, limit: 5 }),
-    "Carbon Tokens": () =>
-      carbonTradingApi.getCarbonTokens({ page: 1, limit: 5 }),
-    "Order Book": () => carbonTradingApi.getOrderBook(),
-    "Carbon Credits": () => carbonTradingApi.getCarbonCredits(),
+  const runAllTests = async () => {
+    setLoading("所有測試");
+    const newResults: any = {};
+
+    for (const endpoint of testEndpoints) {
+      try {
+        const result = await endpoint.test();
+        newResults[endpoint.name] = { success: true, data: result };
+      } catch (error) {
+        newResults[endpoint.name] = { success: false, error: error };
+      }
+    }
+
+    setResults(newResults);
+    setLoading(null);
   };
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-8">碳交易 API 測試</h1>
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-6">API 測試頁面</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        {Object.entries(testApis).map(([name, apiCall]) => (
-          <button
-            key={name}
-            onClick={() => testApi(name, apiCall)}
-            disabled={loading === name}
-            className="p-4 border rounded-lg hover:bg-gray-50 disabled:opacity-50"
-          >
-            {loading === name ? "測試中..." : `測試 ${name}`}
-          </button>
-        ))}
+      <div className="mb-6">
+        <Button onClick={runAllTests} disabled={loading === "所有測試"}>
+          {loading === "所有測試" ? "測試中..." : "運行所有測試"}
+        </Button>
       </div>
 
-      <div className="space-y-4">
-        {Object.entries(results).map(([name, result]) => (
-          <div key={name} className="border rounded-lg p-4">
-            <h3 className="font-semibold mb-2">{name}</h3>
-            {result.success ? (
-              <div className="bg-green-50 p-3 rounded">
-                <p className="text-green-800 font-medium">成功</p>
-                <pre className="text-sm mt-2 overflow-auto">
-                  {JSON.stringify(result.data, null, 2)}
-                </pre>
-              </div>
-            ) : (
-              <div className="bg-red-50 p-3 rounded">
-                <p className="text-red-800 font-medium">失敗</p>
-                <p className="text-red-600">{result.error}</p>
-              </div>
-            )}
-          </div>
+      <div className="grid gap-4">
+        {testEndpoints.map((endpoint) => (
+          <Card key={endpoint.name}>
+            <CardHeader>
+              <CardTitle className="flex justify-between items-center">
+                <span>{endpoint.name}</span>
+                <Button
+                  onClick={() => runTest(endpoint)}
+                  disabled={loading === endpoint.name}
+                  size="sm"
+                >
+                  {loading === endpoint.name ? "測試中..." : "測試"}
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {results[endpoint.name] && (
+                <div className="mt-4">
+                  {results[endpoint.name].success ? (
+                    <div className="text-green-600">
+                      <strong>成功</strong>
+                      <pre className="mt-2 text-xs bg-gray-100 p-2 rounded overflow-auto">
+                        {JSON.stringify(results[endpoint.name].data, null, 2)}
+                      </pre>
+                    </div>
+                  ) : (
+                    <div className="text-red-600">
+                      <strong>失敗</strong>
+                      <pre className="mt-2 text-xs bg-red-50 p-2 rounded overflow-auto">
+                        {JSON.stringify(results[endpoint.name].error, null, 2)}
+                      </pre>
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

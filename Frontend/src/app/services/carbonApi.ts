@@ -278,8 +278,8 @@ export const carbonApi = {
       const response = await api.get("/carbonCredits", { params });
       return response.data;
     } catch (error) {
-      handleError(error);
-      throw new Error("獲取碳信用額列表失敗");
+      console.error("獲取碳權列表失敗:", error);
+      return [];
     }
   },
 
@@ -306,11 +306,11 @@ export const carbonApi = {
 
   async getUserTradeOrders(userId: string): Promise<Trade[]> {
     try {
-      const response = await api.get(`/trades/orders/${userId}`);
+      const response = await api.get(`/users/${userId}/trades`);
       return response.data;
     } catch (error) {
-      handleError(error);
-      throw new Error("獲取用戶交易訂單失敗");
+      console.error("獲取用戶交易訂單失敗:", error);
+      return [];
     }
   },
 
@@ -320,8 +320,8 @@ export const carbonApi = {
       const response = await api.get(`/users/${userId}/assets`);
       return response.data;
     } catch (error) {
-      handleError(error);
-      throw new Error("獲取用戶資產失敗");
+      console.error("獲取用戶資產失敗:", error);
+      return [];
     }
   },
 
@@ -350,11 +350,11 @@ export const carbonApi = {
 
   async getUserTradeHistory(userId: string): Promise<Trade[]> {
     try {
-      const response = await api.get(`/users/${userId}/tradeHistory`);
+      const response = await api.get(`/users/${userId}/trades`);
       return response.data;
     } catch (error) {
-      handleError(error);
-      throw new Error("獲取用戶交易歷史失敗");
+      console.error("獲取用戶交易歷史失敗:", error);
+      return [];
     }
   },
 
@@ -417,7 +417,7 @@ export const carbonApi = {
       const response = await api.post("/carbonOffset/purchase", { quantity });
       return response.data;
     } catch (error) {
-      handleError(error);
+      console.error("購買碳權抵消失敗:", error);
       throw new Error("購買碳權抵消失敗");
     }
   },
@@ -468,8 +468,8 @@ export const carbonApi = {
         data: {
           by_status: [],
           daily_trades: [],
-          total_volume: 0
-        }
+          total_volume: 0,
+        },
       };
     }
   },
@@ -486,8 +486,8 @@ export const carbonApi = {
         data: {
           by_role: [],
           by_status: [],
-          daily_registrations: []
-        }
+          daily_registrations: [],
+        },
       };
     }
   },

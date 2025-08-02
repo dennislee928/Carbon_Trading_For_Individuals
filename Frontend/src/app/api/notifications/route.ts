@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,9 +14,9 @@ export async function GET(request: NextRequest) {
         created_at: "2024-03-15T10:30:00Z",
         data: {
           trade_id: "trade-1",
-          amount: 2550.00,
-          quantity: 100
-        }
+          amount: 2550.0,
+          quantity: 100,
+        },
       },
       {
         id: "notif-2",
@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
         created_at: "2024-03-14T15:45:00Z",
         data: {
           carbon_credit_id: "credit-1",
-          old_price: 25.50,
-          new_price: 26.00
-        }
+          old_price: 25.5,
+          new_price: 26.0,
+        },
       },
       {
         id: "notif-3",
@@ -42,8 +42,8 @@ export async function GET(request: NextRequest) {
         created_at: "2024-03-13T09:00:00Z",
         data: {
           maintenance_start: "2024-03-15T23:00:00Z",
-          maintenance_end: "2024-03-16T02:00:00Z"
-        }
+          maintenance_end: "2024-03-16T02:00:00Z",
+        },
       },
       {
         id: "notif-4",
@@ -55,8 +55,8 @@ export async function GET(request: NextRequest) {
         created_at: "2024-03-12T14:20:00Z",
         data: {
           project_id: "credit-4",
-          project_name: "風力發電項目"
-        }
+          project_name: "風力發電項目",
+        },
       },
       {
         id: "notif-5",
@@ -67,21 +67,20 @@ export async function GET(request: NextRequest) {
         is_read: true,
         created_at: "2024-03-11T11:15:00Z",
         data: {
-          updated_fields: ["email", "phone"]
-        }
-      }
+          updated_fields: ["email", "phone"],
+        },
+      },
     ];
 
     return NextResponse.json(mockNotifications);
-
   } catch (error) {
-    console.error('Get notifications error:', error);
+    console.error("Get notifications error:", error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: '獲取通知失敗' 
+      {
+        success: false,
+        message: "獲取通知失敗",
       },
       { status: 500 }
     );
   }
-} 
+}

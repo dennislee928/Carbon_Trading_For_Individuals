@@ -289,7 +289,7 @@ export default function LoginPage() {
             {/* 調試信息 */}
             {debugInfo && (
               <div className="mt-4 border border-gray-200 rounded p-2 text-xs text-gray-500 bg-gray-50">
-                <p className="font-bold">調試信息:</p>
+                <p className="font-bold">alert:</p>
                 <p className="whitespace-pre-wrap">{debugInfo}</p>
               </div>
             )}

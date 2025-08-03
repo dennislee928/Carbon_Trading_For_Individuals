@@ -3,6 +3,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import SidebarMenu from "./SidebarMenu";
+import HeaderNotifications from "./HeaderNotifications";
 import { Button } from "./ui/button";
 import { carbonApi } from "../app/services/carbonApi";
 
@@ -128,12 +129,15 @@ export default function AppLayout({ children }: AppLayoutProps) {
       >
         {(isLoggedIn || useLocalMode) && !isPublicPath && (
           <header className="border-b dark:border-gray-800">
-            <div className="container flex items-center justify-end h-16 mx-auto px-4">
+            <div className="container flex items-center justify-between h-16 mx-auto px-4">
               <div className="flex items-center gap-4">
                 {userName && <span className="text-sm">您好，{userName}</span>}
                 {useLocalMode && (
                   <span className="text-xs text-yellow-500">本地模式</span>
                 )}
+              </div>
+              <div className="flex items-center gap-4">
+                <HeaderNotifications />
                 <Button variant="outline" onClick={handleLogout}>
                   登出
                 </Button>

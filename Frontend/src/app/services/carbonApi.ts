@@ -343,6 +343,30 @@ export interface MarketPurchaseResponse {
   purchased_at: string;
 }
 
+export interface OrderBookEntry {
+  id: string;
+  order_type: "buy" | "sell";
+  credit_type: string;
+  vintage_year: number;
+  project_type: string;
+  quantity: number;
+  price: number;
+  total_amount: number;
+  user_id: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OrderBookResponse {
+  buy_orders: OrderBookEntry[];
+  sell_orders: OrderBookEntry[];
+  total_buy_orders: number;
+  total_sell_orders: number;
+  total_buy_volume: number;
+  total_sell_volume: number;
+}
+
 // API客戶端設置
 const api = axios.create({
   baseURL: API_CONFIG.BASE_URL,
@@ -422,7 +446,14 @@ export const carbonApi = {
   async getCurrentUser(): Promise<User> {
     try {
       const response = await api.get("/auth/me");
-      const userData = response.data.data; // 確保取得內部的 data 物件
+      console.log("Auth me response:", response.data);
+
+      // 檢查不同的響應結構
+      let userData = response.data;
+      if (response.data && response.data.data) {
+        userData = response.data.data;
+      }
+
       if (!userData || !userData.id || !userData.email) {
         console.warn("API響應中缺少用戶ID或email，使用預設本地用戶:", userData);
         return {
@@ -711,13 +742,28 @@ export const carbonApi = {
     }
   },
 
-  async getOrderBook(): Promise<any> {
+  async getOrderBook(): Promise<OrderBookResponse> {
     try {
       const response = await api.get("/market/orderbook");
       return response.data; // 返回訂單簿數據
     } catch (error) {
       handleError(error);
       throw new Error("獲取訂單簿失敗");
+    }
+  },
+
+  async simulateCarbonOffset(data: {
+    activity_type: string;
+    quantity: number;
+    unit: string;
+    country_code: string;
+  }): Promise<CarbonFootprintCalculateResponse> {
+    try {
+      const response = await api.post("/carbon/offset/simulate", data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("模擬碳權抵消失敗");
     }
   },
 };

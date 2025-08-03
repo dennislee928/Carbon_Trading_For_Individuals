@@ -100,6 +100,18 @@ export default function ApiTestPage() {
       },
     },
     {
+      name: "模擬碳權抵消",
+      test: async () => {
+        const result = await carbonApi.simulateCarbonOffset({
+          activity_type: "transport",
+          quantity: 100,
+          unit: "km",
+          country_code: "tw",
+        });
+        return result;
+      },
+    },
+    {
       name: "獲取訂單簿",
       test: async () => {
         const result = await carbonApi.getOrderBook();

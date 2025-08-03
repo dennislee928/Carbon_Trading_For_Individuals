@@ -47,11 +47,6 @@ export const signInSolana = async () => {
     throw new Error("Supabase 環境變數未設定。請在 .env.local 文件中配置 NEXT_PUBLIC_SUPABASE_URL 和 NEXT_PUBLIC_SUPABASE_KEY");
   }
   
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "solana",
-    options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
-    },
-  });
-  if (error) throw error;
+  // Solana 提供者目前不被 Supabase 支援，顯示錯誤訊息
+  throw new Error("Solana 錢包登入目前不支援，請使用 GitHub 或 Google 登入");
 };

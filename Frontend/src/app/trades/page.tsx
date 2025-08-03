@@ -100,7 +100,7 @@ function TradePageContent() {
 
     try {
       // 取得當前用戶資訊
-      const userResponse = await carbonApi.get("/auth/me");
+      const userResponse = await carbonApi.get("/users/me");
       const user = userResponse.data;
 
       // 創建交易請求

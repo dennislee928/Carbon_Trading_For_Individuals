@@ -47,7 +47,9 @@ export default function ProfilePage() {
     try {
       setLoading(true);
       const user = await carbonApi.getCurrentUser();
-      setProfile(user);
+      if (user) {
+        setProfile(user);
+      }
       setFormData({
         name: user.name || "",
         address: user.address || "",

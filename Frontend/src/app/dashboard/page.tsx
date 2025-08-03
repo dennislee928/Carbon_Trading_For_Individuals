@@ -54,22 +54,28 @@ export default function DashboardPage() {
         setUser(userData);
 
         if (userData.id) {
+          // 分別處理每個 API 調用，避免一個失敗影響其他
           try {
-            // 使用 carbonApi 的方法來獲取資產、交易數據和統計數據
-            const [assetsData, tradesData, statsData] = await Promise.all([
-              carbonApi.getUserAssets(userData.id),
-              carbonApi.getUserTradeOrders(userData.id),
-              carbonApi.getStatsOverview(),
-            ]);
-
+            const assetsData = await carbonApi.getUserAssets(userData.id);
             setAssets(assetsData);
-            setTrades(tradesData);
-            setStats(statsData);
-          } catch (apiErr) {
-            console.warn("API調用失敗，使用模擬數據:", apiErr);
-            // 使用模擬數據作為降級
+          } catch (assetsErr) {
+            console.warn("獲取用戶資產失敗:", assetsErr);
             setAssets([]);
+          }
+
+          try {
+            const tradesData = await carbonApi.getUserTradeOrders(userData.id);
+            setTrades(tradesData);
+          } catch (tradesErr) {
+            console.warn("獲取用戶交易失敗:", tradesErr);
             setTrades([]);
+          }
+
+          try {
+            const statsData = await carbonApi.getStatsOverview();
+            setStats(statsData);
+          } catch (statsErr) {
+            console.warn("獲取統計數據失敗:", statsErr);
             setStats(null);
           }
         }

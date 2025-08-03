@@ -1,9 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_CARBON_API_URL ||
-  "https://apiv1-carbontrading.dennisleehappy.org/api/v1";
 
 export async function GET(
   request: NextRequest,
@@ -11,34 +6,43 @@ export async function GET(
 ) {
   try {
     const userId = params.id;
-    const authHeader = request.headers.get("authorization");
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "未提供有效的認證令牌",
-        },
-        { status: 401 }
-      );
-    }
-
-    const token = authHeader.substring(7);
-
-    const response = await axios.get(`${API_BASE_URL}/trades/orders/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return NextResponse.json(response.data);
-  } catch (error) {
-    console.error("Get user trades API error:", error);
-    return NextResponse.json(
+    // 模擬用戶交易數據
+    const mockTrades = [
       {
-        success: false,
-        message: "獲取用戶交易歷史失敗",
+        id: "trade-001",
+        user_id: userId,
+        order_type: "buy",
+        quantity: 50,
+        price: 12.5,
+        status: "completed",
+        created_at: "2024-01-15T10:30:00Z",
       },
+      {
+        id: "trade-002",
+        user_id: userId,
+        order_type: "sell",
+        quantity: 25,
+        price: 18.75,
+        status: "completed",
+        created_at: "2024-02-20T14:45:00Z",
+      },
+      {
+        id: "trade-003",
+        user_id: userId,
+        order_type: "buy",
+        quantity: 100,
+        price: 8.9,
+        status: "pending",
+        created_at: "2024-03-10T09:15:00Z",
+      },
+    ];
+
+    return NextResponse.json(mockTrades);
+  } catch (error) {
+    console.error("用戶交易獲取錯誤:", error);
+    return NextResponse.json(
+      { error: "無法獲取用戶交易數據" },
       { status: 500 }
     );
   }

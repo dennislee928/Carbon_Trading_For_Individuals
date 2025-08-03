@@ -103,11 +103,31 @@ export default function ApiTestPage() {
       name: "模擬碳權抵消",
       test: async () => {
         const result = await carbonApi.simulateCarbonOffset({
-          activity_type: "transport",
-          quantity: 100,
-          unit: "km",
-          country_code: "tw",
+          user_id: "5a319d27-7a90-49ab-bd3e-6e802cef4089",
+          project_id: "proj-001",
+          token_amount: 1.5,
         });
+        return result;
+      },
+    },
+    {
+      name: "獲取碳權項目列表 (新API)",
+      test: async () => {
+        const result = await carbonApi.getCarbonProjects();
+        return result;
+      },
+    },
+    {
+      name: "獲取碳權項目詳情 (新API)",
+      test: async () => {
+        const result = await carbonApi.getCarbonProjectById("proj-001");
+        return result;
+      },
+    },
+    {
+      name: "獲取碳權代幣列表 (新API)",
+      test: async () => {
+        const result = await carbonApi.getCarbonTokens();
         return result;
       },
     },
@@ -118,6 +138,7 @@ export default function ApiTestPage() {
         return result;
       },
     },
+
     {
       name: "創建交易報價",
       test: async () => {

@@ -445,7 +445,7 @@ export const carbonApi = {
 
   async getCurrentUser(): Promise<User> {
     try {
-      const response = await api.get("/auth/me");
+      const response = await api.get("/users/me");
       console.log("Auth me response:", response.data);
 
       // 檢查不同的響應結構
@@ -753,10 +753,9 @@ export const carbonApi = {
   },
 
   async simulateCarbonOffset(data: {
-    activity_type: string;
-    quantity: number;
-    unit: string;
-    country_code: string;
+    user_id: string;
+    project_id: string;
+    token_amount: number;
   }): Promise<CarbonFootprintCalculateResponse> {
     try {
       const response = await api.post("/carbon/offset/simulate", data);
@@ -764,6 +763,29 @@ export const carbonApi = {
     } catch (error) {
       handleError(error);
       throw new Error("模擬碳權抵消失敗");
+    }
+  },
+
+  async getCarbonProjects(params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<CarbonProjectResponse> {
+    try {
+      const response = await api.get("/carbon/projects", { params });
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("獲取碳權項目失敗");
+    }
+  },
+
+  async getCarbonProjectById(projectId: string): Promise<CarbonProject> {
+    try {
+      const response = await api.get(`/carbon/projects/${projectId}`);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("獲取碳權項目詳情失敗");
     }
   },
 };

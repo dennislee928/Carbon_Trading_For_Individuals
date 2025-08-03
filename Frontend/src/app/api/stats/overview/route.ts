@@ -1,40 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_CARBON_API_URL ||
-  "https://apiv1-carbontrading.dennisleehappy.org/api/v1";
 
 export async function GET(request: NextRequest) {
   try {
-    const authHeader = request.headers.get("authorization");
+    // 模擬統計概覽數據
+    const statsOverview = {
+      total_users: 1250,
+      active_users: 890,
+      total_trades: 3456,
+      completed_trades: 3120,
+      total_points: 125000,
+      total_carbon_credits: 45678,
+      new_users_today: 23,
+      trades_today: 45,
+    };
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "未提供有效的認證令牌",
-        },
-        { status: 401 }
-      );
-    }
-
-    const token = authHeader.substring(7);
-
-    const response = await axios.get(`${API_BASE_URL}/stats/overview`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    return NextResponse.json({
+      status: "success",
+      data: statsOverview,
     });
-
-    return NextResponse.json(response.data);
   } catch (error) {
-    console.error("Get stats overview API error:", error);
+    console.error("統計概覽獲取錯誤:", error);
     return NextResponse.json(
-      {
-        success: false,
-        message: "獲取統計概覽失敗",
-      },
+      { error: "無法獲取統計概覽數據" },
       { status: 500 }
     );
   }

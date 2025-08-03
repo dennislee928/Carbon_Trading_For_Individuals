@@ -7,6 +7,8 @@ import {
   CarbonOffsetPurchase,
   OrderBookResponse,
   OrderBookEntry,
+  CarbonProject,
+  CarbonToken,
 } from "../services/carbonApi";
 import {
   Card,
@@ -32,6 +34,8 @@ import LocalModeIndicator from "../../components/LocalModeIndicator";
 
 export default function MarketPage() {
   const [carbonCredits, setCarbonCredits] = useState<CarbonCredit[]>([]);
+  const [carbonProjects, setCarbonProjects] = useState<CarbonProject[]>([]);
+  const [carbonTokens, setCarbonTokens] = useState<CarbonToken[]>([]);
   const [orderBook, setOrderBook] = useState<OrderBookResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [orderBookLoading, setOrderBookLoading] = useState(false);
@@ -40,12 +44,14 @@ export default function MarketPage() {
   const [purchasing, setPurchasing] = useState(false);
   const [purchaseResult, setPurchaseResult] =
     useState<CarbonOffsetPurchase | null>(null);
-  const [activeTab, setActiveTab] = useState<"credits" | "orderbook">(
-    "credits"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "credits" | "orderbook" | "projects" | "tokens"
+  >("credits");
 
   useEffect(() => {
     fetchCarbonCredits();
+    fetchCarbonProjects();
+    fetchCarbonTokens();
     fetchOrderBook();
   }, []);
 
@@ -72,6 +78,24 @@ export default function MarketPage() {
       // Don't set error for orderbook as it's not critical
     } finally {
       setOrderBookLoading(false);
+    }
+  };
+
+  const fetchCarbonProjects = async () => {
+    try {
+      const response = await carbonApi.getCarbonProjects();
+      setCarbonProjects(response.projects);
+    } catch (err) {
+      console.error("獲取碳權項目失敗:", err);
+    }
+  };
+
+  const fetchCarbonTokens = async () => {
+    try {
+      const response = await carbonApi.getCarbonTokens();
+      setCarbonTokens(response.tokens);
+    } catch (err) {
+      console.error("獲取碳權代幣失敗:", err);
     }
   };
 
@@ -204,6 +228,28 @@ export default function MarketPage() {
           >
             <Leaf className="h-4 w-4 inline mr-2" />
             碳權項目
+          </button>
+          <button
+            onClick={() => setActiveTab("projects")}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              activeTab === "projects"
+                ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            }`}
+          >
+            <TrendingUp className="h-4 w-4 inline mr-2" />
+            項目詳情
+          </button>
+          <button
+            onClick={() => setActiveTab("tokens")}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              activeTab === "tokens"
+                ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            }`}
+          >
+            <ShoppingCart className="h-4 w-4 inline mr-2" />
+            代幣列表
           </button>
           <button
             onClick={() => setActiveTab("orderbook")}
@@ -362,11 +408,146 @@ export default function MarketPage() {
           </div>
         )}
 
+        {/* Projects Tab */}
+        {activeTab === "projects" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {carbonProjects.map((project) => (
+              <Card
+                key={project.id}
+                className="hover:shadow-lg transition-shadow"
+              >
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      {getProjectTypeIcon(project.type)}
+                      <Badge className={getCreditTypeColor(project.standard)}>
+                        {project.standard}
+                      </Badge>
+                    </div>
+                    <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                      ${project.price_per_credit}
+                    </span>
+                  </div>
+                  <CardTitle className="text-lg">{project.name}</CardTitle>
+                  <CardDescription>位置: {project.location}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-sm">
+                      <span>類型:</span>
+                      <span className="font-medium">{project.type}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>總碳權:</span>
+                      <span className="font-medium">
+                        {project.total_credits} 噸
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>可用碳權:</span>
+                      <span className="font-medium">
+                        {project.available_credits} 噸
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>已退休:</span>
+                      <span className="font-medium">
+                        {project.retired_credits} 噸
+                      </span>
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {project.description}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* Tokens Tab */}
+        {activeTab === "tokens" && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {carbonTokens.map((token) => (
+              <Card
+                key={token.id}
+                className="hover:shadow-lg transition-shadow"
+              >
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Badge className={getCreditTypeColor(token.standard)}>
+                        {token.standard}
+                      </Badge>
+                      <Badge variant="outline">{token.symbol}</Badge>
+                    </div>
+                    <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                      ${token.price_per_unit}
+                    </span>
+                  </div>
+                  <CardTitle className="text-lg">{token.name}</CardTitle>
+                  <CardDescription>項目: {token.project_name}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-sm">
+                      <span>代幣類型:</span>
+                      <span className="font-medium">{token.token_type}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>年份:</span>
+                      <span className="font-medium">{token.vintage}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>數量:</span>
+                      <span className="font-medium">{token.quantity} 噸</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>總價:</span>
+                      <span className="font-medium">${token.total_price}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>狀態:</span>
+                      <Badge
+                        className={
+                          token.status === "available"
+                            ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                            : "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400"
+                        }
+                      >
+                        {token.status === "available" ? "可購買" : token.status}
+                      </Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
         {activeTab === "credits" && carbonCredits.length === 0 && !error && (
           <div className="text-center py-12">
             <Leaf className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-500 dark:text-gray-400">
               目前沒有可用的碳權
+            </p>
+          </div>
+        )}
+
+        {activeTab === "projects" && carbonProjects.length === 0 && (
+          <div className="text-center py-12">
+            <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-500 dark:text-gray-400">
+              目前沒有可用的碳權項目
+            </p>
+          </div>
+        )}
+
+        {activeTab === "tokens" && carbonTokens.length === 0 && (
+          <div className="text-center py-12">
+            <ShoppingCart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-500 dark:text-gray-400">
+              目前沒有可用的碳權代幣
             </p>
           </div>
         )}

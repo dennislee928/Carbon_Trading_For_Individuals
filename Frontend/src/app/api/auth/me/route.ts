@@ -1,40 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_CARBON_API_URL ||
-  "https://apiv1-carbontrading.dennisleehappy.org/api/v1";
 
 export async function GET(request: NextRequest) {
   try {
+    // 從請求頭獲取 token
     const authHeader = request.headers.get("authorization");
+    const token = authHeader?.replace("Bearer ", "");
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "未提供有效的認證令牌",
-        },
-        { status: 401 }
-      );
+    if (!token) {
+      return NextResponse.json({ error: "未提供認證令牌" }, { status: 401 });
     }
 
-    const token = authHeader.substring(7);
+    // 模擬當前用戶數據
+    const currentUser = {
+      id: "user-001",
+      email: "user@example.com",
+      name: "測試用戶",
+      role: "user",
+      status: "active",
+      level: 2,
+      address: "台北市信義區",
+      phone: "+886912345678",
+      created_at: "2024-01-01T00:00:00Z",
+      updated_at: "2024-01-15T10:30:00Z",
+      last_login: "2024-01-15T10:30:00Z",
+    };
 
-    const response = await axios.get(`${API_BASE_URL}/users/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    return NextResponse.json({
+      status: "success",
+      data: currentUser,
     });
-
-    return NextResponse.json(response.data);
   } catch (error) {
-    console.error("Auth me API error:", error);
+    console.error("獲取當前用戶錯誤:", error);
     return NextResponse.json(
-      {
-        success: false,
-        message: "內部伺服器錯誤",
-      },
+      { error: "無法獲取當前用戶數據" },
       { status: 500 }
     );
   }

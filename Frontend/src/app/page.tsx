@@ -250,48 +250,24 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-gray-600 dark:text-gray-400 mb-4">
-                    <li className="flex items-center">
-                      <svg
-                        className="h-4 w-4 mr-2 text-green-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      交通出行碳排放
-                    </li>
-                    <li className="flex items-center">
-                      <svg
-                        className="h-4 w-4 mr-2 text-green-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      家庭能源消耗
-                    </li>
-                    <li className="flex items-center">
-                      <svg
-                        className="h-4 w-4 mr-2 text-green-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      飲食碳排放
-                    </li>
+                    {["交通出行碳排放", "家庭能源消耗", "飲食碳排放"].map(
+                      (item, index) => (
+                        <li key={index} className="flex items-center">
+                          <svg
+                            className="h-4 w-4 mr-2 text-green-500"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          {item}
+                        </li>
+                      )
+                    )}
                   </ul>
                   <Link href="/travel">
                     <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
@@ -326,48 +302,24 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-gray-600 dark:text-gray-400 mb-4">
-                    <li className="flex items-center">
-                      <svg
-                        className="h-4 w-4 mr-2 text-green-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      購買認證碳權
-                    </li>
-                    <li className="flex items-center">
-                      <svg
-                        className="h-4 w-4 mr-2 text-green-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      追蹤市場價格
-                    </li>
-                    <li className="flex items-center">
-                      <svg
-                        className="h-4 w-4 mr-2 text-green-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      支持環保項目
-                    </li>
+                    {["購買認證碳權", "追蹤市場價格", "支持環保項目"].map(
+                      (item, index) => (
+                        <li key={index} className="flex items-center">
+                          <svg
+                            className="h-4 w-4 mr-2 text-green-500"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          {item}
+                        </li>
+                      )
+                    )}
                   </ul>
                   <Link href="/market">
                     <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
@@ -402,48 +354,24 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-gray-600 dark:text-gray-400 mb-4">
-                    <li className="flex items-center">
-                      <svg
-                        className="h-4 w-4 mr-2 text-green-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      排放趨勢圖表
-                    </li>
-                    <li className="flex items-center">
-                      <svg
-                        className="h-4 w-4 mr-2 text-green-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      個人化建議
-                    </li>
-                    <li className="flex items-center">
-                      <svg
-                        className="h-4 w-4 mr-2 text-green-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      與社區比較
-                    </li>
+                    {["排放趨勢圖表", "個人化建議", "與社區比較"].map(
+                      (item, index) => (
+                        <li key={index} className="flex items-center">
+                          <svg
+                            className="h-4 w-4 mr-2 text-green-500"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          {item}
+                        </li>
+                      )
+                    )}
                   </ul>
                   <Link href="/dashboard">
                     <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
@@ -568,109 +496,73 @@ export default function Home() {
                 我們致力於為個人提供碳足跡管理和碳交易的解決方案，幫助每個人為環境保護做出貢獻。
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-green-600">
-                  <svg
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
+                {[
+                  {
+                    path: "M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z",
+                  },
+                  {
+                    path: "M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 10h-2v2h2v6h3v-6h1.82l.18-2h-2v-.833c0-.478.096-.667.558-.667h1.442v-2.5h-1.9c-1.782 0-2.1.739-2.1 1.833v1.167z",
+                  },
+                  {
+                    path: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z",
+                  },
+                ].map((icon, index) => (
+                  <a
+                    key={index}
+                    href="#"
+                    className="text-gray-400 hover:text-green-600"
                   >
-                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                  </svg>
-                </a>
-                <a href="#" className="text-gray-400 hover:text-green-600">
-                  <svg
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 10h-2v2h2v6h3v-6h1.82l.18-2h-2v-.833c0-.478.096-.667.558-.667h1.442v-2.5h-1.9c-1.782 0-2.1.739-2.1 1.833v1.167z" />
-                  </svg>
-                </a>
-                <a href="#" className="text-gray-400 hover:text-green-600">
-                  <svg
-                    className="h-5 w-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                  </svg>
-                </a>
+                    <svg
+                      className="h-5 w-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d={icon.path} />
+                    </svg>
+                  </a>
+                ))}
               </div>
             </div>
 
             <div>
               <h3 className="font-semibold text-lg mb-4">快速連結</h3>
               <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/about"
-                    className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-                  >
-                    關於我們
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/market"
-                    className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-                  >
-                    交易市場
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard"
-                    className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-                  >
-                    用戶儀表板
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/trade-history"
-                    className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-                  >
-                    交易歷史
-                  </Link>
-                </li>
+                {[
+                  { href: "/about", text: "關於我們" },
+                  { href: "/market", text: "交易市場" },
+                  { href: "/dashboard", text: "用戶儀表板" },
+                  { href: "/trade-history", text: "交易歷史" },
+                ].map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      href={link.href}
+                      className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                    >
+                      {link.text}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div>
               <h3 className="font-semibold text-lg mb-4">幫助與支持</h3>
               <ul className="space-y-2">
-                <li>
-                  <Link
-                    href="/faq"
-                    className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-                  >
-                    常見問題
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-                  >
-                    聯繫我們
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/terms"
-                    className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-                  >
-                    使用條款
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/privacy"
-                    className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
-                  >
-                    隱私政策
-                  </Link>
-                </li>
+                {[
+                  { href: "/faq", text: "常見問題" },
+                  { href: "/contact", text: "聯繫我們" },
+                  { href: "/terms", text: "使用條款" },
+                  { href: "/privacy", text: "隱私政策" },
+                ].map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      href={link.href}
+                      className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                    >
+                      {link.text}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

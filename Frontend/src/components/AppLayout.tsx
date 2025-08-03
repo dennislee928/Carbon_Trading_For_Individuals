@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import SidebarMenu from "./SidebarMenu";
 import HeaderNotifications from "./HeaderNotifications";
 import { Button } from "./ui/button";
-import { carbonTradingApi } from "../app/services/carbonApi";
+import carbonTradingApi from "../app/services/carbonApi";
 import { supabase } from "../services/supabase";
 
 interface AppLayoutProps {
@@ -19,6 +19,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [userName, setUserName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [useLocalMode, setUseLocalMode] = useState(false);
+  const [hasRedirected, setHasRedirected] = useState(false);
 
   console.log("當前路徑:", pathname);
 
@@ -70,8 +71,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
           setUserName(session.user.email || "使用者");
 
           // 如果用户已登录且访问公共路径，重定向到仪表板
-          if (isPublicPath && pathname !== "/") {
-            router.push("/dashboard");
+          if (isPublicPath && pathname !== "/" && !hasRedirected) {
+            // 避免重定向循環，只在非登入頁面時重定向
+            if (pathname !== "/login") {
+              setHasRedirected(true);
+              router.push("/dashboard");
+            }
           }
           setIsLoading(false);
           return;
@@ -97,8 +102,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
               setUserName(user?.name || user?.email || "使用者");
 
               // 如果用户已登录且访问公共路径，重定向到仪表板
-              if (isPublicPath && pathname !== "/") {
-                router.push("/dashboard");
+              if (isPublicPath && pathname !== "/" && !hasRedirected) {
+                // 避免重定向循環，只在非登入頁面時重定向
+                if (pathname !== "/login") {
+                  setHasRedirected(true);
+                  router.push("/dashboard");
+                }
               }
             } else {
               setIsLoggedIn(false);
@@ -141,6 +150,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
     }
 
     setIsLoggedIn(false);
+    setHasRedirected(false);
     router.push("/login");
   };
 

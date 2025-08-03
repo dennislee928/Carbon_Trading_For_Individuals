@@ -403,7 +403,7 @@ export const carbonTradingApi = {
   },
 
   async register(data: SignupRequest): Promise<SignupResponse> {
-    const response = await carbonApi.post("/auth/register", data);
+    const response = await carbonApi.post("/auth/signup", data);
     return response.data;
   },
 
@@ -594,3 +594,7 @@ export const carbonTradingApi = {
     return response.data;
   },
 };
+
+// 導出 carbonTradingApi 作為默認導出
+export default carbonTradingApi;
+export { carbonTradingApi };

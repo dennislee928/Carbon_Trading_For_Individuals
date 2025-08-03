@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { Alert, AlertDescription } from "../../components/ui/alert";
-import { carbonTradingApi, LoginRequest } from "../services/carbonApi";
+import carbonTradingApi, { LoginRequest } from "../services/carbonApi";
 import { AuthProvider } from "../components/AuthProvider";
 //
 export default function LoginPage() {

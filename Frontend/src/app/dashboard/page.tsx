@@ -21,8 +21,7 @@ import {
   TableRow,
 } from "../../components/ui/table";
 import { ThemeToggle } from "@/app/components/theme-toggle";
-import {
-  carbonApi,
+import carbonTradingApi, {
   User,
   Asset,
   Trade,
@@ -50,13 +49,15 @@ export default function DashboardPage() {
         }
 
         // 使用 carbonApi 的 getCurrentUser 方法
-        const userData = await carbonApi.getCurrentUser();
+        const userData = await carbonTradingApi.getCurrentUser();
         setUser(userData);
 
         if (userData.id) {
           // 分別處理每個 API 調用，避免一個失敗影響其他
           try {
-            const assetsData = await carbonApi.getUserAssets(userData.id);
+            const assetsData = await carbonTradingApi.getUserAssets(
+              userData.id
+            );
             setAssets(assetsData);
           } catch (assetsErr) {
             console.warn("獲取用戶資產失敗:", assetsErr);
@@ -64,7 +65,9 @@ export default function DashboardPage() {
           }
 
           try {
-            const tradesData = await carbonApi.getUserTradeOrders(userData.id);
+            const tradesData = await carbonTradingApi.getUserTradeOrders(
+              userData.id
+            );
             setTrades(tradesData);
           } catch (tradesErr) {
             console.warn("獲取用戶交易失敗:", tradesErr);
@@ -72,7 +75,7 @@ export default function DashboardPage() {
           }
 
           try {
-            const statsData = await carbonApi.getStatsOverview();
+            const statsData = await carbonTradingApi.getStatsOverview();
             setStats(statsData);
           } catch (statsErr) {
             console.warn("獲取統計數據失敗:", statsErr);
@@ -99,7 +102,7 @@ export default function DashboardPage() {
   // 使用 carbonApi 的 logout 方法
   const handleLogout = async () => {
     try {
-      await carbonApi.logout();
+      await carbonTradingApi.logout();
     } catch (err) {
       // 即使登出 API 失敗，也要清除本地 token 並導向登入頁
       console.warn("登出 API 失敗:", err);

@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { Alert, AlertDescription } from "../../components/ui/alert";
-import { carbonTradingApi, SignupRequest } from "../../services/carbonApi";
+import carbonTradingApi, { SignupRequest } from "../../services/carbonApi";
 export const dynamic = "force-dynamic";
 export default function RegisterPage() {
   const router = useRouter();

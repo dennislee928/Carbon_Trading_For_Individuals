@@ -102,16 +102,41 @@ export default function MarketPage() {
   const handlePurchase = async (creditId: string) => {
     try {
       setPurchasing(true);
-      const result = await carbonApi.purchaseCarbonOffset({
+      setError(null);
+
+      // 驗證 credit ID 格式
+      if (!creditId || typeof creditId !== "string" || creditId.trim() === "") {
+        throw new Error("無效的碳權 ID");
+      }
+
+      // 驗證購買數量
+      if (!purchaseQuantity || purchaseQuantity <= 0) {
+        throw new Error("請輸入有效的購買數量");
+      }
+
+      console.log("購買參數:", {
         credit_id: creditId,
         quantity: purchaseQuantity,
       });
+
+      const result = await carbonApi.purchaseCarbonOffset({
+        credit_id: creditId.trim(),
+        quantity: purchaseQuantity,
+      });
+
       setPurchaseResult(result);
       // 重新獲取碳權列表和訂單簿
       await Promise.all([fetchCarbonCredits(), fetchOrderBook()]);
+
+      // 重置購買數量
+      setPurchaseQuantity(1);
     } catch (err) {
       console.error("購買失敗:", err);
-      setError("購買失敗，請稍後再試");
+      if (err instanceof Error) {
+        setError(`購買失敗: ${err.message}`);
+      } else {
+        setError("購買失敗，請稍後再試");
+      }
     } finally {
       setPurchasing(false);
     }

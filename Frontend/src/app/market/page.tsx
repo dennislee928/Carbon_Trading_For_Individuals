@@ -51,7 +51,10 @@ export default function MarketPage() {
   const handlePurchase = async (creditId: string) => {
     try {
       setPurchasing(true);
-      const result = await carbonApi.purchaseCarbonOffset(purchaseQuantity);
+      const result = await carbonApi.purchaseCarbonOffset({
+        credit_id: creditId,
+        quantity: purchaseQuantity,
+      });
       setPurchaseResult(result);
       // 重新獲取碳權列表
       await fetchCarbonCredits();
@@ -63,12 +66,14 @@ export default function MarketPage() {
     }
   };
 
-  const getCreditTypeColor = (type: string) => {
-    switch (type) {
-      case "VER":
+  const getCreditTypeColor = (standard: string) => {
+    switch (standard) {
+      case "VCS":
         return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
-      case "CER":
+      case "Gold Standard":
         return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
+      case "CDM":
+        return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400";
       default:
         return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400";
     }
@@ -78,7 +83,11 @@ export default function MarketPage() {
     if (type.includes("森林") || type.includes("Forestry")) {
       return <Leaf className="h-4 w-4" />;
     }
-    if (type.includes("能源") || type.includes("Energy")) {
+    if (
+      type.includes("能源") ||
+      type.includes("Energy") ||
+      type.includes("Renewable")
+    ) {
       return <TrendingUp className="h-4 w-4" />;
     }
     return <Leaf className="h-4 w-4" />;
@@ -118,13 +127,10 @@ export default function MarketPage() {
             <AlertDescription className="text-green-800 dark:text-green-200">
               <p className="font-medium">購買成功！</p>
               <p className="text-sm mt-1">
-                交易 ID: {purchaseResult.transaction_id}
+                購買 ID: {purchaseResult.purchase_id}
               </p>
               <p className="text-sm mt-1">
-                總價: ${purchaseResult.final_price_usd} USD
-              </p>
-              <p className="text-sm mt-1">
-                抵消等效: {purchaseResult.offset_equivalent.car_km} 公里汽車行駛
+                總價: ${purchaseResult.total_cost} USD
               </p>
             </AlertDescription>
           </Alert>
@@ -136,29 +142,29 @@ export default function MarketPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    {getProjectTypeIcon(credit.project_type)}
-                    <Badge className={getCreditTypeColor(credit.credit_type)}>
-                      {credit.credit_type}
+                    {getProjectTypeIcon(credit.type)}
+                    <Badge className={getCreditTypeColor(credit.standard)}>
+                      {credit.standard}
                     </Badge>
                   </div>
                   <span className="text-2xl font-bold text-green-600 dark:text-green-400">
-                    ${credit.price}
+                    ${credit.price_per_credit}
                   </span>
                 </div>
-                <CardTitle className="text-lg">{credit.project_type}</CardTitle>
-                <CardDescription>
-                  發行者: {credit.issuer} | 來源: {credit.origin}
-                </CardDescription>
+                <CardTitle className="text-lg">{credit.name}</CardTitle>
+                <CardDescription>位置: {credit.location}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between text-sm">
                     <span>年份:</span>
-                    <span className="font-medium">{credit.vintage_year}</span>
+                    <span className="font-medium">{credit.vintage}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>可用數量:</span>
-                    <span className="font-medium">{credit.quantity} 噸</span>
+                    <span className="font-medium">
+                      {credit.available_credits} 噸
+                    </span>
                   </div>
 
                   <div className="space-y-2">
@@ -167,7 +173,7 @@ export default function MarketPage() {
                       id={`quantity-${credit.id}`}
                       type="number"
                       min="1"
-                      max={credit.quantity}
+                      max={credit.available_credits}
                       value={purchaseQuantity}
                       onChange={(e) =>
                         setPurchaseQuantity(Number(e.target.value))
@@ -178,7 +184,9 @@ export default function MarketPage() {
 
                   <Button
                     onClick={() => handlePurchase(credit.id)}
-                    disabled={purchasing || purchaseQuantity > credit.quantity}
+                    disabled={
+                      purchasing || purchaseQuantity > credit.available_credits
+                    }
                     className="w-full"
                   >
                     {purchasing ? (
@@ -186,7 +194,8 @@ export default function MarketPage() {
                     ) : (
                       <ShoppingCart className="h-4 w-4 mr-2" />
                     )}
-                    購買 ${(credit.price * purchaseQuantity).toFixed(2)}
+                    購買 $
+                    {(credit.price_per_credit * purchaseQuantity).toFixed(2)}
                   </Button>
                 </div>
               </CardContent>

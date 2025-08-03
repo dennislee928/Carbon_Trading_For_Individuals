@@ -1,51 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
+import axios from "axios";
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_CARBON_API_URL ||
+  "https://apiv1-carbontrading.dennisleehappy.org/api/v1";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { quantity } = body;
+    const authHeader = request.headers.get("authorization");
 
-    if (!quantity || quantity <= 0) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json(
         {
           success: false,
-          message: "請提供有效的購買數量",
+          message: "未提供有效的認證令牌",
         },
-        { status: 400 }
+        { status: 401 }
       );
     }
 
-    // 模擬購買計算
-    const price_per_token = 25.5; // 假設每噸碳權價格
-    const total_price_usd = quantity * price_per_token;
-    const estimated_fees = total_price_usd * 0.02; // 2% 手續費
-    const final_price_usd = total_price_usd + estimated_fees;
-    const transaction_id = `tx_${Date.now()}_${Math.random()
-      .toString(36)
-      .substr(2, 9)}`;
+    const token = authHeader.substring(7);
+    const body = await request.json();
 
-    // 計算抵消當量
-    const offset_equivalent = {
-      car_km: quantity * 4000, // 每噸碳權相當於 4000 公里汽車行駛
-      flights: quantity * 2.5, // 每噸碳權相當於 2.5 次短程飛行
-      tree_months: quantity * 12, // 每噸碳權相當於 12 個月的樹木生長
-    };
+    const response = await axios.post(`${API_BASE_URL}/market/purchase`, body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-    const purchaseResult = {
-      price_per_token,
-      total_price_usd,
-      estimated_fees,
-      final_price_usd,
-      transaction_id,
-      offset_equivalent,
-      quantity,
-      status: "completed",
-      created_at: new Date().toISOString(),
-    };
-
-    return NextResponse.json(purchaseResult);
+    return NextResponse.json(response.data);
   } catch (error) {
-    console.error("Purchase carbon offset error:", error);
+    console.error("Purchase carbon offset API error:", error);
     return NextResponse.json(
       {
         success: false,

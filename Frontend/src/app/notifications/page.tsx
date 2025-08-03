@@ -27,7 +27,7 @@ export default function NotificationsPage() {
     try {
       setLoading(true);
       const response = await carbonApi.getNotifications();
-      setNotifications(response.data.notifications || []);
+      setNotifications(response || []); // 直接使用返回的 Notification[] 類型
     } catch (err) {
       console.error("獲取通知失敗:", err);
       setError("無法載入通知");

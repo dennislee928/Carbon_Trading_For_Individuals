@@ -64,7 +64,7 @@ export default function DashboardPage() {
 
             setAssets(assetsData);
             setTrades(tradesData);
-            setStats(statsData.data);
+            setStats(statsData);
           } catch (apiErr) {
             console.warn("API調用失敗，使用模擬數據:", apiErr);
             // 使用模擬數據作為降級

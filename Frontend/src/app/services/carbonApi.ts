@@ -32,6 +32,7 @@ export interface SignupResponse {
 export interface User {
   id: string;
   email: string;
+  password?: string;
   name?: string;
   role?: string;
   status?: string;
@@ -61,36 +62,75 @@ export interface ErrorResponse {
 
 export interface CarbonCredit {
   id: string;
-  credit_type: string; // e.g., "VER", "CER"
-  project_type: string; // e.g., "Renewable Energy", "Forestry"
-  quantity: number;
-  price: number;
-  vintage_year: number;
-  issuer?: string;
-  origin?: string;
+  name: string;
+  description: string;
+  type: string;
+  location: string;
+  region?: string;
+  standard: string;
+  methodology?: string;
+  start_date?: string;
+  end_date?: string;
+  total_credits: number;
+  available_credits: number;
+  retired_credits: number;
+  price_per_credit: number;
+  image_url?: string;
+  images?: string[] | null;
+  website?: string;
+  verification_body?: string;
+  sdgs?: string[] | null;
+  coordinates?: string;
+  vintage?: string;
+  status?: string;
+  available_supply?: number;
+  price_usdc?: number;
   created_at?: string;
+  updated_at?: string;
 }
 
-export interface CarbonOffsetPurchase {
-  price_per_token: number;
-  total_price_usd: number;
-  estimated_fees: number;
-  final_price_usd: number;
-  transaction_id: string;
-  offset_equivalent: {
-    car_km: number;
-    flights: number;
-    tree_months: number;
+export interface CarbonFootprintCalculateResponse {
+  emission_amount: number;
+  unit: string;
+  emission_source: string;
+  breakdown?: {
+    CH4?: number;
+    CO2?: number;
+    N2O?: number;
   };
+  offset_options?: Array<{
+    project_id: string;
+    project_name: string;
+    project_type: string;
+    token_amount: number;
+    price_per_unit: number;
+    total_price: number;
+  }>;
+  metadata?: any;
+}
+
+// 碳權抵消購買
+export interface CarbonOffsetPurchase {
+  purchase_id: string;
+  asset_id: string;
+  credit_type: string;
+  quantity: number;
+  unit_price: number;
+  total_cost: number;
+  new_balance?: number;
+  purchased_at: string;
 }
 
 export interface Notification {
   id: string;
+  user_id: string;
+  type: string;
   title: string;
   message: string;
-  type: string;
-  read: boolean;
+  is_read: boolean;
   created_at: string;
+  updated_at: string;
+  data?: any;
 }
 
 export interface NotificationResponse {
@@ -103,6 +143,34 @@ export interface NotificationResponse {
       total: number;
     };
   };
+}
+
+export interface CarbonMarketStats {
+  total_projects: number;
+  total_tokens: number;
+  total_available_tokens: number;
+  total_retired_tokens: number;
+  total_volume_tco2e: number;
+  total_sales_usd: number;
+  average_price_usd: number;
+  highest_price_usd: number;
+  lowest_price_usd: number;
+  top_project_types: Array<{
+    label: string;
+    value: number;
+  }>;
+  top_project_locations: Array<{
+    label: string;
+    value: number;
+  }>;
+  price_history: Array<{
+    date: string;
+    value: number;
+  }>;
+  volume_history: Array<{
+    date: string;
+    value: number;
+  }>;
 }
 
 export interface StatsOverview {
@@ -169,6 +237,110 @@ export interface CreateTradeRequest {
   order_type: string;
   quantity: number;
   price: number;
+}
+
+export interface CarbonProject {
+  id: string;
+  name: string;
+  description: string;
+  type: string;
+  location: string;
+  region: string;
+  standard: string;
+  methodology: string;
+  start_date: string;
+  end_date: string;
+  total_credits: number;
+  available_credits: number;
+  retired_credits: number;
+  price_per_credit: number;
+  image_url: string;
+  images: string[] | null;
+  website: string;
+  verification_body: string;
+  sdgs: string[] | null;
+  coordinates: string;
+  vintage: string;
+  status: string;
+  available_supply: number;
+  price_usdc: number;
+}
+
+export interface CarbonProjectResponse {
+  projects: CarbonProject[];
+  total: number;
+  count: number;
+  page: number;
+  limit: number;
+  page_size: number;
+}
+
+export interface CarbonToken {
+  id: string;
+  name: string;
+  symbol: string;
+  token_type: string;
+  project_id: string;
+  project_name: string;
+  vintage: string;
+  quantity: number;
+  price_per_unit: number;
+  total_price: number;
+  standard: string;
+  status: string;
+  seller: string;
+  region: string;
+  category: string;
+  supply_total: number;
+  supply_remaining: number;
+  available_since: string;
+  expiry_date: string;
+  certificate_url: string;
+  price_usdc: number;
+}
+
+export interface CarbonTokenResponse {
+  tokens: CarbonToken[];
+  total: number;
+  count: number;
+  page: number;
+  limit: number;
+  page_size: number;
+}
+
+export interface TradeOfferRequest {
+  order_type: "buy" | "sell";
+  credit_type: string;
+  vintage_year: number;
+  project_type: string;
+  quantity: number;
+  price: number;
+}
+
+export interface TradeOfferResponse {
+  id: string;
+  user_id: string;
+  order_type: string;
+  credit_type: string;
+  vintage_year: number;
+  project_type: string;
+  quantity: number;
+  price: number;
+  total_amount: number;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MarketPurchaseResponse {
+  purchase_id: string;
+  asset_id: string;
+  credit_type: string;
+  quantity: number;
+  unit_price: number;
+  total_cost: number;
+  new_balance: number;
+  purchased_at: string;
 }
 
 // API客戶端設置
@@ -250,10 +422,20 @@ export const carbonApi = {
   async getCurrentUser(): Promise<User> {
     try {
       const response = await api.get("/auth/me");
-      return response.data.data;
+      const userData = response.data.data; // 確保取得內部的 data 物件
+      if (!userData || !userData.id || !userData.email) {
+        console.warn("API響應中缺少用戶ID或email，使用預設本地用戶:", userData);
+        return {
+          id: "local-user",
+          email: "local@example.com",
+          name: "本地用戶",
+          role: "user",
+          status: "active",
+        };
+      }
+      return userData;
     } catch (error) {
       console.error("獲取用戶資訊失敗:", error);
-      // 不拋出錯誤，而是返回一個預設用戶對象
       return {
         id: "local-user",
         email: "local@example.com",
@@ -265,7 +447,13 @@ export const carbonApi = {
   },
 
   async logout(): Promise<void> {
-    localStorage.removeItem("token");
+    try {
+      await api.post("/auth/logout"); // 調用後端登出API
+    } catch (error) {
+      console.error("登出API調用失敗:", error);
+    } finally {
+      localStorage.removeItem("token"); // 無論API是否成功，都清除本地token
+    }
   },
 
   // 碳信用額相關功能
@@ -275,8 +463,8 @@ export const carbonApi = {
     projectType?: string;
   }): Promise<CarbonCredit[]> {
     try {
-      const response = await api.get("/carbonCredits", { params });
-      return response.data;
+      const response = await api.get("/carbon/projects", { params });
+      return response.data.projects; // 從 data.projects 中獲取實際列表
     } catch (error) {
       console.error("獲取碳權列表失敗:", error);
       return [];
@@ -285,8 +473,8 @@ export const carbonApi = {
 
   async getCarbonCreditById(creditId: string): Promise<CarbonCredit> {
     try {
-      const response = await api.get(`/carbonCredits/${creditId}`);
-      return response.data;
+      const response = await api.get(`/carbon/projects/${creditId}`);
+      return response.data; // 直接返回單個項目數據
     } catch (error) {
       handleError(error);
       throw new Error("獲取碳信用額詳情失敗");
@@ -294,10 +482,16 @@ export const carbonApi = {
   },
 
   // 交易相關功能
-  async createTrade(data: CreateTradeRequest): Promise<Trade> {
+  async createTrade(data: {
+    credit_type: string;
+    vintage_year: number;
+    project_type: string;
+    quantity: number;
+    price: number;
+  }): Promise<Trade> {
     try {
       const response = await api.post("/trades/create", data);
-      return response.data;
+      return response.data; // 返回新創建的交易
     } catch (error) {
       handleError(error);
       throw new Error("創建交易失敗");
@@ -412,10 +606,13 @@ export const carbonApi = {
   },
 
   // 碳權抵消購買
-  async purchaseCarbonOffset(quantity: number): Promise<CarbonOffsetPurchase> {
+  async purchaseCarbonOffset(data: {
+    credit_id: string;
+    quantity: number;
+  }): Promise<CarbonOffsetPurchase> {
     try {
-      const response = await api.post("/carbonOffset/purchase", { quantity });
-      return response.data;
+      const response = await api.post("/market/purchase", data);
+      return response.data.data; // 返回 data.data 物件
     } catch (error) {
       console.error("購買碳權抵消失敗:", error);
       throw new Error("購買碳權抵消失敗");
@@ -426,7 +623,7 @@ export const carbonApi = {
   async getNotifications(): Promise<Notification[]> {
     try {
       const response = await api.get("/notifications");
-      return response.data;
+      return response.data.data.notifications; // 從 data.data.notifications 中獲取實際列表
     } catch (error) {
       console.error("獲取通知失敗:", error);
       return [];
@@ -434,61 +631,93 @@ export const carbonApi = {
   },
 
   // 獲取概覽統計
-  async getStatsOverview(): Promise<{ status: string; data: StatsOverview }> {
+  async getStatsOverview(): Promise<StatsOverview> {
     try {
       const response = await api.get("/stats/overview");
-      return response.data;
+      return response.data.data; // 返回 data.data 物件
     } catch (error) {
       console.error("獲取統計概覽失敗:", error);
-      return {
-        status: "error",
-        data: {
-          total_users: 0,
-          active_users: 0,
-          total_trades: 0,
-          completed_trades: 0,
-          total_points: 0,
-          total_carbon_credits: 0,
-          new_users_today: 0,
-          trades_today: 0,
-        },
-      };
+      throw new Error("獲取統計概覽失敗");
     }
   },
 
   // 獲取交易統計
-  async getTradeStats(): Promise<{ status: string; data: TradeStats }> {
+  async getTradeStats(): Promise<TradeStats> {
     try {
       const response = await api.get("/stats/trades");
-      return response.data;
+      return response.data.data; // 返回 data.data 物件
     } catch (error) {
       console.error("獲取交易統計失敗:", error);
-      return {
-        status: "error",
-        data: {
-          by_status: [],
-          daily_trades: [],
-          total_volume: 0,
-        },
-      };
+      throw new Error("獲取交易統計失敗");
     }
   },
 
   // 獲取用戶統計
-  async getUserStats(): Promise<{ status: string; data: UserStats }> {
+  async getUserStats(): Promise<UserStats> {
     try {
       const response = await api.get("/stats/users");
-      return response.data;
+      return response.data.data; // 返回 data.data 物件
     } catch (error) {
       console.error("獲取用戶統計失敗:", error);
-      return {
-        status: "error",
-        data: {
-          by_role: [],
-          by_status: [],
-          daily_registrations: [],
-        },
-      };
+      throw new Error("獲取用戶統計失敗");
+    }
+  },
+
+  async calculateCarbonFootprint(data: {
+    activity_type: string;
+    quantity: number;
+    unit: string;
+    country_code: string;
+  }): Promise<CarbonFootprintCalculateResponse> {
+    try {
+      const response = await api.post("/carbon/footprint/calculate", data);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw new Error("計算碳足跡失敗");
+    }
+  },
+
+  async getCarbonMarketStats(): Promise<CarbonMarketStats> {
+    try {
+      const response = await api.get("/carbon/market/stats");
+      return response.data; // 直接返回數據
+    } catch (error) {
+      handleError(error);
+      throw new Error("獲取碳市場統計失敗");
+    }
+  },
+
+  async getCarbonTokens(params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<CarbonTokenResponse> {
+    try {
+      const response = await api.get("/carbon/tokens", { params });
+      return response.data; // 返回包含 tokens 和分頁信息的數據
+    } catch (error) {
+      handleError(error);
+      throw new Error("獲取碳權代幣列表失敗");
+    }
+  },
+
+  async createTradeOffer(data: TradeOfferRequest): Promise<TradeOfferResponse> {
+    try {
+      const response = await api.post("/market/trade-offers", data);
+      return response.data; // 返回新創建的交易報價
+    } catch (error) {
+      handleError(error);
+      throw new Error("創建交易報價失敗");
+    }
+  },
+
+  async getOrderBook(): Promise<any> {
+    try {
+      const response = await api.get("/market/orderbook");
+      return response.data; // 返回訂單簿數據
+    } catch (error) {
+      handleError(error);
+      throw new Error("獲取訂單簿失敗");
     }
   },
 };

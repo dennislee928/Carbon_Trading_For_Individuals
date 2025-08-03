@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import SidebarMenu from "./SidebarMenu";
 import HeaderNotifications from "./HeaderNotifications";
 import { Button } from "./ui/button";
-import { carbonApi } from "../app/services/carbonApi";
+import { carbonTradingApi } from "../app/services/carbonApi";
 import { supabase } from "../services/supabase";
 
 interface AppLayoutProps {
@@ -89,7 +89,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         } else {
           try {
             // 確保使用正確的引入方式
-            const user = await carbonApi.getCurrentUser();
+            const user = await carbonTradingApi.getCurrentUser();
             console.log("獲取到的用戶:", user);
 
             if (user?.id) {
@@ -135,7 +135,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
       }
 
       // 再嘗試傳統 API 登出
-      await carbonApi.logout();
+      await carbonTradingApi.logout();
     } catch (error) {
       console.error("登出錯誤:", error);
     }

@@ -79,14 +79,16 @@ export const signInSolana = async () => {
 
   console.log("檢測到 Solana 錢包:", window.solana);
 
-  // 確保錢包已連接
-  try {
-    console.log("嘗試連接 Solana 錢包...");
-    const connection = await window.solana.connect();
-    console.log("Solana 錢包連接成功:", connection);
-  } catch (error) {
-    console.error("Solana 錢包連接失敗:", error);
-    throw new Error("無法連接到 Solana 錢包，請檢查錢包設定");
+  // 檢查錢包是否已連接
+  if (!window.solana.isConnected) {
+    try {
+      console.log("嘗試連接 Solana 錢包...");
+      const connection = await window.solana.connect();
+      console.log("Solana 錢包連接成功:", connection);
+    } catch (error) {
+      console.error("Solana 錢包連接失敗:", error);
+      throw new Error("無法連接到 Solana 錢包，請檢查錢包設定");
+    }
   }
 
   try {
@@ -107,6 +109,18 @@ export const signInSolana = async () => {
     return data;
   } catch (error) {
     console.error("Solana 登入過程錯誤:", error);
-    throw error;
+
+    // 提供更具體的錯誤訊息
+    if (error instanceof Error) {
+      if (error.message.includes("signature request")) {
+        throw new Error("錢包簽名請求失敗，請確保錢包已正確連接並授權");
+      } else if (error.message.includes("user rejected")) {
+        throw new Error("用戶拒絕了簽名請求");
+      } else {
+        throw error;
+      }
+    } else {
+      throw new Error("Solana 錢包登入失敗，請稍後再試");
+    }
   }
 };

@@ -427,6 +427,13 @@ export const carbonTradingApi = {
     return response.data;
   },
 
+  async logout(): Promise<void> {
+    // 清除本地存儲的 token
+    localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userId");
+  },
+
   // 用戶相關
   async getCurrentUser(): Promise<{ data: User; status: string }> {
     const response = await carbonApi.get("/users/me");

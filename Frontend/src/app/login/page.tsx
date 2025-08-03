@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { Alert, AlertDescription } from "../../components/ui/alert";
-import carbonApi, { LoginRequest } from "../services/carbonApi";
+import { carbonTradingApi, LoginRequest } from "../services/carbonApi";
 import { AuthProvider } from "../components/AuthProvider";
 //
 export default function LoginPage() {
@@ -116,7 +116,7 @@ export default function LoginPage() {
         url: "https://apiv1-carbontrading.dennisleehappy.org/api/v1/auth/login",
         data: formData,
       });
-      const response = await carbonApi.login(formData);
+      const response = await carbonTradingApi.login(formData);
 
       console.log("登入響應:", response);
       setDebugInfo(`登入響應: ${JSON.stringify(response)}`);

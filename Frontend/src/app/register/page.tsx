@@ -15,8 +15,8 @@ import {
   CardTitle,
 } from "../../components/ui/card";
 import { Alert, AlertDescription } from "../../components/ui/alert";
-import { carbonApi, SignupRequest } from "../../services/carbonApi";
-
+import { carbonTradingApi, SignupRequest } from "../../services/carbonApi";
+export const dynamic = "force-dynamic";
 export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState<
@@ -93,7 +93,7 @@ export default function RegisterPage() {
     try {
       // 從formData中排除confirmPassword
       const { confirmPassword, ...signupData } = formData;
-      const response = await carbonApi.register(signupData);
+      const response = await carbonTradingApi.register(signupData);
       setSuccess(true);
       // 註冊成功後延遲導航至登入頁面
       setTimeout(() => {

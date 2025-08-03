@@ -129,106 +129,63 @@ export default function ProfilePage() {
                 <CardDescription>您的個人基本資料</CardDescription>
               </CardHeader>
               <CardContent>
-                {isEditing ? (
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">姓名</Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
-                        placeholder="請輸入姓名"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="address">地址</Label>
-                      <Input
-                        id="address"
-                        value={formData.address}
-                        onChange={(e) =>
-                          setFormData({ ...formData, address: e.target.value })
-                        }
-                        placeholder="請輸入地址"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">電話</Label>
-                      <Input
-                        id="phone"
-                        value={formData.phone}
-                        onChange={(e) =>
-                          setFormData({ ...formData, phone: e.target.value })
-                        }
-                        placeholder="請輸入電話"
-                      />
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button type="submit" className="flex-1">
-                        儲存
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setIsEditing(false)}
-                        className="flex-1"
-                      >
-                        取消
-                      </Button>
-                    </div>
-                  </form>
-                ) : (
-                  <div className="space-y-4">
-                    <div>
-                      <Label className="text-sm font-medium text-gray-500">
-                        電子郵件
-                      </Label>
-                      <p className="text-sm text-gray-900 dark:text-white">
-                        {profile?.email}
-                      </p>
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-500">
-                        姓名
-                      </Label>
-                      <p className="text-sm text-gray-900 dark:text-white">
-                        {profile?.name || "未設定"}
-                      </p>
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-500">
-                        地址
-                      </Label>
-                      <p className="text-sm text-gray-900 dark:text-white">
-                        {profile?.address || "未設定"}
-                      </p>
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium text-gray-500">
-                        電話
-                      </Label>
-                      <p className="text-sm text-gray-900 dark:text-white">
-                        {profile?.phone || "未設定"}
-                      </p>
-                    </div>
-                    <Button
-                      onClick={() => setIsEditing(true)}
-                      className="w-full"
-                    >
-                      編輯資料
-                    </Button>
+                <div className="space-y-4">
+                  <div>
+                    <Label className="text-sm font-medium text-gray-500">
+                      電子郵件
+                    </Label>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      {profile?.email}
+                    </p>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-500">
+                      用戶 ID
+                    </Label>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      {profile?.id}
+                    </p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-500">
+                      角色
+                    </Label>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      {profile?.role || "一般用戶"}
+                    </p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-500">
+                      等級
+                    </Label>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      Level {profile?.level || 0}
+                    </p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-500">
+                      狀態
+                    </Label>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      {profile?.status || "正常"}
+                    </p>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-500">
+                      註冊時間
+                    </Label>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      {profile?.created_at
+                        ? new Date(profile.created_at).toLocaleDateString(
+                            "zh-TW"
+                          )
+                        : "未知"}
+                    </p>
+                  </div>
+                </div>
                 <CardTitle>帳戶資訊</CardTitle>
                 <CardDescription>您的帳戶詳細資訊</CardDescription>
-              </CardHeader>
-              <CardContent>
+
                 <div className="space-y-4">
                   <div>
                     <Label className="text-sm font-medium text-gray-500">

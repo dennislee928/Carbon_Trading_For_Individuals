@@ -1,0 +1,1612 @@
+API 測試報告
+生成時間: 2025/8/3 下午3:36:45
+API URL: https://apiv1-carbontrading.dennisleehappy.org
+測試用戶: 110462011@g.nccu.edu.tw
+========================================
+
+🚀 開始全面API測試...
+
+
+🔐 測試認證API...
+
+📤 請求詳情:
+   Method: POST
+   URL: /api/v1/auth/login
+   Payload: {
+  "email": "110462011@g.nccu.edu.tw",
+  "password": "Popoman1217!"
+}
+   Headers: {
+  "Accept": "application/json, text/plain, */*"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "status": "success",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:33 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; frame-src 'self'; base-uri 'self'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "35f7e1b7-93ff-4332",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "0a86765b-3cc3-48cd-8210-4331ad7a4a99",
+  "cf-cache-status": "DYNAMIC",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=HTxFYjn2TgwC10QCiazqnjVNOlL0CmEw3OIlnEAbzIdVfYM2Q9UsPjNuHjcgKqR5WyfFgpRA5GRPc26rMePHFjOoXXsQvQ8G0gmw44SY%2FweqWO1ruAY1iH1IPFMkk8GlwtA8m8r6XP5sppvz84IMNW3UAZj7ul3b%2Bg%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "969424ff9b5b0f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134813&min_rtt=133455&rtt_var=51015&sent=4&recv=5&lost=0&retrans=0&sent_bytes=2863&recv_bytes=831&delivery_rate=21700&cwnd=225&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=2030&x=0\""
+}
+   用戶ID: 5a319d27-7a90-49ab-bd3e-6e802cef4089
+✅ 登入成功
+
+📤 請求詳情:
+   Method: POST
+   URL: /api/v1/auth/logout
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "status": "success",
+  "message": "Logout successful"
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:34 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; form-action 'self'; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; frame-ancestors 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "d57f2f31-4381-4361",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "288831cb-7a52-462c-bd3b-53cf12924456",
+  "cf-cache-status": "DYNAMIC",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=5Bw8K1NqjE7aU%2F9Fj2Qyi41WwpINVwCIjvSry3%2Fl7guKbi2TnRYLm2wgD5f6f%2FK7UiBV0Ko6J1UXcyDwpYxw3Pmj7cnWEBctEimreGfNzn5RgxSLr7kf%2BIxw2i3a6drAWi0P0ag9FPGYlND0L3jI2eTDR1cYOg8uiA%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694250c6fd40f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134812&min_rtt=133455&rtt_var=38262&sent=9&recv=7&lost=0&retrans=0&sent_bytes=5459&recv_bytes=1393&delivery_rate=42964&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=2315&x=0\""
+}
+✅ 登出成功
+
+👤 測試用戶API...
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/users/me
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "status": "success",
+  "data": {
+    "id": "5a319d27-7a90-49ab-bd3e-6e802cef4089",
+    "email": "pcleegood@gmail.com",
+    "password": "",
+    "level": 0,
+    "name": "",
+    "address": "",
+    "phone": "",
+    "role": "user",
+    "status": "active",
+    "created_at": "2025-08-03T02:31:59.037104Z",
+    "updated_at": "2025-08-03T02:31:59.037104Z",
+    "last_login": "2025-08-03T02:31:59.037104Z"
+  }
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:34 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; default-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "407fe7af-913a-41da",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "7985dd0f-4311-425f-b09b-6367b1e435ad",
+  "cf-cache-status": "BYPASS",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=16qUiaZpz6yoGAAjXaPmXJ6wg0YY7OmcwqK%2B15iDUvc%2Bcq88301Ns4cfWh5kyequ%2BZJ%2BgoapVarC%2BoJnll9%2FMaRCs1AvJXcVAhDea5S1%2FJZySgODCFX5lIO4Av8WlpjkG9bVo1wP1%2FS7muQ0DTSOrwprFYkidjC9fA%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694250e4c540f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=135112&min_rtt=133455&rtt_var=29296&sent=15&recv=9&lost=0&retrans=0&sent_bytes=7460&recv_bytes=1883&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=3105&x=0\""
+}
+   用戶數據: {"status":"success","data":{"id":"5a319d27-7a90-49ab-bd3e-6e802cef4089","email":"pcleegood@gmail.com...
+✅ 獲取當前用戶信息成功
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/users/5a319d27-7a90-49ab-bd3e-6e802cef4089/assets
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 401
+   Response: {
+  "error": "Unauthorized"
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:35 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "frame-ancestors 'self'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; frame-src 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; base-uri 'self'; form-action 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "6337754d-2377-4743",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "8f1e0ebd-b8d0-4579-b428-74e0182e3f34",
+  "cf-cache-status": "BYPASS",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=LpQpnvqNJftlV8QImI4IcgUitF5JYF5YYBxhgchiya31dqV8oQPeTurULStZlpb88c%2FPNKEZ%2BG1WNjEG7jnJNmS9GeCFAdvEkX1rcU8%2FN1CTc%2BFzyGmd9bmLuW1RFzzZshUooUfXddi54C5nugMxwzxsSKh53%2BGtnQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "969425130f530f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=135015&min_rtt=133455&rtt_var=22166&sent=19&recv=11&lost=0&retrans=0&sent_bytes=9631&recv_bytes=2414&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=3339&x=0\""
+}
+⚠️ 跳過: 獲取用戶資產 - 未授權 (401)
+
+🌱 測試碳足跡API...
+
+📤 請求詳情:
+   Method: POST
+   URL: /api/v1/carbon/footprint/calculate
+   Payload: {
+  "activity_type": "transport",
+  "quantity": 100,
+  "unit": "km",
+  "country_code": "tw"
+}
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "emission_amount": 12,
+  "unit": "kg CO2e",
+  "emission_source": "transport",
+  "breakdown": {
+    "CH4": 0.36,
+    "CO2": 11.399999999999999,
+    "N2O": 0.24
+  },
+  "offset_options": [
+    {
+      "project_id": "proj-001",
+      "project_name": "森林保護項目",
+      "project_type": "forestry",
+      "token_amount": 0.012,
+      "price_per_unit": 25,
+      "total_price": 0.3
+    },
+    {
+      "project_id": "proj-002",
+      "project_name": "可再生能源項目",
+      "project_type": "renewable",
+      "token_amount": 0.012,
+      "price_per_unit": 20,
+      "total_price": 0.24
+    }
+  ],
+  "metadata": null
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:35 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "base-uri 'self'; form-action 'self'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; frame-src 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "3c3835c1-687c-4e17",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "6bdf4afc-c1ab-4843-828e-ea84506e9a7c",
+  "cf-cache-status": "DYNAMIC",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=7Uf4G9hCqZG7umj8mQWORdZble8eNEKCr1gGvNs0fOR2bhgn3FD5nSnmhXkjqsAkmRHnnXwVYkmQEa%2BsucghQ2bi9vCaKNwtzlDnSdyrEnDZ6HeLeRQwFsYDveC6df1Nodj4VqKgmLh3AepyCNGJqoEfr286KRazEA%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "969425148a7d0f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134993&min_rtt=133455&rtt_var=16669&sent=23&recv=13&lost=0&retrans=0&sent_bytes=11591&recv_bytes=3051&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=3620&x=0\""
+}
+   排放量: 12 kg CO2e
+✅ 計算碳足跡成功
+
+💹 測試碳市場API...
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/carbon/market/stats
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "total_projects": 10,
+  "total_tokens": 5000,
+  "total_available_tokens": 3500,
+  "total_retired_tokens": 1500,
+  "total_volume_tco2e": 5000,
+  "total_sales_usd": 125000,
+  "average_price_usd": 25,
+  "highest_price_usd": 35,
+  "lowest_price_usd": 15,
+  "top_project_types": [
+    {
+      "label": "森林保護",
+      "value": 40
+    },
+    {
+      "label": "可再生能源",
+      "value": 30
+    },
+    {
+      "label": "甲烷捕捉",
+      "value": 20
+    },
+    {
+      "label": "其他",
+      "value": 10
+    }
+  ],
+  "top_project_locations": [
+    {
+      "label": "巴西",
+      "value": 30
+    },
+    {
+      "label": "印度",
+      "value": 25
+    },
+    {
+      "label": "肯尼亞",
+      "value": 20
+    },
+    {
+      "label": "中國",
+      "value": 15
+    },
+    {
+      "label": "其他",
+      "value": 10
+    }
+  ],
+  "price_history": [
+    {
+      "date": "2022-01",
+      "value": 22.5
+    },
+    {
+      "date": "2022-02",
+      "value": 23
+    },
+    {
+      "date": "2022-03",
+      "value": 24
+    },
+    {
+      "date": "2022-04",
+      "value": 25
+    },
+    {
+      "date": "2022-05",
+      "value": 25.5
+    },
+    {
+      "date": "2022-06",
+      "value": 26
+    }
+  ],
+  "volume_history": [
+    {
+      "date": "2022-01",
+      "value": 800
+    },
+    {
+      "date": "2022-02",
+      "value": 850
+    },
+    {
+      "date": "2022-03",
+      "value": 900
+    },
+    {
+      "date": "2022-04",
+      "value": 950
+    },
+    {
+      "date": "2022-05",
+      "value": 1000
+    },
+    {
+      "date": "2022-06",
+      "value": 1050
+    }
+  ]
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:35 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; frame-src 'self'; object-src 'none'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "c8b4d95d-0db2-468c",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "2075cfdb-4316-4123-b8a7-8e43e146cb2f",
+  "cache-control": "max-age=7200",
+  "cf-cache-status": "HIT",
+  "age": "27309",
+  "last-modified": "Sun, 03 Aug 2025 00:01:26 GMT",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=KVOfcUZwV5R7EpVv7v2GKhWKGbarFmszp2ZK4PC%2BQZVtdW71PzQWVXaRDMx9t3nLSozUjUhBmEXS%2B544NeOXuxixkS3f5BzljFfzjYrf3bBule2OADRb5YYDWTkvdXtQxbYRpQQ1xBOufTJGoAECUuNANAwTma284g%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "969425163e7b0f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=135342&min_rtt=133455&rtt_var=13200&sent=27&recv=15&lost=0&retrans=0&sent_bytes=13791&recv_bytes=3552&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=3779&x=0\""
+}
+✅ 獲取碳市場統計成功
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/carbon/projects
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "projects": [
+    {
+      "id": "proj-001",
+      "name": "亞馬遜森林保護計劃",
+      "description": "保護亞馬遜雨林的碳匯項目",
+      "type": "forestry",
+      "location": "巴西",
+      "region": "",
+      "standard": "VCS",
+      "methodology": "",
+      "start_date": "",
+      "end_date": "",
+      "total_credits": 50000,
+      "available_credits": 30000,
+      "retired_credits": 0,
+      "price_per_credit": 25,
+      "image_url": "",
+      "images": null,
+      "website": "",
+      "verification_body": "",
+      "sdgs": null,
+      "coordinates": "",
+      "vintage": "",
+      "status": "",
+      "available_supply": 0,
+      "price_usdc": 0
+    },
+    {
+      "id": "proj-002",
+      "name": "太陽能發電廠",
+      "description": "大型太陽能發電項目，替代化石燃料",
+      "type": "renewable",
+      "location": "印度",
+      "region": "",
+      "standard": "Gold Standard",
+      "methodology": "",
+      "start_date": "",
+      "end_date": "",
+      "total_credits": 20000,
+      "available_credits": 15000,
+      "retired_credits": 0,
+      "price_per_credit": 20,
+      "image_url": "",
+      "images": null,
+      "website": "",
+      "verification_body": "",
+      "sdgs": null,
+      "coordinates": "",
+      "vintage": "",
+      "status": "",
+      "available_supply": 0,
+      "price_usdc": 0
+    }
+  ],
+  "total": 2,
+  "count": 2,
+  "page": 1,
+  "limit": 10,
+  "page_size": 0
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:35 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; frame-src 'self'; base-uri 'self'; frame-ancestors 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'; form-action 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "d68dfa7c-4c55-4a1e",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "14a2f585-4613-44cd-b44f-4bc931144c54",
+  "cache-control": "max-age=7200",
+  "cf-cache-status": "HIT",
+  "age": "27318",
+  "last-modified": "Sun, 03 Aug 2025 00:01:17 GMT",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=4UA%2F4o2Y7YMPKPxgdbuEiF0WI%2Bpuua5IRRVZB3j3QjZtxsp4m483fGUkaNjWV1CYIRLUK%2BpgEC1OGtUcYxZ46Tv5RH%2FczaVqvZVUZ11akSwl2gAccaE%2FeQ9v%2B%2FonqxGhV2fIzT%2BSEdSQgCvsr9T1%2FCPXrMBbzpXZjg%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694251738b70f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=135184&min_rtt=133455&rtt_var=10216&sent=29&recv=17&lost=0&retrans=0&sent_bytes=16216&recv_bytes=4049&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=3930&x=0\""
+}
+✅ 獲取碳權項目列表成功
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/carbon/projects/proj-001
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "id": "proj-001",
+  "name": "亞馬遜森林保護計劃",
+  "description": "保護亞馬遜雨林的碳匯項目，通過防止森林砍伐和退化來減少碳排放。該項目覆蓋超過10萬公頃的熱帶雨林，每年可減少約50萬噸二氧化碳排放。",
+  "type": "forestry",
+  "location": "巴西",
+  "region": "亞馬遜流域",
+  "standard": "VCS",
+  "methodology": "VM0015",
+  "start_date": "2020-01-01",
+  "end_date": "2050-01-01",
+  "total_credits": 500000,
+  "available_credits": 300000,
+  "retired_credits": 50000,
+  "price_per_credit": 25,
+  "image_url": "",
+  "images": [
+    "https://example.com/amazon1.jpg",
+    "https://example.com/amazon2.jpg"
+  ],
+  "website": "",
+  "verification_body": "",
+  "sdgs": [
+    "SDG 13: Climate Action",
+    "SDG 15: Life on Land"
+  ],
+  "coordinates": "",
+  "vintage": "",
+  "status": "",
+  "available_supply": 0,
+  "price_usdc": 0
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:35 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; frame-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'self'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "a7d3f878-1af4-40ce",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "cf6fdaa7-d78e-4935-826a-5f4c8fb4c384",
+  "cache-control": "max-age=7200",
+  "cf-cache-status": "HIT",
+  "age": "18913",
+  "last-modified": "Sun, 03 Aug 2025 02:21:22 GMT",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=KAejKfrDuyKD8IVGidBhXiGJOIb3YgjAiMIx5w5xS0qhQup%2FdIzVm%2BeuMgIIcu1ne7oWGEmM8N8DIM2hVWxoCSzX2IieTZO1dZgxF0kC1jUe4dt7M3vPAYAH%2FEIB3yrIAnOf4DmFevR4Aa37D4v3Y7WW3O7c9Dz0Aw%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "969425184b260f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134971&min_rtt=133219&rtt_var=8087&sent=32&recv=19&lost=0&retrans=0&sent_bytes=18735&recv_bytes=4555&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=4107&x=0\""
+}
+✅ 獲取碳權項目詳情成功
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/carbon/tokens
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "tokens": [
+    {
+      "id": "token-001",
+      "name": "亞馬遜森林碳權",
+      "symbol": "AMZC",
+      "token_type": "VCS",
+      "project_id": "proj-001",
+      "project_name": "亞馬遜森林保護計劃",
+      "vintage": "2022",
+      "quantity": 100,
+      "price_per_unit": 25,
+      "total_price": 2500,
+      "standard": "VCS",
+      "status": "available",
+      "seller": "",
+      "region": "",
+      "category": "",
+      "supply_total": 1000,
+      "supply_remaining": 900,
+      "available_since": "",
+      "expiry_date": "",
+      "certificate_url": "",
+      "price_usdc": 0
+    },
+    {
+      "id": "token-002",
+      "name": "印度太陽能碳權",
+      "symbol": "INSC",
+      "token_type": "GS",
+      "project_id": "proj-002",
+      "project_name": "太陽能發電廠",
+      "vintage": "2022",
+      "quantity": 50,
+      "price_per_unit": 20,
+      "total_price": 1000,
+      "standard": "Gold Standard",
+      "status": "available",
+      "seller": "",
+      "region": "",
+      "category": "",
+      "supply_total": 500,
+      "supply_remaining": 450,
+      "available_since": "",
+      "expiry_date": "",
+      "certificate_url": "",
+      "price_usdc": 0
+    }
+  ],
+  "total": 2,
+  "count": 2,
+  "page": 1,
+  "limit": 10,
+  "page_size": 0
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:36 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "cf-ray": "969425195d930f19-LAX",
+  "content-security-policy": "frame-ancestors 'self'; default-src 'self'; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'; form-action 'self'; frame-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "3e41c364-b206-4892",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "a7828e1e-196c-456b-8734-654edac0996d",
+  "cache-control": "max-age=7200",
+  "cf-cache-status": "HIT",
+  "age": "27315",
+  "last-modified": "Sun, 03 Aug 2025 00:01:21 GMT",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=UpfJLhyKkrrONyPBvGQvpFNRf5WJApoZWuojsl9tDsWkErT42ui2U76Xh6CY5dfnGDh9dSLkFE12z2UB4g%2FrNNUdS%2F%2FFliFV0JQI10CWG%2B8oOdaKPgDt4l%2F8UJfN5a5SSLAzt05BYxtUdFTIxOWHates0o6EmJ9%2Bhw%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134855&min_rtt=133219&rtt_var=6298&sent=34&recv=21&lost=0&retrans=0&sent_bytes=21324&recv_bytes=5050&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=4290&x=0\""
+}
+✅ 獲取碳權代幣列表成功
+
+♻️ 測試碳權抵消API...
+
+📤 請求詳情:
+   Method: POST
+   URL: /api/v1/carbon/offset/simulate
+   Payload: {
+  "user_id": "5a319d27-7a90-49ab-bd3e-6e802cef4089",
+  "project_id": "proj-001",
+  "token_amount": 1.5
+}
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "success": true,
+  "project_id": "proj-001",
+  "project_name": "亞馬遜森林保護計劃",
+  "token_amount": 1.5,
+  "price_per_token": 25,
+  "total_price_usd": 37.5,
+  "estimated_fees": 0.75,
+  "final_price_usd": 38.25,
+  "transaction_id": "sim-5a319d27-7a90-49ab-bd3e-6e802cef4089-proj-001",
+  "offset_equivalent": {
+    "car_km": 6000,
+    "flights": 3,
+    "tree_months": 180
+  }
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:36 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; frame-src 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "680d0032-d77c-4f8a",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "3ab8b10d-8c1a-4cdd-8883-859e03b83dba",
+  "cf-cache-status": "DYNAMIC",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=yI2JjJInfsrMADMYWmbU4gkx5fqdpw4g3KGBI1Zcn4w0oWSODFTSuDom3AQ0b%2FxGVbATkt9fYLubg99OAvgAwuyrYQhy%2Fzwl%2FBagKqeNTKcgbCIy00RVjM2MbxPRaaEmAPoCRUMx5w2PpFtCaiyFzTz4MoS%2Bwz20cA%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694251a68210f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134683&min_rtt=133219&rtt_var=5067&sent=38&recv=23&lost=0&retrans=0&sent_bytes=23786&recv_bytes=5700&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=4504&x=0\""
+}
+✅ 模擬碳權抵消購買成功
+
+🏆 測試碳權API...
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/carbon/projects
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "projects": [
+    {
+      "id": "proj-001",
+      "name": "亞馬遜森林保護計劃",
+      "description": "保護亞馬遜雨林的碳匯項目",
+      "type": "forestry",
+      "location": "巴西",
+      "region": "",
+      "standard": "VCS",
+      "methodology": "",
+      "start_date": "",
+      "end_date": "",
+      "total_credits": 50000,
+      "available_credits": 30000,
+      "retired_credits": 0,
+      "price_per_credit": 25,
+      "image_url": "",
+      "images": null,
+      "website": "",
+      "verification_body": "",
+      "sdgs": null,
+      "coordinates": "",
+      "vintage": "",
+      "status": "",
+      "available_supply": 0,
+      "price_usdc": 0
+    },
+    {
+      "id": "proj-002",
+      "name": "太陽能發電廠",
+      "description": "大型太陽能發電項目，替代化石燃料",
+      "type": "renewable",
+      "location": "印度",
+      "region": "",
+      "standard": "Gold Standard",
+      "methodology": "",
+      "start_date": "",
+      "end_date": "",
+      "total_credits": 20000,
+      "available_credits": 15000,
+      "retired_credits": 0,
+      "price_per_credit": 20,
+      "image_url": "",
+      "images": null,
+      "website": "",
+      "verification_body": "",
+      "sdgs": null,
+      "coordinates": "",
+      "vintage": "",
+      "status": "",
+      "available_supply": 0,
+      "price_usdc": 0
+    }
+  ],
+  "total": 2,
+  "count": 2,
+  "page": 1,
+  "limit": 10,
+  "page_size": 0
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:36 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; frame-src 'self'; base-uri 'self'; frame-ancestors 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'; form-action 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "d68dfa7c-4c55-4a1e",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "14a2f585-4613-44cd-b44f-4bc931144c54",
+  "cache-control": "max-age=7200",
+  "cf-cache-status": "HIT",
+  "age": "27319",
+  "last-modified": "Sun, 03 Aug 2025 00:01:17 GMT",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=%2F1hGWuHyz7OU9DqjlqV4%2BJ1Bre5TxYt%2F6RQqjNLRlZ0xNh55nSMPfPCzYZC4OTi2Fp%2BLqrxM6YVZGZaHxtstAOBGPZxIpIv8lmvPKUvNuWMpm%2FC0kXLJoSIJVxPQCb5oTC5TIMud4POQGmsrp2WE1x8uw89Yso2T5g%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694251beb740f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134763&min_rtt=133219&rtt_var=3961&sent=43&recv=25&lost=0&retrans=0&sent_bytes=25986&recv_bytes=6197&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=4693&x=0\""
+}
+✅ 獲取碳權列表成功
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/carbon/projects/proj-001
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "id": "proj-001",
+  "name": "亞馬遜森林保護計劃",
+  "description": "保護亞馬遜雨林的碳匯項目，通過防止森林砍伐和退化來減少碳排放。該項目覆蓋超過10萬公頃的熱帶雨林，每年可減少約50萬噸二氧化碳排放。",
+  "type": "forestry",
+  "location": "巴西",
+  "region": "亞馬遜流域",
+  "standard": "VCS",
+  "methodology": "VM0015",
+  "start_date": "2020-01-01",
+  "end_date": "2050-01-01",
+  "total_credits": 500000,
+  "available_credits": 300000,
+  "retired_credits": 50000,
+  "price_per_credit": 25,
+  "image_url": "",
+  "images": [
+    "https://example.com/amazon1.jpg",
+    "https://example.com/amazon2.jpg"
+  ],
+  "website": "",
+  "verification_body": "",
+  "sdgs": [
+    "SDG 13: Climate Action",
+    "SDG 15: Life on Land"
+  ],
+  "coordinates": "",
+  "vintage": "",
+  "status": "",
+  "available_supply": 0,
+  "price_usdc": 0
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:36 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; frame-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'self'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "a7d3f878-1af4-40ce",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "cf6fdaa7-d78e-4935-826a-5f4c8fb4c384",
+  "cache-control": "max-age=7200",
+  "cf-cache-status": "HIT",
+  "age": "18914",
+  "last-modified": "Sun, 03 Aug 2025 02:21:22 GMT",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=zvtWlLsvdxQEr5rqejCJanKHr4V9qVk%2FsihXfTxP%2FUdn0eKg01VSxK%2Fb590U%2FS1C%2F4wCB9FvaBVHVz8GrUTXDZAkTEfNv0ju6BS%2BZRAICmWl0luHYBxgYGcMI7Ly54R9eQBN0w3LTZgap5GjAYW2mf4j0YnFUGsK3g%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694251d0d9f0f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134668&min_rtt=133219&rtt_var=3161&sent=46&recv=27&lost=0&retrans=0&sent_bytes=28496&recv_bytes=6703&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=4867&x=0\""
+}
+✅ 獲取碳權詳情成功
+
+🛒 測試市場API...
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/market/orderbook
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "status": "success",
+  "data": {
+    "buy_orders": [
+      {
+        "id": "b4586239-e7bb-4897-bf1c-fcd8dfd26e45",
+        "order_type": "buy",
+        "user_email": "5a319d27-7a90-49ab-bd3e-6e802cef4089",
+        "credit_type": "VCS",
+        "vintage_year": 2022,
+        "project_type": "forestry",
+        "quantity": 1,
+        "price": 25,
+        "created_at": "2025-08-03T03:20:51.950968Z"
+      },
+      {
+        "id": "bb0e8400-e29b-41d4-a716-446655440001",
+        "order_type": "buy",
+        "user_email": "550e8400-e29b-41d4-a716-446655440003",
+        "credit_type": "VCS",
+        "vintage_year": 2022,
+        "project_type": "風力發電",
+        "quantity": 5,
+        "price": 24,
+        "created_at": "2025-08-02T12:45:03.700319Z"
+      },
+      {
+        "id": "bb0e8400-e29b-41d4-a716-446655440003",
+        "order_type": "buy",
+        "user_email": "550e8400-e29b-41d4-a716-446655440006",
+        "credit_type": "CDM",
+        "vintage_year": 2023,
+        "project_type": "生質能源",
+        "quantity": 3,
+        "price": 15,
+        "created_at": "2025-08-02T12:45:03.700319Z"
+      }
+    ],
+    "sell_orders": [
+      {
+        "id": "bb0e8400-e29b-41d4-a716-446655440002",
+        "order_type": "sell",
+        "user_email": "550e8400-e29b-41d4-a716-446655440004",
+        "credit_type": "GS",
+        "vintage_year": 2023,
+        "project_type": "太陽能",
+        "quantity": 2,
+        "price": 31.5,
+        "created_at": "2025-08-02T12:45:03.700319Z"
+      }
+    ]
+  }
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:37 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "form-action 'self'; frame-ancestors 'self'; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data: https: blob:; object-src 'none'; base-uri 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; frame-src 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "f1ff7987-3d9c-475f",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "d53c5998-9e8a-4c26-bb33-d2a9745a98e8",
+  "cf-cache-status": "BYPASS",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=j8vbIVLR3vGePa0X5g4JDl%2FAgVBf45NBUzatkgm7yRtAgYbK6hpWPGh8D8f1NfWeMHGSwdDkBUztgiI8b73968CX0T2y%2FzCJYctZ7ZWAB%2FnpoEAP4%2BoO8UtSenSevnZezgc7SlCJMBrLgHws1M%2BV6N3dmLqeK4YXrA%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694251e0fe80f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134598&min_rtt=133219&rtt_var=2511&sent=49&recv=29&lost=0&retrans=0&sent_bytes=31091&recv_bytes=7201&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=5675&x=0\""
+}
+✅ 獲取訂單簿成功
+
+📤 請求詳情:
+   Method: POST
+   URL: /api/v1/market/trade-offers
+   Payload: {
+  "order_type": "sell",
+  "credit_type": "VCS",
+  "vintage_year": 2022,
+  "project_type": "forestry",
+  "quantity": 1,
+  "price": 25
+}
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 422
+   Response: {
+  "error": "Insufficient asset quantity"
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:38 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data: https: blob:; frame-src 'self'; form-action 'self'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "343ec5c7-eca5-472e",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "48da08c0-d215-423b-8ca0-a8b2e55f025d",
+  "cf-cache-status": "DYNAMIC",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=InWMn48tVe%2BXcmOyz%2FO5KyOUU0yu5uzYudkf%2BaXljzrmPO0tZBmtxwtx%2BAABLG3h25BO3U7ke%2BqVcdSUfgj98X7EPLCjQYNtUZyL6uk2qLvSIx7fgTPgngw5tKZ%2BkX1X5pugh8d7ZrTgS1re2yPIkEbxhsSgb2W3xQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "969425231aa30f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134409&min_rtt=132917&rtt_var=2261&sent=53&recv=31&lost=0&retrans=0&sent_bytes=33441&recv_bytes=7867&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=6353&x=0\""
+}
+⚠️ 跳過: 創建交易報價 - 狀態碼: 422
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/carbon/projects
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "projects": [
+    {
+      "id": "proj-001",
+      "name": "亞馬遜森林保護計劃",
+      "description": "保護亞馬遜雨林的碳匯項目",
+      "type": "forestry",
+      "location": "巴西",
+      "region": "",
+      "standard": "VCS",
+      "methodology": "",
+      "start_date": "",
+      "end_date": "",
+      "total_credits": 50000,
+      "available_credits": 30000,
+      "retired_credits": 0,
+      "price_per_credit": 25,
+      "image_url": "",
+      "images": null,
+      "website": "",
+      "verification_body": "",
+      "sdgs": null,
+      "coordinates": "",
+      "vintage": "",
+      "status": "",
+      "available_supply": 0,
+      "price_usdc": 0
+    },
+    {
+      "id": "proj-002",
+      "name": "太陽能發電廠",
+      "description": "大型太陽能發電項目，替代化石燃料",
+      "type": "renewable",
+      "location": "印度",
+      "region": "",
+      "standard": "Gold Standard",
+      "methodology": "",
+      "start_date": "",
+      "end_date": "",
+      "total_credits": 20000,
+      "available_credits": 15000,
+      "retired_credits": 0,
+      "price_per_credit": 20,
+      "image_url": "",
+      "images": null,
+      "website": "",
+      "verification_body": "",
+      "sdgs": null,
+      "coordinates": "",
+      "vintage": "",
+      "status": "",
+      "available_supply": 0,
+      "price_usdc": 0
+    }
+  ],
+  "total": 2,
+  "count": 2,
+  "page": 1,
+  "limit": 10,
+  "page_size": 0
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:38 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; frame-src 'self'; base-uri 'self'; frame-ancestors 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'; form-action 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "d68dfa7c-4c55-4a1e",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "14a2f585-4613-44cd-b44f-4bc931144c54",
+  "cache-control": "max-age=7200",
+  "cf-cache-status": "HIT",
+  "age": "27321",
+  "last-modified": "Sun, 03 Aug 2025 00:01:17 GMT",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=5g2F9waEEqPXzPBXJhTWt2F6nKYscgh%2F4MdKEDA%2FfOiuumAffwe9o7rJW5OBJXNlsGa8JitXygx5x9HXHXY1tUqG7fKOmE90ZTgA5%2FQzGbeG9cS1BOc%2BaP90LqelOBDI1WMvzjesS5lOavt0jRz22HkVz%2BJuFgzS9g%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "969425275bb20f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134702&min_rtt=132917&rtt_var=2281&sent=57&recv=33&lost=0&retrans=0&sent_bytes=35362&recv_bytes=8364&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=6512&x=0\""
+}
+
+📤 請求詳情:
+   Method: POST
+   URL: /api/v1/market/purchase
+   Payload: {
+  "credit_id": "proj-001",
+  "quantity": 1
+}
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 400
+   Response: {
+  "error": "Invalid credit ID format"
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:38 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "frame-src 'self'; form-action 'self'; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "b5e54e91-2c34-440b",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "5b4f3c80-749a-4a78-a785-f8c8df44d784",
+  "cf-cache-status": "DYNAMIC",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=w%2FyORj%2BXqUkhs%2FAkP6GNn6o2dVmbWLGtBBlR3LR9%2BvG2ZDtyoH76QaRybrs%2BVg8RvuIX19n00v4%2BQZObsCl9Rpfm%2BeTYbamYXFDN9GXaHJg%2F63zyOXBQnCyKxuMlm8JXI0UOlkJS13xOW1S2YdQ%2F2JRBPcwwnbS38w%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "969425284df00f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134723&min_rtt=132917&rtt_var=1753&sent=61&recv=35&lost=0&retrans=0&sent_bytes=37850&recv_bytes=8951&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=6732&x=0\""
+}
+⚠️ 跳過: 購買碳權 - 狀態碼: 400
+
+🔔 測試通知API...
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/notifications/
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "status": "success",
+  "data": {
+    "notifications": null,
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 0
+    }
+  }
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:39 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; frame-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "91256cb0-6b7e-41dd",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "058a49b6-e107-4f9b-b581-f9edf77e8ded",
+  "cf-cache-status": "BYPASS",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=pbC%2FQ7NjNkfI6TEHn%2BiPh1a6fK5tdUXBlbxs41mNhx0RTwfBuXN1j3cdAnr0PTiQvEqJnB4D4jdKBUK7B3%2Bu12agWls7vRlsBKnS0yrHMUhX9QphFDgEGQ3fVQ%2F6ZvhY%2F2N3M0mW3O7chAwX5Twcq276aO96O38e%2FQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "96942529a9140f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134604&min_rtt=132917&rtt_var=1552&sent=65&recv=37&lost=0&retrans=0&sent_bytes=39765&recv_bytes=9447&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=8088&x=0\""
+}
+✅ 獲取通知列表成功
+
+📊 測試統計API...
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/stats/overview
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "status": "success",
+  "data": {
+    "total_users": 31,
+    "active_users": 31,
+    "total_trades": 63,
+    "completed_trades": 40,
+    "total_points": 35038,
+    "total_carbon_credits": 34,
+    "new_users_today": 1,
+    "trades_today": 23
+  }
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:41 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; frame-src 'self'; base-uri 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'; form-action 'self'; default-src 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "b86eb2c4-9b03-41cf",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "2ded761b-b826-4114-9f53-c0e5882b3626",
+  "cf-cache-status": "BYPASS",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=LNERGyFhpLsewwEMcrQxzXMMzw2v6ZFZn0aS4pI%2B1Gwg19FpkJCVJPT7zOAlOQy5ONzn1XwqZBcAwcTfvYiATOGQyCtxbzMD%2BBjMpt8i9eVzXWxFgUNz%2Be%2BlA5c1lLmVS2CzMu3FNfZ7hD0eOC9NuGtbDYTUDW9QaQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "969425322c8e0f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134482&min_rtt=132917&rtt_var=1408&sent=69&recv=39&lost=0&retrans=0&sent_bytes=41798&recv_bytes=9943&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=9975&x=0\""
+}
+✅ 獲取概覽統計成功
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/stats/trades
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "status": "success",
+  "data": {
+    "by_status": [
+      {
+        "status": "completed",
+        "count": 40,
+        "total_value": 8118.3897
+      },
+      {
+        "status": "pending",
+        "count": 23,
+        "total_value": 575
+      }
+    ],
+    "daily_trades": [
+      {
+        "date": "2025-07-28",
+        "count": 0
+      },
+      {
+        "date": "2025-07-29",
+        "count": 0
+      },
+      {
+        "date": "2025-07-30",
+        "count": 0
+      },
+      {
+        "date": "2025-07-31",
+        "count": 0
+      },
+      {
+        "date": "2025-08-01",
+        "count": 0
+      },
+      {
+        "date": "2025-08-02",
+        "count": 40
+      },
+      {
+        "date": "2025-08-03",
+        "count": 23
+      }
+    ],
+    "total_volume": 8118.3897
+  }
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:43 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; frame-src 'self'; object-src 'none'; base-uri 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; form-action 'self'; frame-ancestors 'self'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "312c2e07-4c0d-4900",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "3a6c8db6-56f6-43b9-b1fb-b2bd624acc58",
+  "cf-cache-status": "BYPASS",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=%2BEfB5Y2F5BqhO5qJr5PgxHfq9XD564zDVGjvDhNAwgyKxAzH4Nv%2FPSK6Wtb4YJijOMudF8V4DCLCfKrYKXt7pMt0FhL7141kKv14xRFJbJwyQjRELB0BWcj1NaPl0JD8yGIrUDZL1XPFkL3XPKdSMmMNFWzkxyjWYQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694253dfe940f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134738&min_rtt=132917&rtt_var=1568&sent=73&recv=41&lost=0&retrans=0&sent_bytes=43870&recv_bytes=10437&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=11323&x=0\""
+}
+✅ 獲取交易統計成功
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/stats/users
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "status": "success",
+  "data": {
+    "by_role": [
+      {
+        "role": "trader",
+        "count": 1
+      },
+      {
+        "role": "premium",
+        "count": 1
+      },
+      {
+        "role": "admin",
+        "count": 2
+      },
+      {
+        "role": "user",
+        "count": 27
+      }
+    ],
+    "by_status": [
+      {
+        "status": "active",
+        "count": 31
+      }
+    ],
+    "daily_registrations": [
+      {
+        "date": "2025-07-28",
+        "count": 0
+      },
+      {
+        "date": "2025-07-29",
+        "count": 0
+      },
+      {
+        "date": "2025-07-30",
+        "count": 0
+      },
+      {
+        "date": "2025-07-31",
+        "count": 0
+      },
+      {
+        "date": "2025-08-01",
+        "count": 0
+      },
+      {
+        "date": "2025-08-02",
+        "count": 30
+      },
+      {
+        "date": "2025-08-03",
+        "count": 1
+      }
+    ]
+  }
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:44 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; frame-src 'self'; form-action 'self'; frame-ancestors 'self'; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; object-src 'none'; base-uri 'self'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "d871b357-aea9-40b9",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "90c4011a-034d-42b0-9c1a-e741023e0652",
+  "cf-cache-status": "BYPASS",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=IL1IGuJAvvddmELkLRu4ottSgErn%2B66JLYYFk%2FV0%2BFry2hRb6GJCpHeK4SOjGUcaMhKat5nUztAmWBZnCfffyubLV1FyVz4hRWKpq49iKV48palpXObtAn3%2FJC2f6GiGnkle%2BSTO2AaCVUjsmF3cq3EkoHZdmuKUxQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694254659270f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134798&min_rtt=132917&rtt_var=1295&sent=78&recv=43&lost=0&retrans=0&sent_bytes=46005&recv_bytes=10930&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=12686&x=0\""
+}
+✅ 獲取用戶統計成功
+
+💰 測試交易API...
+
+📤 請求詳情:
+   Method: POST
+   URL: /api/v1/trades/create
+   Payload: {
+  "credit_type": "VCS",
+  "vintage_year": 2022,
+  "project_type": "forestry",
+  "quantity": 1,
+  "price": 25
+}
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: {
+  "id": "7d95479c-7d3a-4483-915b-b380035e9dc5",
+  "user_id": "5a319d27-7a90-49ab-bd3e-6e802cef4089",
+  "credit_type": "VCS",
+  "vintage_year": 2022,
+  "project_type": "forestry",
+  "order_type": "buy",
+  "quantity": 1,
+  "price": 25,
+  "total_amount": 25,
+  "status": "pending",
+  "created_at": "2025-08-03T07:36:44.777451617Z",
+  "updated_at": "2025-08-03T07:36:44.777451617Z"
+}
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:45 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; default-src 'self'; img-src 'self' data: https: blob:; connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; frame-src 'self'; object-src 'none'",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "ae747c24-604d-4325",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "04a0f9b6-02c5-4616-8a67-09f65f6041e5",
+  "cf-cache-status": "DYNAMIC",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=UfbKzsuWaSvZjOet57n1%2FlYzAxZKVC2JoLKX5VIdU04T8y%2BPijsm1pNzxPxf3huxkogTVFZQFHW%2FGdGriVmx9Pwv9mb8wkCCe9W5n82fLMvLby7roGcf799rQ03cdTbive%2Fp%2FH2qi2esrR%2BKF6iyypM%2BwM8PkTdUHQ%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "9694254edc3f0f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=134699&min_rtt=132917&rtt_var=1169&sent=82&recv=45&lost=0&retrans=0&sent_bytes=48125&recv_bytes=11569&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=13313&x=0\""
+}
+✅ 創建交易成功
+
+📤 請求詳情:
+   Method: GET
+   URL: /api/v1/trades/orders/me
+   Headers: {
+  "Accept": "application/json, text/plain, */*",
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTQyOTI5OTMsImlhdCI6MTc1NDIwNjU5MywiaXNzIjoiY2FyYm9uLXRyYWRlLWFwaSIsInVzZXJfaWQiOiI1YTMxOWQyNy03YTkwLTQ5YWItYmQzZS02ZTgwMmNlZjQwODkifQ.obCUS-5GIeZRchR_zAoIZMVjP58NGBH2b4Tnj_OtRnw"
+}
+
+📥 響應詳情:
+   Status: 200
+   Response: null
+   Response Headers: {
+  "date": "Sun, 03 Aug 2025 07:36:45 GMT",
+  "content-type": "application/json; charset=utf-8",
+  "transfer-encoding": "chunked",
+  "connection": "keep-alive",
+  "content-security-policy": "connect-src 'self' https://ymgxleuooeytcusgbson.supabase.co https://api.carboninterface.com; frame-src 'self'; frame-ancestors 'self'; img-src 'self' data: https: blob:; object-src 'none'; base-uri 'self'; form-action 'self'; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net",
+  "permissions-policy": "geolocation=(), microphone=(), camera=(), payment=()",
+  "rndr-id": "4700a668-d8ce-4261",
+  "strict-transport-security": "max-age=15552000; includeSubDomains; preload",
+  "vary": "Accept-Encoding",
+  "x-render-origin-server": "Render",
+  "x-request-id": "066b324a-16e5-4e53-b2e5-0a828b2db638",
+  "cf-cache-status": "BYPASS",
+  "report-to": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=EpTrJSbkkTV08D0Ipo4yjZG0g18ZnHV8RKXEhwHEzPr2ULCQo0nnS4V4duNkg6LgTNIfT8HjzhvQXW%2BsqG65g%2BMbG9e4pRCn4S2mfx5VJtdKfCbE9vTYpZM9fwY48KCYLSdb93%2B18mgGPUabap7bmro1vL4CgDa%2B%2Fw%3D%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+  "nel": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}",
+  "speculation-rules": "\"/cdn-cgi/speculation\"",
+  "expect-ct": "max-age=86400, enforce",
+  "referrer-policy": "same-origin",
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "x-xss-protection": "1; mode=block",
+  "server": "cloudflare",
+  "cf-ray": "96942552ed9a0f19-LAX",
+  "alt-svc": "h3=\":443\"; ma=86400",
+  "server-timing": "cfL4;desc=\"?proto=TCP&rtt=136597&min_rtt=132917&rtt_var=4673&sent=86&recv=47&lost=0&retrans=0&sent_bytes=50234&recv_bytes=12067&delivery_rate=52766&cwnd=229&unsent_bytes=0&cid=ba0b1d1d3b5f5573&ts=13837&x=0\""
+}
+✅ 獲取交易訂單成功
+
+📊 測試結果摘要:
+   通過: 18
+   失敗: 0
+   跳過: 3
+   總計: 21
+
+🎉 所有測試通過!
+
+========================================
+測試完成時間: 2025/8/3 下午3:36:45
+總計測試: 21
+通過: 18
+失敗: 0
+跳過: 3
+成功率: 85.71%

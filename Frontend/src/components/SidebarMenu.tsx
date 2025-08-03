@@ -89,20 +89,10 @@ export default function SidebarMenu() {
       path: "/custom-mappings",
       icon: <Map className="h-5 w-5" />,
     },
-    { name: "能源", path: "/energy", icon: <Zap className="h-5 w-5" /> },
+
     {
-      name: "貨運",
-      path: "/freight",
-      icon: <Truck className="h-5 w-5" />,
-    },
-    {
-      name: "採購",
-      path: "/procurement",
-      icon: <Briefcase className="h-5 w-5" />,
-    },
-    {
-      name: "旅行",
-      path: "/travel",
+      name: "綜合計算",
+      path: "/calculator-unified",
       icon: <Globe className="h-5 w-5" />,
     },
   ];

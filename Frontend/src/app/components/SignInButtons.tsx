@@ -1,6 +1,10 @@
 "use client";
 
-import { signInOAuth, signInSolana, isSupabaseConfigured } from "@/services/supabase";
+import {
+  signInOAuth,
+  signInSolana,
+  isSupabaseConfigured,
+} from "@/services/supabase";
 import { Button } from "@/components/ui/button";
 import { Github, LucideIcon, Wallet, Globe, AlertCircle } from "lucide-react";
 import { useState } from "react";
@@ -12,7 +16,12 @@ interface SignInButtonProps {
   disabled?: boolean;
 }
 
-const SignInButton = ({ label, Icon, onClick, disabled }: SignInButtonProps) => (
+const SignInButton = ({
+  label,
+  Icon,
+  onClick,
+  disabled,
+}: SignInButtonProps) => (
   <Button
     className="w-full justify-start gap-2"
     variant="outline"
@@ -30,7 +39,7 @@ export default function SignInButtons() {
   const handleSignIn = async (provider: "github" | "google" | "solana") => {
     try {
       setError(null);
-      
+
       if (!isSupabaseConfigured) {
         setError("Supabase 環境變數未設定。請聯繫管理員配置登入功能。");
         return;
@@ -55,7 +64,7 @@ export default function SignInButtons() {
           <p className="text-sm text-red-700">{error}</p>
         </div>
       )}
-      
+
       <div className="space-y-2">
         <SignInButton
           label="使用 GitHub 登入"

@@ -11,15 +11,20 @@
 
 **修復方案：**
 
-- 更新 `supabase.ts` 中的 `signInSolana` 方法，返回錯誤訊息而不是嘗試調用不支援的提供者
-- 更新 `SignInButtons.tsx`，將 Solana 按鈕標記為「即將推出」並禁用
-- 創建了 `auth/callback/page.tsx` 來處理 OAuth 回調
+- **修正錯誤認知**：Supabase 確實支援 Solana 錢包登入
+- **更新 API 方法**：根據 [Supabase Web3 文檔](https://supabase.com/docs/guides/auth/auth-web3)，使用 `signInWithWeb3` 而不是 `signInWithOAuth`
+- 更新 `supabase.ts` 中的 `signInSolana` 方法，使用正確的 Web3 認證配置
+- 添加 Solana 錢包類型定義 (`types/solana.d.ts`)
+- 更新 `SignInButtons.tsx`，啟用 Solana 登入按鈕
+- 創建了 `auth/callback/page.tsx` 來處理認證回調
+- 創建了 `SOLANA_SETUP_GUIDE.md` 詳細說明如何在 Supabase Dashboard 中配置 Web3 錢包登入
 
 **相關文件：**
 
 - `Frontend/src/services/supabase.ts`
 - `Frontend/src/app/components/SignInButtons.tsx`
 - `Frontend/src/app/auth/callback/page.tsx`
+- `Frontend/SOLANA_SETUP_GUIDE.md`
 
 ### 2. Layout.tsx 和 ClientLayout.tsx 衝突 ✅
 

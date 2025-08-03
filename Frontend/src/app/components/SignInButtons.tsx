@@ -79,10 +79,10 @@ export default function SignInButtons() {
           disabled={!isSupabaseConfigured}
         />
         <SignInButton
-          label="使用 Solana Wallet 登入 (即將推出)"
+          label="使用 Solana Wallet 登入"
           Icon={Wallet}
           onClick={() => handleSignIn("solana")}
-          disabled={true}
+          disabled={!isSupabaseConfigured}
         />
       </div>
 

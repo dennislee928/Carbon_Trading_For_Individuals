@@ -55,6 +55,23 @@ export const signInSolana = async () => {
     );
   }
 
-  // Solana 提供者目前不被 Supabase 支援，顯示錯誤訊息
-  throw new Error("Solana 錢包登入目前不支援，請使用 GitHub 或 Google 登入");
+  // 檢查是否支援 Solana 錢包
+  if (!window.solana) {
+    throw new Error("請安裝 Solana 錢包擴展（如 Phantom、Solflare 等）");
+  }
+
+  // 確保錢包已連接
+  try {
+    await window.solana.connect();
+  } catch (error) {
+    throw new Error("無法連接到 Solana 錢包，請檢查錢包設定");
+  }
+
+  const { data, error } = await supabase.auth.signInWithWeb3({
+    chain: 'solana',
+    statement: '我同意碳交易平台的服務條款和隱私政策',
+  });
+
+  if (error) throw error;
+  return data;
 };

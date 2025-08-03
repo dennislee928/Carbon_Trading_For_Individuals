@@ -69,27 +69,16 @@ export default function SidebarMenu() {
       path: "/trades",
       icon: <BarChart2 className="h-5 w-5" />,
     },
-    {
-      name: "自動駕駛",
-      path: "/autopilot",
-      icon: <Wind className="h-5 w-5" />,
-    },
-    {
-      name: "CBAM",
-      path: "/cbam",
-      icon: <Activity className="h-5 w-5" />,
-    },
-
-    {
-      name: "自定義映射",
-      path: "/custom-mappings",
-      icon: <Map className="h-5 w-5" />,
-    },
 
     {
       name: "綜合計算",
       path: "/calculator-unified",
       icon: <Globe className="h-5 w-5" />,
+    },
+    {
+      name: "進階計算",
+      path: "/calculator-advanced",
+      icon: <Wind className="h-5 w-5" />,
     },
   ];
 

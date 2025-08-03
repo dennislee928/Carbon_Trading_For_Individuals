@@ -55,6 +55,12 @@ export default function Home() {
                 碳足跡計算器
               </Link>
               <Link
+                href="/calculator-advanced"
+                className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 text-sm font-medium transition-colors"
+              >
+                進階計算器
+              </Link>
+              <Link
                 href="/market"
                 className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 text-sm font-medium transition-colors"
               >

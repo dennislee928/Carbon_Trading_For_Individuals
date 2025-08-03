@@ -28,6 +28,15 @@ import {
   Leaf,
   TrendingUp,
   BookOpen,
+  BarChart3,
+  TrendingDown,
+  DollarSign,
+  Activity,
+  Users,
+  Globe,
+  Calendar,
+  ArrowUpRight,
+  ArrowDownRight,
 } from "lucide-react";
 import ErrorBanner from "../../components/ErrorBanner";
 import LocalModeIndicator from "../../components/LocalModeIndicator";
@@ -47,8 +56,9 @@ export default function MarketPage() {
   const [purchaseResult, setPurchaseResult] =
     useState<CarbonOffsetPurchase | null>(null);
   const [activeTab, setActiveTab] = useState<
-    "credits" | "orderbook" | "projects" | "tokens"
+    "credits" | "orderbook" | "projects" | "tokens" | "stats"
   >("credits");
+  const [timeRange, setTimeRange] = useState("7d");
 
   useEffect(() => {
     fetchCarbonCredits();
@@ -295,6 +305,17 @@ export default function MarketPage() {
             <BookOpen className="h-4 w-4 inline mr-2" />
             訂單簿
           </button>
+          <button
+            onClick={() => setActiveTab("stats")}
+            className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              activeTab === "stats"
+                ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm"
+                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            }`}
+          >
+            <BarChart3 className="h-4 w-4 inline mr-2" />
+            市場統計
+          </button>
         </div>
 
         {/* Credits Tab */}
@@ -418,7 +439,8 @@ export default function MarketPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-0">
-                    {orderBook.sell_orders.length > 0 ? (
+                    {orderBook.sell_orders &&
+                    orderBook.sell_orders.length > 0 ? (
                       <div className="max-h-96 overflow-y-auto">
                         {orderBook.sell_orders.map(renderOrderBookEntry)}
                       </div>
@@ -582,6 +604,200 @@ export default function MarketPage() {
             <p className="text-gray-500 dark:text-gray-400">
               目前沒有可用的碳權代幣
             </p>
+          </div>
+        )}
+
+        {/* Stats Tab */}
+        {activeTab === "stats" && (
+          <div className="space-y-6">
+            {/* 主要統計卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    總交易量
+                  </CardTitle>
+                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">$2,847,392</div>
+                  <p className="text-xs text-muted-foreground">過去24小時</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    平均價格
+                  </CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">$25.47</div>
+                  <div className="flex items-center text-xs">
+                    <span className="text-green-500">+2.5%</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    活躍用戶
+                  </CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">1,247</div>
+                  <p className="text-xs text-muted-foreground">總碳權數量</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    總項目數
+                  </CardTitle>
+                  <Globe className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">156</div>
+                  <p className="text-xs text-muted-foreground">認證項目</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* 詳細統計 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>市場概況</CardTitle>
+                  <CardDescription>碳交易市場的整體表現</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">
+                      總交易量
+                    </span>
+                    <span className="font-medium">111,847 噸</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">
+                      可用碳權
+                    </span>
+                    <span className="font-medium">89,234 噸</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">
+                      已退休碳權
+                    </span>
+                    <span className="font-medium">22,613 噸</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>24小時變化</CardTitle>
+                  <CardDescription>主要指標的日變化</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">
+                      價格變化
+                    </span>
+                    <div className="flex items-center">
+                      <ArrowUpRight className="h-4 w-4 text-green-500 mr-1" />
+                      <span className="text-green-500">+2.5%</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">
+                      交易量變化
+                    </span>
+                    <div className="flex items-center">
+                      <ArrowUpRight className="h-4 w-4 text-green-500 mr-1" />
+                      <span className="text-green-500">+12.5%</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">
+                      項目數量變化
+                    </span>
+                    <div className="flex items-center">
+                      <ArrowUpRight className="h-4 w-4 text-green-500 mr-1" />
+                      <span className="text-green-500">+8.3%</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* 熱門項目 */}
+            <Card>
+              <CardHeader>
+                <CardTitle>熱門項目</CardTitle>
+                <CardDescription>交易量最高的碳權項目</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {[
+                    {
+                      id: "proj-001",
+                      name: "亞馬遜雨林保護項目",
+                      volume: 15420,
+                      price: 28.5,
+                      change_24h: 5.2,
+                    },
+                    {
+                      id: "proj-002",
+                      name: "中國風力發電項目",
+                      volume: 12850,
+                      price: 26.8,
+                      change_24h: -2.1,
+                    },
+                    {
+                      id: "proj-003",
+                      name: "印度太陽能發電項目",
+                      volume: 9870,
+                      price: 24.3,
+                      change_24h: 3.8,
+                    },
+                  ].map((project) => (
+                    <div
+                      key={project.id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <div className="flex-1">
+                        <h4 className="font-medium">{project.name}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          交易量: {project.volume.toLocaleString()} 噸
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-medium">${project.price}</p>
+                        <div className="flex items-center">
+                          {project.change_24h > 0 ? (
+                            <ArrowUpRight className="h-3 w-3 text-green-500 mr-1" />
+                          ) : (
+                            <ArrowDownRight className="h-3 w-3 text-red-500 mr-1" />
+                          )}
+                          <span
+                            className={
+                              project.change_24h > 0
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }
+                          >
+                            {Math.abs(project.change_24h).toFixed(1)}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
       </div>

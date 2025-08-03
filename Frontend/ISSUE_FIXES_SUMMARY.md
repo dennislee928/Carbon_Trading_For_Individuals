@@ -24,6 +24,7 @@
 - `Frontend/src/services/supabase.ts`
 - `Frontend/src/app/components/SignInButtons.tsx`
 - `Frontend/src/app/auth/callback/page.tsx`
+- `Frontend/src/types/solana.d.ts`
 - `Frontend/SOLANA_SETUP_GUIDE.md`
 
 ### 2. Layout.tsx 和 ClientLayout.tsx 衝突 ✅

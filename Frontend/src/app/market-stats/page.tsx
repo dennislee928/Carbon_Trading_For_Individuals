@@ -1,22 +1,33 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
-import { 
-  BarChart3, 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  Activity, 
-  Users, 
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/app/components/ui/tabs";
+import {
+  BarChart3,
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Activity,
+  Users,
   Globe,
   Calendar,
   ArrowUpRight,
   ArrowDownRight,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import { carbonApi } from "../services/carbonApi";
 
@@ -90,7 +101,6 @@ export default function MarketStatsPage() {
       // 模擬熱門項目數據
       const mockTopProjects = generateMockTopProjects();
       setTopProjects(mockTopProjects);
-
     } catch (err) {
       console.error("獲取市場統計失敗:", err);
       setError("獲取市場統計數據失敗");
@@ -103,22 +113,22 @@ export default function MarketStatsPage() {
     const days = range === "7d" ? 7 : range === "30d" ? 30 : 90;
     const data: PriceHistory[] = [];
     let basePrice = 25;
-    
+
     for (let i = days - 1; i >= 0; i--) {
       const date = new Date();
       date.setDate(date.getDate() - i);
-      
+
       // 模擬價格波動
       const change = (Math.random() - 0.5) * 0.1; // ±5% 變化
       basePrice = basePrice * (1 + change);
-      
+
       data.push({
-        date: date.toISOString().split('T')[0],
+        date: date.toISOString().split("T")[0],
         price: parseFloat(basePrice.toFixed(2)),
-        volume: Math.floor(Math.random() * 10000) + 1000
+        volume: Math.floor(Math.random() * 10000) + 1000,
       });
     }
-    
+
     return data;
   };
 
@@ -128,54 +138,54 @@ export default function MarketStatsPage() {
         id: "proj-001",
         name: "亞馬遜雨林保護項目",
         volume: 15420,
-        price: 28.50,
-        change_24h: 5.2
+        price: 28.5,
+        change_24h: 5.2,
       },
       {
         id: "proj-002",
         name: "中國風力發電項目",
         volume: 12850,
-        price: 26.80,
-        change_24h: -2.1
+        price: 26.8,
+        change_24h: -2.1,
       },
       {
         id: "proj-003",
         name: "印度太陽能發電項目",
         volume: 9870,
-        price: 24.30,
-        change_24h: 3.8
+        price: 24.3,
+        change_24h: 3.8,
       },
       {
         id: "proj-004",
         name: "巴西生物質能項目",
         volume: 7650,
-        price: 22.90,
-        change_24h: -1.5
+        price: 22.9,
+        change_24h: -1.5,
       },
       {
         id: "proj-005",
         name: "歐洲海上風電項目",
         volume: 6540,
-        price: 31.20,
-        change_24h: 7.3
-      }
+        price: 31.2,
+        change_24h: 7.3,
+      },
     ];
   };
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + 'M';
+      return (num / 1000000).toFixed(1) + "M";
     } else if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'K';
+      return (num / 1000).toFixed(1) + "K";
     }
     return num.toString();
   };
 
   const formatCurrency = (num: number) => {
-    return new Intl.NumberFormat('zh-TW', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2
+    return new Intl.NumberFormat("zh-TW", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
     }).format(num);
   };
 
@@ -184,7 +194,9 @@ export default function MarketStatsPage() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">載入市場統計數據中...</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            載入市場統計數據中...
+          </p>
         </div>
       </div>
     );
@@ -228,11 +240,9 @@ export default function MarketStatsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {stats ? formatCurrency(stats.total_sales_usd) : '$0'}
+                  {stats ? formatCurrency(stats.total_sales_usd) : "$0"}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  過去24小時
-                </p>
+                <p className="text-xs text-muted-foreground">過去24小時</p>
               </CardContent>
             </Card>
 
@@ -243,12 +253,10 @@ export default function MarketStatsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {stats ? formatCurrency(stats.average_price_usd) : '$0'}
+                  {stats ? formatCurrency(stats.average_price_usd) : "$0"}
                 </div>
                 <div className="flex items-center text-xs">
-                  <span className="text-green-500">
-                    +2.5%
-                  </span>
+                  <span className="text-green-500">+2.5%</span>
                 </div>
               </CardContent>
             </Card>
@@ -260,11 +268,9 @@ export default function MarketStatsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {stats ? formatNumber(stats.total_tokens) : '0'}
+                  {stats ? formatNumber(stats.total_tokens) : "0"}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  總碳權數量
-                </p>
+                <p className="text-xs text-muted-foreground">總碳權數量</p>
               </CardContent>
             </Card>
 
@@ -275,11 +281,9 @@ export default function MarketStatsPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {stats ? formatNumber(stats.total_projects) : '0'}
+                  {stats ? formatNumber(stats.total_projects) : "0"}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  認證項目
-                </p>
+                <p className="text-xs text-muted-foreground">認證項目</p>
               </CardContent>
             </Card>
           </div>
@@ -302,21 +306,32 @@ export default function MarketStatsPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">總交易量</span>
+                      <span className="text-sm text-muted-foreground">
+                        總交易量
+                      </span>
                       <span className="font-medium">
-                        {stats ? formatNumber(stats.total_volume_tco2e) : '0'} 噸
+                        {stats ? formatNumber(stats.total_volume_tco2e) : "0"}{" "}
+                        噸
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">可用碳權</span>
+                      <span className="text-sm text-muted-foreground">
+                        可用碳權
+                      </span>
                       <span className="font-medium">
-                        {stats ? formatNumber(stats.total_available_tokens) : '0'} 噸
+                        {stats
+                          ? formatNumber(stats.total_available_tokens)
+                          : "0"}{" "}
+                        噸
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">已退休碳權</span>
+                      <span className="text-sm text-muted-foreground">
+                        已退休碳權
+                      </span>
                       <span className="font-medium">
-                        {stats ? formatNumber(stats.total_retired_tokens) : '0'} 噸
+                        {stats ? formatNumber(stats.total_retired_tokens) : "0"}{" "}
+                        噸
                       </span>
                     </div>
                   </CardContent>
@@ -329,21 +344,27 @@ export default function MarketStatsPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">價格變化</span>
+                      <span className="text-sm text-muted-foreground">
+                        價格變化
+                      </span>
                       <div className="flex items-center">
                         <ArrowUpRight className="h-4 w-4 text-green-500 mr-1" />
                         <span className="text-green-500">+2.5%</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">交易量變化</span>
+                      <span className="text-sm text-muted-foreground">
+                        交易量變化
+                      </span>
                       <div className="flex items-center">
                         <ArrowUpRight className="h-4 w-4 text-green-500 mr-1" />
                         <span className="text-green-500">+12.5%</span>
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">項目數量變化</span>
+                      <span className="text-sm text-muted-foreground">
+                        項目數量變化
+                      </span>
                       <div className="flex items-center">
                         <ArrowUpRight className="h-4 w-4 text-green-500 mr-1" />
                         <span className="text-green-500">+8.3%</span>
@@ -367,7 +388,11 @@ export default function MarketStatsPage() {
                         size="sm"
                         onClick={() => setTimeRange(range)}
                       >
-                        {range === "7d" ? "7天" : range === "30d" ? "30天" : "90天"}
+                        {range === "7d"
+                          ? "7天"
+                          : range === "30d"
+                          ? "30天"
+                          : "90天"}
                       </Button>
                     ))}
                   </div>
@@ -378,7 +403,13 @@ export default function MarketStatsPage() {
                       <BarChart3 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                       <p className="text-gray-500">價格走勢圖表</p>
                       <p className="text-sm text-gray-400 mt-2">
-                        顯示 {timeRange === "7d" ? "7天" : timeRange === "30d" ? "30天" : "90天"} 的價格變化
+                        顯示{" "}
+                        {timeRange === "7d"
+                          ? "7天"
+                          : timeRange === "30d"
+                          ? "30天"
+                          : "90天"}{" "}
+                        的價格變化
                       </p>
                     </div>
                   </div>
@@ -395,7 +426,10 @@ export default function MarketStatsPage() {
                 <CardContent>
                   <div className="space-y-4">
                     {topProjects.map((project) => (
-                      <div key={project.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div
+                        key={project.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
                         <div className="flex-1">
                           <h4 className="font-medium">{project.name}</h4>
                           <p className="text-sm text-muted-foreground">
@@ -403,14 +437,22 @@ export default function MarketStatsPage() {
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-medium">{formatCurrency(project.price)}</p>
+                          <p className="font-medium">
+                            {formatCurrency(project.price)}
+                          </p>
                           <div className="flex items-center">
                             {project.change_24h > 0 ? (
                               <ArrowUpRight className="h-3 w-3 text-green-500 mr-1" />
                             ) : (
                               <ArrowDownRight className="h-3 w-3 text-red-500 mr-1" />
                             )}
-                            <span className={project.change_24h > 0 ? "text-green-500" : "text-red-500"}>
+                            <span
+                              className={
+                                project.change_24h > 0
+                                  ? "text-green-500"
+                                  : "text-red-500"
+                              }
+                            >
                               {Math.abs(project.change_24h).toFixed(1)}%
                             </span>
                           </div>
@@ -421,29 +463,9 @@ export default function MarketStatsPage() {
                 </CardContent>
               </Card>
             </TabsContent>
-
-            <TabsContent value="volume" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>交易量分析</CardTitle>
-                  <CardDescription>不同時間段的交易量分布</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-80 flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <div className="text-center">
-                      <Activity className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500">交易量分析圖表</p>
-                      <p className="text-sm text-gray-400 mt-2">
-                        顯示交易量的時間分布和趨勢
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
           </Tabs>
         </div>
       </div>
     </div>
   );
-} 
+}

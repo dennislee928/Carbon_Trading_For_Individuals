@@ -68,8 +68,8 @@ export const signInSolana = async () => {
   }
 
   const { data, error } = await supabase.auth.signInWithWeb3({
-    chain: 'solana',
-    statement: '我同意碳交易平台的服務條款和隱私政策',
+    chain: "solana",
+    statement: "我同意碳交易平台的服務條款和隱私政策",
   });
 
   if (error) throw error;

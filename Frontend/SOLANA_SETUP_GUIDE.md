@@ -25,7 +25,7 @@
 
 #### 進階設定
 
-- **Rate Limiting**: 設定適當的速率限制以防止濫用（建議：每5分鐘30次登入嘗試）
+- **Rate Limiting**: 設定適當的速率限制以防止濫用（建議：每 5 分鐘 30 次登入嘗試）
 - **CAPTCHA Protection**: 啟用 CAPTCHA 保護以防止機器人攻擊
 - **Redirect URL**: 設定您的應用程式 URL（例如：`https://your-domain.com/**`）
 
@@ -88,8 +88,8 @@ export const signInSolana = async () => {
   }
 
   const { data, error } = await supabase.auth.signInWithWeb3({
-    chain: 'solana',
-    statement: '我同意碳交易平台的服務條款和隱私政策',
+    chain: "solana",
+    statement: "我同意碳交易平台的服務條款和隱私政策",
   });
 
   if (error) throw error;
@@ -107,15 +107,18 @@ export const signInSolana = async () => {
 ## Web3 認證工作原理
 
 ### EIP-4361 標準
+
 Supabase 的 Web3 認證使用 EIP-4361 標準來驗證錢包地址。這個標準允許用戶使用他們的 Web3 錢包進行離線認證。
 
 ### 認證流程
+
 1. **錢包連接**: 用戶連接他們的 Solana 錢包
 2. **訊息簽名**: 應用程式要求用戶簽署預定義的訊息
 3. **驗證**: Supabase 驗證簽名的有效性
 4. **創建會話**: 如果驗證成功，創建用戶帳戶或會話
 
 ### 安全考量
+
 - Web3 錢包帳戶沒有關聯的電子郵件或電話號碼
 - 創建 Web3 錢包帳戶是免費且容易自動化的
 - 建議啟用速率限制和 CAPTCHA 保護

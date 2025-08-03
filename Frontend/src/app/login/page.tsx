@@ -46,7 +46,7 @@ export default function LoginPage() {
         });
         console.log("API健康檢查狀態:", res.status);
 
-        setApiStatus("API可訪問");
+        setApiStatus("伺服器健康");
       } catch (error) {
         console.error("API健康檢查錯誤:", error);
         setApiStatus("無法連接到API服務");
@@ -285,17 +285,6 @@ export default function LoginPage() {
               </Button>
             </form>
             {/* 測試連接按鈕 */}
-            <div className="mt-4">
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full"
-                onClick={testApiConnection}
-                type="button"
-              >
-                測試API連接
-              </Button>
-            </div>
 
             {/* 調試信息 */}
             {debugInfo && (

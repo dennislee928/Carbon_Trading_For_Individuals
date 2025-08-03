@@ -3,7 +3,9 @@ import { createClient } from "@supabase/supabase-js";
 let supabase: ReturnType<typeof createClient>;
 
 // 檢查環境變數是否已設定
-const isSupabaseConfigured = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_KEY);
+const isSupabaseConfigured = !!(
+  process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_KEY
+);
 
 if (isSupabaseConfigured) {
   supabase = createClient(
@@ -16,7 +18,9 @@ if (isSupabaseConfigured) {
     auth: {
       signInWithOAuth: async () => {
         console.warn("Supabase 環境變數未設定，請檢查 .env.local 文件");
-        throw new Error("Supabase 環境變數未設定。請在 .env.local 文件中配置 NEXT_PUBLIC_SUPABASE_URL 和 NEXT_PUBLIC_SUPABASE_KEY");
+        throw new Error(
+          "Supabase 環境變數未設定。請在 .env.local 文件中配置 NEXT_PUBLIC_SUPABASE_URL 和 NEXT_PUBLIC_SUPABASE_KEY"
+        );
       },
       onAuthStateChange: () => ({
         data: { subscription: { unsubscribe() {} } },
@@ -30,9 +34,11 @@ export { supabase, isSupabaseConfigured };
 
 export const signInOAuth = async (provider: "github" | "google") => {
   if (!isSupabaseConfigured) {
-    throw new Error("Supabase 環境變數未設定。請在 .env.local 文件中配置 NEXT_PUBLIC_SUPABASE_URL 和 NEXT_PUBLIC_SUPABASE_KEY");
+    throw new Error(
+      "Supabase 環境變數未設定。請在 .env.local 文件中配置 NEXT_PUBLIC_SUPABASE_URL 和 NEXT_PUBLIC_SUPABASE_KEY"
+    );
   }
-  
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
@@ -44,9 +50,11 @@ export const signInOAuth = async (provider: "github" | "google") => {
 
 export const signInSolana = async () => {
   if (!isSupabaseConfigured) {
-    throw new Error("Supabase 環境變數未設定。請在 .env.local 文件中配置 NEXT_PUBLIC_SUPABASE_URL 和 NEXT_PUBLIC_SUPABASE_KEY");
+    throw new Error(
+      "Supabase 環境變數未設定。請在 .env.local 文件中配置 NEXT_PUBLIC_SUPABASE_URL 和 NEXT_PUBLIC_SUPABASE_KEY"
+    );
   }
-  
+
   // Solana 提供者目前不被 Supabase 支援，顯示錯誤訊息
   throw new Error("Solana 錢包登入目前不支援，請使用 GitHub 或 Google 登入");
 };

@@ -31,6 +31,8 @@ import {
 } from "lucide-react";
 import ErrorBanner from "../../components/ErrorBanner";
 import LocalModeIndicator from "../../components/LocalModeIndicator";
+import PriceChart from "../components/PriceChart";
+import VolumeChart from "../components/VolumeChart";
 
 export default function MarketPage() {
   const [carbonCredits, setCarbonCredits] = useState<CarbonCredit[]>([]);
@@ -240,6 +242,12 @@ export default function MarketPage() {
             </AlertDescription>
           </Alert>
         )}
+
+        {/* 圖表區域 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <PriceChart />
+          <VolumeChart />
+        </div>
 
         {/* Tab Navigation */}
         <div className="flex space-x-1 mb-6 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">

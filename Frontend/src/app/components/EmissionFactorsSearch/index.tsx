@@ -115,20 +115,15 @@ export default function EmissionFactorsSearch() {
         transition: "all 0.3s ease-in-out",
       }}
     >
-      <Typography variant="h5" gutterBottom>
+      <Typography
+        variant="h5"
+        gutterBottom
+        className="text-center text-black-600"
+      >
         Vague Emission Factors Search
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Tooltip title="Enter keywords to search for emission factors. This matches IDs, names, and descriptions.">
-            <TextField
-              fullWidth
-              label="Search Query"
-              value={searchParams.query}
-              onChange={handleTextChange("query")}
-            />
-          </Tooltip>
-        </Grid>
+        <Grid item xs={12}></Grid>
 
         <Grid item xs={12} md={6}>
           <FormControl fullWidth>

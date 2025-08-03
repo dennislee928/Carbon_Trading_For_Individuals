@@ -79,11 +79,7 @@ export default function SidebarMenu() {
       path: "/cbam",
       icon: <Activity className="h-5 w-5" />,
     },
-    {
-      name: "電腦計算",
-      path: "/computing",
-      icon: <Server className="h-5 w-5" />,
-    },
+
     {
       name: "自定義映射",
       path: "/custom-mappings",

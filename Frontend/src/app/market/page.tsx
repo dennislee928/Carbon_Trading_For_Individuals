@@ -393,7 +393,7 @@ export default function MarketPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-0">
-                    {orderBook.buy_orders.length > 0 ? (
+                    {orderBook.buy_orders && orderBook.buy_orders.length > 0 ? (
                       <div className="max-h-96 overflow-y-auto">
                         {orderBook.buy_orders.map(renderOrderBookEntry)}
                       </div>

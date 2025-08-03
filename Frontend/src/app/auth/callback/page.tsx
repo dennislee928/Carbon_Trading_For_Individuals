@@ -25,28 +25,23 @@ export default function AuthCallback() {
       try {
         console.log("處理認證回調...");
 
-        // 獲取當前會話
-        const {
-          data: { session },
-          error: sessionError,
-        } = await supabase.auth.getSession();
+        // 處理 OAuth 回調
+        const { data, error } = await supabase.auth.getSession();
 
-        if (sessionError) {
-          console.error("會話錯誤:", sessionError);
-          setError(sessionError.message);
+        if (error) {
+          console.error("認證回調錯誤:", error);
+          setError(error.message);
           setStatus("error");
           return;
         }
 
-        if (session) {
-          console.log("認證成功:", session.user.email);
-          setUser(session.user);
+        if (data.session) {
+          console.log("認證成功:", data.session.user.email);
+          setUser(data.session.user);
           setStatus("success");
 
-          // 延遲重定向，讓用戶看到成功訊息
-          setTimeout(() => {
-            router.push("/dashboard");
-          }, 2000);
+          // 立即重定向到儀表板
+          router.push("/dashboard");
         } else {
           console.log("沒有會話，檢查 URL 參數...");
 

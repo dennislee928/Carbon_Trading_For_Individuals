@@ -6,6 +6,7 @@ import SidebarMenu from "./SidebarMenu";
 import HeaderNotifications from "./HeaderNotifications";
 import { Button } from "./ui/button";
 import { carbonApi } from "../app/services/carbonApi";
+import { supabase } from "../services/supabase";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -52,6 +53,31 @@ export default function AppLayout({ children }: AppLayoutProps) {
     // 檢查使用者是否已登入
     const checkAuth = async () => {
       try {
+        // 檢查 Supabase 會話
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          console.error("Supabase 會話錯誤:", sessionError);
+        }
+
+        if (session) {
+          // Supabase 認證成功
+          console.log("Supabase 認證成功:", session.user.email);
+          setIsLoggedIn(true);
+          setUserName(session.user.email || "使用者");
+
+          // 如果用户已登录且访问公共路径，重定向到仪表板
+          if (isPublicPath && pathname !== "/") {
+            router.push("/dashboard");
+          }
+          setIsLoading(false);
+          return;
+        }
+
+        // 檢查傳統 JWT token
         const token = localStorage.getItem("token");
         console.log("Token存在:", !!token);
 
@@ -101,7 +127,19 @@ export default function AppLayout({ children }: AppLayoutProps) {
   }, [pathname, router, isPublicPath, useLocalMode]);
 
   const handleLogout = async () => {
-    await carbonApi.logout();
+    try {
+      // 先嘗試 Supabase 登出
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Supabase 登出錯誤:", error);
+      }
+
+      // 再嘗試傳統 API 登出
+      await carbonApi.logout();
+    } catch (error) {
+      console.error("登出錯誤:", error);
+    }
+
     setIsLoggedIn(false);
     router.push("/login");
   };

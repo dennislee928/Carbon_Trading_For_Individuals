@@ -183,10 +183,18 @@ export default function ProfilePage() {
                     </p>
                   </div>
                 </div>
-                <CardTitle>帳戶資訊</CardTitle>
-                <CardDescription>您的帳戶詳細資訊</CardDescription>
+                <br />
 
                 <div className="space-y-4">
+                  <div>
+                    <Label className="text-sm font-medium text-gray-500">
+                      帳戶資訊
+                    </Label>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      您的帳戶詳細資訊
+                    </p>
+                  </div>
+
                   <div>
                     <Label className="text-sm font-medium text-gray-500">
                       用戶 ID
@@ -234,6 +242,8 @@ export default function ProfilePage() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card></Card>
           </div>
         </div>
       </main>

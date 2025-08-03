@@ -39,13 +39,27 @@ export const signInOAuth = async (provider: "github" | "google") => {
     );
   }
 
-  const { error } = await supabase.auth.signInWithOAuth({
+  console.log(`開始 ${provider} 登入流程...`);
+  console.log(`重定向 URL: ${window.location.origin}/auth/callback`);
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
       redirectTo: `${window.location.origin}/auth/callback`,
+      queryParams: {
+        access_type: "offline",
+        prompt: "consent",
+      },
     },
   });
-  if (error) throw error;
+
+  if (error) {
+    console.error(`${provider} 登入錯誤:`, error);
+    throw error;
+  }
+
+  console.log(`${provider} 登入成功，數據:`, data);
+  return data;
 };
 
 export const signInSolana = async () => {
@@ -55,23 +69,44 @@ export const signInSolana = async () => {
     );
   }
 
+  console.log("開始 Solana 錢包登入流程...");
+
   // 檢查是否支援 Solana 錢包
   if (!window.solana) {
+    console.error("未檢測到 Solana 錢包擴展");
     throw new Error("請安裝 Solana 錢包擴展（如 Phantom、Solflare 等）");
   }
 
+  console.log("檢測到 Solana 錢包:", window.solana);
+
   // 確保錢包已連接
   try {
-    await window.solana.connect();
+    console.log("嘗試連接 Solana 錢包...");
+    const connection = await window.solana.connect();
+    console.log("Solana 錢包連接成功:", connection);
   } catch (error) {
+    console.error("Solana 錢包連接失敗:", error);
     throw new Error("無法連接到 Solana 錢包，請檢查錢包設定");
   }
 
-  const { data, error } = await supabase.auth.signInWithWeb3({
-    chain: "solana",
-    statement: "我同意碳交易平台的服務條款和隱私政策",
-  });
+  try {
+    console.log("開始 Web3 認證...");
+    const { data, error } = await supabase.auth.signInWithWeb3({
+      chain: "solana",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
 
-  if (error) throw error;
-  return data;
+    if (error) {
+      console.error("Web3 認證錯誤:", error);
+      throw error;
+    }
+
+    console.log("Solana 錢包登入成功:", data);
+    return data;
+  } catch (error) {
+    console.error("Solana 登入過程錯誤:", error);
+    throw error;
+  }
 };

@@ -2,11 +2,11 @@
 
 import React, { ReactNode, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import SidebarMenu from "./SidebarMenu";
-import HeaderNotifications from "./HeaderNotifications";
+import { supabase } from "@/services/supabase";
 import { Button } from "./ui/button";
-import carbonTradingApi from "../app/services/carbonApi";
-import { supabase } from "../services/supabase";
+import SidebarMenu from "./SidebarMenu";
+import LocalModeIndicator from "./LocalModeIndicator";
+import carbonTradingApi from "@/app/services/carbonApi";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -197,7 +197,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 )}
               </div>
               <div className="flex items-center gap-4">
-                <HeaderNotifications />
                 <Button variant="outline" onClick={handleLogout}>
                   登出
                 </Button>

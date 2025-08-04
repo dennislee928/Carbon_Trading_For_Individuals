@@ -39,9 +39,10 @@ export default function LoginPage() {
     const checkApiOnLoad = async () => {
       try {
         console.log("正在檢查API健康狀態...");
-        // 簡單的健康檢查，測試基本 URL 是否可訪問
+        // 使用一個已知存在的端點來檢查API連接性
         const baseUrl = "https://apiv1-carbontrading.dennisleehappy.org";
-        const res = await fetch(`${baseUrl}/api/v1/health`, {
+        const res = await fetch(`${baseUrl}/api/v1/auth/login`, {
+          method: "HEAD", // 只檢查連接性，不發送實際請求
           mode: "no-cors",
         });
         console.log("API健康檢查狀態:", res.status);

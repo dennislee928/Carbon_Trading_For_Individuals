@@ -13,7 +13,7 @@ export const carbonApi = axios.create({
   },
 });
 
-export default carbonApi;
+// 移除默認導出，只使用命名導出
 
 // 請求攔截器 - 添加認證 token
 carbonApi.interceptors.request.use((config) => {
@@ -389,9 +389,12 @@ export interface GoogleOAuthRequest {
 export const carbonTradingApi = {
   async checkHealth(): Promise<{ status: string; message: string }> {
     try {
-      const res = await fetch(`${CARBON_API_BASE_URL}/health`);
+      // 使用一個已知存在的端點來檢查API連接性
+      const res = await fetch(`${CARBON_API_BASE_URL}/auth/login`, {
+        method: "HEAD", // 只檢查連接性，不發送實際請求
+      });
       if (!res.ok) throw new Error("health check failed");
-      return res.json();
+      return { status: "ok", message: "API server is healthy" };
     } catch {
       return { status: "ok", message: "mock ok" };
     }
@@ -597,4 +600,3 @@ export const carbonTradingApi = {
 
 // 導出 carbonTradingApi 作為默認導出
 export default carbonTradingApi;
-export { carbonTradingApi };

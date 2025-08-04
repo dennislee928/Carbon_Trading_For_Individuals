@@ -63,7 +63,9 @@ export default function ProcurementForm({ onResult }: ProcurementFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="spend">支出金額</Label>
+        <Label htmlFor="spend" className="text-black">
+          支出金額
+        </Label>
         <Input
           id="spend"
           type="number"
@@ -80,7 +82,9 @@ export default function ProcurementForm({ onResult }: ProcurementFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="spend_unit">貨幣單位</Label>
+        <Label htmlFor="spend_unit" className="text-black">
+          貨幣單位
+        </Label>
         <Select
           value={formData.spend_unit}
           onValueChange={(value) =>
@@ -90,17 +94,27 @@ export default function ProcurementForm({ onResult }: ProcurementFormProps) {
           <SelectTrigger>
             <SelectValue placeholder="選擇貨幣單位" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="TWD">新台幣 (TWD)</SelectItem>
-            <SelectItem value="USD">美元 (USD)</SelectItem>
-            <SelectItem value="EUR">歐元 (EUR)</SelectItem>
-            <SelectItem value="JPY">日圓 (JPY)</SelectItem>
+          <SelectContent className="bg-gray-900 text-white border-gray-700">
+            <SelectItem value="TWD" className="hover:bg-gray-800">
+              新台幣 (TWD)
+            </SelectItem>
+            <SelectItem value="USD" className="hover:bg-gray-800">
+              美元 (USD)
+            </SelectItem>
+            <SelectItem value="EUR" className="hover:bg-gray-800">
+              歐元 (EUR)
+            </SelectItem>
+            <SelectItem value="JPY" className="hover:bg-gray-800">
+              日圓 (JPY)
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="category">採購類別</Label>
+        <Label htmlFor="category" className="text-black">
+          採購類別
+        </Label>
         <Select
           value={formData.category}
           onValueChange={(value) =>
@@ -110,19 +124,33 @@ export default function ProcurementForm({ onResult }: ProcurementFormProps) {
           <SelectTrigger>
             <SelectValue placeholder="選擇採購類別" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="office_supplies">辦公用品</SelectItem>
-            <SelectItem value="electronics">電子產品</SelectItem>
-            <SelectItem value="furniture">家具</SelectItem>
-            <SelectItem value="food">食品</SelectItem>
-            <SelectItem value="clothing">服裝</SelectItem>
-            <SelectItem value="transportation">交通運輸</SelectItem>
+          <SelectContent className="bg-gray-900 text-white border-gray-700">
+            <SelectItem value="office_supplies" className="hover:bg-gray-800">
+              辦公用品
+            </SelectItem>
+            <SelectItem value="electronics" className="hover:bg-gray-800">
+              電子產品
+            </SelectItem>
+            <SelectItem value="furniture" className="hover:bg-gray-800">
+              家具
+            </SelectItem>
+            <SelectItem value="food" className="hover:bg-gray-800">
+              食品
+            </SelectItem>
+            <SelectItem value="clothing" className="hover:bg-gray-800">
+              服裝
+            </SelectItem>
+            <SelectItem value="transportation" className="hover:bg-gray-800">
+              交通運輸
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="region">地區</Label>
+        <Label htmlFor="region" className="text-black">
+          地區
+        </Label>
         <Select
           value={formData.region}
           onValueChange={(value) => setFormData({ ...formData, region: value })}
@@ -130,12 +158,22 @@ export default function ProcurementForm({ onResult }: ProcurementFormProps) {
           <SelectTrigger>
             <SelectValue placeholder="選擇地區" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="TW">台灣 (TW)</SelectItem>
-            <SelectItem value="US">美國 (US)</SelectItem>
-            <SelectItem value="EU">歐盟 (EU)</SelectItem>
-            <SelectItem value="CN">中國 (CN)</SelectItem>
-            <SelectItem value="JP">日本 (JP)</SelectItem>
+          <SelectContent className="bg-gray-900 text-white border-gray-700">
+            <SelectItem value="TW" className="hover:bg-gray-800">
+              台灣 (TW)
+            </SelectItem>
+            <SelectItem value="US" className="hover:bg-gray-800">
+              美國 (US)
+            </SelectItem>
+            <SelectItem value="EU" className="hover:bg-gray-800">
+              歐盟 (EU)
+            </SelectItem>
+            <SelectItem value="CN" className="hover:bg-gray-800">
+              中國 (CN)
+            </SelectItem>
+            <SelectItem value="JP" className="hover:bg-gray-800">
+              日本 (JP)
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>

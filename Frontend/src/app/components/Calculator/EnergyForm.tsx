@@ -44,7 +44,9 @@ export default function EnergyForm({ onResult }: EnergyFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="energy">能源消耗 (kWh)</Label>
+        <Label htmlFor="energy" className="text-black">
+          能源消耗 (kWh)
+        </Label>
         <Input
           id="energy"
           type="number"
@@ -60,7 +62,9 @@ export default function EnergyForm({ onResult }: EnergyFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="energy_type">能源類型</Label>
+        <Label htmlFor="energy_type" className="text-black">
+          能源類型
+        </Label>
         <Select
           value={formData.source}
           onValueChange={(value) => setFormData({ ...formData, source: value })}
@@ -68,18 +72,30 @@ export default function EnergyForm({ onResult }: EnergyFormProps) {
           <SelectTrigger>
             <SelectValue placeholder="選擇能源類型" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="electricity">電力</SelectItem>
-            <SelectItem value="natural_gas">天然氣</SelectItem>
-            <SelectItem value="coal">煤炭</SelectItem>
-            <SelectItem value="oil">石油</SelectItem>
-            <SelectItem value="renewable">可再生能源</SelectItem>
+          <SelectContent className="bg-gray-900 text-white border-gray-700">
+            <SelectItem value="electricity" className="hover:bg-gray-800">
+              電力
+            </SelectItem>
+            <SelectItem value="natural_gas" className="hover:bg-gray-800">
+              天然氣
+            </SelectItem>
+            <SelectItem value="coal" className="hover:bg-gray-800">
+              煤炭
+            </SelectItem>
+            <SelectItem value="oil" className="hover:bg-gray-800">
+              石油
+            </SelectItem>
+            <SelectItem value="renewable" className="hover:bg-gray-800">
+              可再生能源
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="region">地區</Label>
+        <Label htmlFor="region" className="text-black">
+          地區
+        </Label>
         <Select
           value={formData.region}
           onValueChange={(value) => setFormData({ ...formData, region: value })}
@@ -87,15 +103,31 @@ export default function EnergyForm({ onResult }: EnergyFormProps) {
           <SelectTrigger>
             <SelectValue placeholder="選擇地區" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="TW">台灣</SelectItem>
-            <SelectItem value="US">美國</SelectItem>
-            <SelectItem value="CN">中國</SelectItem>
-            <SelectItem value="JP">日本</SelectItem>
-            <SelectItem value="KR">韓國</SelectItem>
-            <SelectItem value="EU">歐洲</SelectItem>
-            <SelectItem value="AU">澳洲</SelectItem>
-            <SelectItem value="CA">加拿大</SelectItem>
+          <SelectContent className="bg-gray-900 text-white border-gray-700">
+            <SelectItem value="TW" className="hover:bg-gray-800">
+              台灣
+            </SelectItem>
+            <SelectItem value="US" className="hover:bg-gray-800">
+              美國
+            </SelectItem>
+            <SelectItem value="CN" className="hover:bg-gray-800">
+              中國
+            </SelectItem>
+            <SelectItem value="JP" className="hover:bg-gray-800">
+              日本
+            </SelectItem>
+            <SelectItem value="KR" className="hover:bg-gray-800">
+              韓國
+            </SelectItem>
+            <SelectItem value="EU" className="hover:bg-gray-800">
+              歐洲
+            </SelectItem>
+            <SelectItem value="AU" className="hover:bg-gray-800">
+              澳洲
+            </SelectItem>
+            <SelectItem value="CA" className="hover:bg-gray-800">
+              加拿大
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>

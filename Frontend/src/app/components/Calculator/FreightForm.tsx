@@ -48,7 +48,9 @@ export default function FreightForm({ onResult }: FreightFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="distance">距離 (公里)</Label>
+        <Label htmlFor="distance" className="text-black">
+          距離 (公里)
+        </Label>
         <Input
           id="distance"
           type="number"
@@ -64,7 +66,9 @@ export default function FreightForm({ onResult }: FreightFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="weight">重量 (公斤)</Label>
+        <Label htmlFor="weight" className="text-black">
+          重量 (公斤)
+        </Label>
         <Input
           id="weight"
           type="number"
@@ -80,7 +84,9 @@ export default function FreightForm({ onResult }: FreightFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="transport_mode">運輸方式</Label>
+        <Label htmlFor="transport_mode" className="text-black">
+          運輸方式
+        </Label>
         <Select
           value={formData.transport_mode}
           onValueChange={(value) =>
@@ -90,12 +96,22 @@ export default function FreightForm({ onResult }: FreightFormProps) {
           <SelectTrigger>
             <SelectValue placeholder="選擇運輸方式" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="road">公路運輸</SelectItem>
-            <SelectItem value="rail">鐵路運輸</SelectItem>
-            <SelectItem value="air">航空運輸</SelectItem>
-            <SelectItem value="sea">海運</SelectItem>
-            <SelectItem value="inland_waterway">內河運輸</SelectItem>
+          <SelectContent className="bg-gray-900 text-white border-gray-700">
+            <SelectItem value="road" className="hover:bg-gray-800">
+              公路運輸
+            </SelectItem>
+            <SelectItem value="rail" className="hover:bg-gray-800">
+              鐵路運輸
+            </SelectItem>
+            <SelectItem value="air" className="hover:bg-gray-800">
+              航空運輸
+            </SelectItem>
+            <SelectItem value="sea" className="hover:bg-gray-800">
+              海運
+            </SelectItem>
+            <SelectItem value="inland_waterway" className="hover:bg-gray-800">
+              內河運輸
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>

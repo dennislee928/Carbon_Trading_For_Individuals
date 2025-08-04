@@ -40,7 +40,9 @@ export default function TravelForm({ onResult }: TravelFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="distance">距離 (公里)</Label>
+        <Label htmlFor="distance" className="text-black">
+          距離 (公里)
+        </Label>
         <Input
           id="distance"
           type="number"
@@ -56,7 +58,9 @@ export default function TravelForm({ onResult }: TravelFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="travel_mode">交通方式</Label>
+        <Label htmlFor="travel_mode" className="text-black">
+          交通方式
+        </Label>
         <Select
           value={formData.travel_mode}
           onValueChange={(value) =>
@@ -67,19 +71,35 @@ export default function TravelForm({ onResult }: TravelFormProps) {
             <SelectValue placeholder="選擇交通方式" />
           </SelectTrigger>
           <SelectContent className="bg-gray-900 text-white border-gray-700">
-            <SelectItem value="car" className="hover:bg-gray-800">汽車</SelectItem>
-            <SelectItem value="train" className="hover:bg-gray-800">火車</SelectItem>
-            <SelectItem value="plane" className="hover:bg-gray-800">飛機</SelectItem>
-            <SelectItem value="bus" className="hover:bg-gray-800">公車</SelectItem>
-            <SelectItem value="motorcycle" className="hover:bg-gray-800">機車</SelectItem>
-            <SelectItem value="bicycle" className="hover:bg-gray-800">自行車</SelectItem>
-            <SelectItem value="walking" className="hover:bg-gray-800">步行</SelectItem>
+            <SelectItem value="car" className="hover:bg-gray-800">
+              汽車
+            </SelectItem>
+            <SelectItem value="train" className="hover:bg-gray-800">
+              火車
+            </SelectItem>
+            <SelectItem value="plane" className="hover:bg-gray-800">
+              飛機
+            </SelectItem>
+            <SelectItem value="bus" className="hover:bg-gray-800">
+              公車
+            </SelectItem>
+            <SelectItem value="motorcycle" className="hover:bg-gray-800">
+              機車
+            </SelectItem>
+            <SelectItem value="bicycle" className="hover:bg-gray-800">
+              自行車
+            </SelectItem>
+            <SelectItem value="walking" className="hover:bg-gray-800">
+              步行
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="passengers">乘客數量</Label>
+        <Label htmlFor="passengers" className="text-black">
+          乘客數量
+        </Label>
         <Input
           id="passengers"
           type="number"

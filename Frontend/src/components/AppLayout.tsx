@@ -67,6 +67,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
         if (session) {
           // Supabase 認證成功
           console.log("Supabase 認證成功:", session.user.email);
+
+          // 將 Supabase access token 轉換為應用程式 token
+          if (session.access_token) {
+            localStorage.setItem("token", session.access_token);
+            console.log("已儲存 Supabase access token 為應用程式 token");
+          }
+
           setIsLoggedIn(true);
           setUserName(session.user.email || "使用者");
 
@@ -148,6 +155,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
     } catch (error) {
       console.error("登出錯誤:", error);
     }
+
+    // 清除所有相關的 token
+    localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userId");
 
     setIsLoggedIn(false);
     setHasRedirected(false);

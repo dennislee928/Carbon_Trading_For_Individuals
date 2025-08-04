@@ -17,7 +17,7 @@ export const carbonApi = axios.create({
 
 // 請求攔截器 - 添加認證 token
 carbonApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken");
+  const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -30,7 +30,7 @@ carbonApi.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // 未授權，清除 token 並重定向到登入頁面
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("token");
       window.location.href = "/login";
     }
     return Promise.reject(error);

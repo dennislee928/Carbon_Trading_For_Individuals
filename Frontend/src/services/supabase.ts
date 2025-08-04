@@ -124,19 +124,40 @@ export const signInSolana = async () => {
     console.log("Edge Function 認證成功，設定 session...");
 
     // 4. 收到 token 後，手動設定 session
-    const { data: sessionData, error: sessionError } =
-      await supabase.auth.setSession({
-        access_token: data.access_token,
-        refresh_token: data.refresh_token,
-      });
+    // 檢查是否是特殊的認證成功訊息
+    if (data.access_token === "solana-wallet-auth-success") {
+      console.log("收到 Solana 錢包認證成功訊息");
 
-    if (sessionError) {
-      console.error("Failed to set session:", sessionError);
-      throw new Error(`Session 設定失敗: ${sessionError.message}`);
+      // 使用從 Edge Function 返回的密碼進行登入
+      const { data: signInData, error: signInError } =
+        await supabase.auth.signInWithPassword({
+          email: data.user.email,
+          password: data.password, // 使用從 Edge Function 返回的密碼
+        });
+
+      if (signInError) {
+        console.error("signInWithPassword 錯誤:", signInError);
+        throw new Error(`密碼登入失敗: ${signInError.message}`);
+      }
+
+      console.log("Solana 錢包登入成功!", signInData.session);
+      return signInData;
+    } else {
+      // 正常的 token 設定流程
+      const { data: sessionData, error: sessionError } =
+        await supabase.auth.setSession({
+          access_token: data.access_token,
+          refresh_token: data.refresh_token,
+        });
+
+      if (sessionError) {
+        console.error("Failed to set session:", sessionError);
+        throw new Error(`Session 設定失敗: ${sessionError.message}`);
+      }
+
+      console.log("Solana 錢包登入成功!", sessionData.session);
+      return sessionData;
     }
-
-    console.log("Solana 錢包登入成功!", sessionData.session);
-    return sessionData;
   } catch (err: any) {
     console.error("Solana 登入流程出錯:", err);
     // 處理使用者拒絕連接或簽名的情況

@@ -71,11 +71,15 @@ serve(async (req) => {
       console.log("使用者不存在，創建新使用者");
       // 使用者不存在，創建一個
       // 使用有效的電子郵件格式，但將錢包地址存儲在 metadata 中
-      const email = `${publicKey.slice(0, 8)}@solana.wallet`;
+      const email = `${publicKey.slice(0, 8)}.${publicKey.slice(
+        8,
+        16
+      )}@solana.wallet`;
+      const password = `solana-wallet-${publicKey.slice(0, 8)}`; // 使用基於錢包地址的固定密碼
       const { data: newUser, error: createUserError } =
         await adminAuthClient.createUser({
           email: email,
-          password: `solana-wallet-${Math.random().toString(36).substring(2)}`, // 隨機密碼
+          password: password,
           email_confirm: true, // 因為錢包簽名已驗證所有權，所以直接設為 true
           user_metadata: {
             wallet_address: publicKey,
@@ -89,30 +93,39 @@ serve(async (req) => {
     } else {
       user = existingUser;
       console.log("使用者已存在:", user.id);
+
+      // 更新現有使用者的密碼，確保密碼格式一致
+      const password = `solana-wallet-${publicKey.slice(0, 8)}`;
+      const { error: updateError } = await adminAuthClient.updateUserById(
+        user.id,
+        {
+          password: password,
+        }
+      );
+
+      if (updateError) {
+        console.error("更新密碼錯誤:", updateError);
+        // 不拋出錯誤，繼續執行
+      } else {
+        console.log("現有使用者密碼已更新");
+      }
     }
 
-    // 4. 為使用者生成 JWT (包含 access_token 和 refresh_token)
-    const { data: linkData, error: linkError } =
-      await adminAuthClient.generateLink({
-        type: "magiclink",
-        email: user.email,
-      });
-    if (linkError) throw linkError;
+    // 4. 返回認證成功訊息和密碼資訊
+    const password = `solana-wallet-${publicKey.slice(0, 8)}`;
+    console.log("認證成功，返回密碼資訊");
 
-    const { access_token, refresh_token } = linkData.properties;
-
-    console.log("Token 生成成功");
-
-    // 5. 回傳 token 給前端
     return new Response(
       JSON.stringify({
-        access_token,
-        refresh_token,
+        access_token: "solana-wallet-auth-success",
+        refresh_token: "solana-wallet-auth-success",
         user: {
           id: user.id,
           email: user.email,
           wallet_address: publicKey,
         },
+        password: password, // 返回密碼給前端使用
+        message: "Solana 錢包認證成功",
       }),
       {
         headers: {

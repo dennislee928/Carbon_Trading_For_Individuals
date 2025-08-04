@@ -242,7 +242,7 @@ export default function MarketPage() {
         {purchaseResult && (
           <Alert className="mb-6 border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20">
             <AlertDescription className="text-green-800 dark:text-green-200">
-              <p className="font-medium">購買成功！</p>
+              <p className="font-medium">模擬購買成功！</p>
               <p className="text-sm mt-1">
                 購買 ID: {purchaseResult.purchase_id}
               </p>

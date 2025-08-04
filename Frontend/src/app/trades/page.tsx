@@ -203,8 +203,8 @@ function TradePageContent() {
                   />
                 </div>
 
-                <Button type="submit" className="w-full" disabled={submitting}>
-                  {submitting ? "處理中..." : "確認交易"}
+                <Button type="submit" className="w-full" disabled>
+                  後端開發中
                 </Button>
               </form>
             </CardContent>

@@ -35,11 +35,22 @@ serve(async (req) => {
     const publicKeyBytes = bs58.decode(publicKey);
     const signatureBytes = bs58.decode(signature);
 
+    console.log("簽名驗證詳細資訊:", {
+      message: SIGN_IN_MESSAGE,
+      messageLength: messageBytes.length,
+      publicKeyLength: publicKeyBytes.length,
+      signatureLength: signatureBytes.length,
+      publicKeyFirst8: publicKey.slice(0, 8),
+      signatureFirst8: signature.slice(0, 8),
+    });
+
     const isVerified = nacl.sign.detached.verify(
       messageBytes,
       signatureBytes,
       publicKeyBytes
     );
+
+    console.log("簽名驗證結果:", isVerified);
 
     if (!isVerified) {
       throw new Error("Invalid signature.");

@@ -17,10 +17,12 @@ import {
 } from "../../components/ui/card";
 import { Alert, AlertDescription } from "../../components/ui/alert";
 import carbonTradingApi, { LoginRequest } from "../services/carbonApi";
-import { AuthProvider } from "../components/AuthProvider";
-//
-export default function LoginPage() {
+import { AuthProvider, useAuth } from "../components/AuthProvider";
+
+// 內部組件，用於處理認證邏輯
+function LoginForm() {
   const router = useRouter();
+  const { session } = useAuth();
   const [formData, setFormData] = useState<LoginRequest>({
     email: "",
     password: "",
@@ -33,6 +35,14 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [apiStatus, setApiStatus] = useState<string | null>(null);
   const [debugInfo, setDebugInfo] = useState<string | null>(null);
+
+  // 檢查認證狀態，如果已登入則重定向到 dashboard
+  useEffect(() => {
+    if (session) {
+      console.log("使用者已登入，重定向到 dashboard");
+      router.push("/dashboard");
+    }
+  }, [session, router]);
 
   useEffect(() => {
     // 頁面載入時檢查API狀態
@@ -315,5 +325,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <AuthProvider>
+      <LoginForm />
+    </AuthProvider>
   );
 }

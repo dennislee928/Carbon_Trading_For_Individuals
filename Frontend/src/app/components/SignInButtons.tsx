@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Github, LucideIcon, Wallet, Globe, AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface SignInButtonProps {
   label: string;
@@ -35,24 +36,39 @@ const SignInButton = ({
 
 export default function SignInButtons() {
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSignIn = async (provider: "github" | "google" | "solana") => {
     try {
       setError(null);
+      setIsLoading(true);
 
       if (!isSupabaseConfigured) {
         setError("Supabase 環境變數未設定。請聯繫管理員配置登入功能。");
         return;
       }
 
+      let result;
       if (provider === "solana") {
-        await signInSolana();
+        result = await signInSolana();
       } else {
-        await signInOAuth(provider);
+        result = await signInOAuth(provider);
       }
+
+      // 登入成功後重定向到 dashboard
+      console.log(`${provider} 登入流程完成`);
+      // 對於 Solana 登入，如果沒有拋出錯誤，表示登入成功
+      if (provider === "solana") {
+        console.log("Solana 登入成功，重定向到 dashboard");
+        router.push("/dashboard");
+      }
+      // 對於 OAuth 登入，會自動重定向，不需要手動處理
     } catch (err) {
       console.error("登入失敗:", err);
       setError(err instanceof Error ? err.message : "登入失敗，請稍後再試");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,19 +86,19 @@ export default function SignInButtons() {
           label="使用 GitHub 登入"
           Icon={Github}
           onClick={() => handleSignIn("github")}
-          disabled={!isSupabaseConfigured}
+          disabled={!isSupabaseConfigured || isLoading}
         />
         <SignInButton
           label="使用 Google 登入"
           Icon={Globe}
           onClick={() => handleSignIn("google")}
-          disabled={!isSupabaseConfigured}
+          disabled={!isSupabaseConfigured || isLoading}
         />
         <SignInButton
-          label="使用 Solana Wallet 登入"
+          label={isLoading ? "登入中..." : "使用 Solana Wallet 登入"}
           Icon={Wallet}
           onClick={() => handleSignIn("solana")}
-          disabled={!isSupabaseConfigured}
+          disabled={!isSupabaseConfigured || isLoading}
         />
       </div>
 

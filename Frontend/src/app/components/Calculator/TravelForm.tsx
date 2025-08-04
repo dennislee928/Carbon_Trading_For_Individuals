@@ -66,14 +66,14 @@ export default function TravelForm({ onResult }: TravelFormProps) {
           <SelectTrigger>
             <SelectValue placeholder="選擇交通方式" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="car">汽車</SelectItem>
-            <SelectItem value="train">火車</SelectItem>
-            <SelectItem value="plane">飛機</SelectItem>
-            <SelectItem value="bus">公車</SelectItem>
-            <SelectItem value="motorcycle">機車</SelectItem>
-            <SelectItem value="bicycle">自行車</SelectItem>
-            <SelectItem value="walking">步行</SelectItem>
+          <SelectContent className="bg-gray-900 text-white border-gray-700">
+            <SelectItem value="car" className="hover:bg-gray-800">汽車</SelectItem>
+            <SelectItem value="train" className="hover:bg-gray-800">火車</SelectItem>
+            <SelectItem value="plane" className="hover:bg-gray-800">飛機</SelectItem>
+            <SelectItem value="bus" className="hover:bg-gray-800">公車</SelectItem>
+            <SelectItem value="motorcycle" className="hover:bg-gray-800">機車</SelectItem>
+            <SelectItem value="bicycle" className="hover:bg-gray-800">自行車</SelectItem>
+            <SelectItem value="walking" className="hover:bg-gray-800">步行</SelectItem>
           </SelectContent>
         </Select>
       </div>

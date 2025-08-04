@@ -10,6 +10,16 @@ declare global {
       signMessage: (message: Uint8Array) => Promise<{ signature: Uint8Array }>;
       publicKey?: { toBytes: () => Uint8Array };
     };
+    phantom?: {
+      solana?: {
+        isPhantom?: boolean;
+        isConnected?: boolean;
+        connect: () => Promise<{ publicKey: { toBytes: () => Uint8Array } }>;
+        disconnect: () => Promise<void>;
+        signMessage: (message: Uint8Array) => Promise<{ signature: Uint8Array }>;
+        publicKey?: { toBytes: () => Uint8Array };
+      };
+    };
   }
 }
 

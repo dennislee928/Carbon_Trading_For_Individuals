@@ -27,7 +27,7 @@
     "tailwind-merge": "^2.0.0",
     "framer-motion": "^10.16.4",
     "react-countup": "^6.4.2",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.6.0"
   },
   "devDependencies": {
     "eslint": "^8",

@@ -35,7 +35,7 @@
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.2.1",
-    "use-debounce": "^10.0.4"
+    "use-debounce": "^10.0.5"
   },
   "devDependencies": {
     "@types/estree": "^1.0.6",

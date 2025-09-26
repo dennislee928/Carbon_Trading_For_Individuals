@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",
-    "@emotion/styled": "^11.13.5",
+    "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^5.18.0",
     "@mui/material": "^5.18.0",
     "@radix-ui/react-accordion": "^1.2.12",

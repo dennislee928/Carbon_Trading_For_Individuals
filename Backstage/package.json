@@ -19,7 +19,7 @@
     "tailwindcss": "^3.3.0",
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
-    "lucide-react": "^0.542.0",
+    "lucide-react": "^0.543.0",
     "recharts": "^2.8.0",
     "date-fns": "^2.30.0",
     "clsx": "^2.0.0",

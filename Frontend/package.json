@@ -88,6 +88,7 @@
     "stream-json": "^3.6.0",
     "postcss-selector-parser": "^6.1.5",
     "ajv": "^6.14.0",
-    "yaml": "^2.8.3"
+    "yaml": "^2.8.3",
+    "bn.js": "^5.2.3"
   }
 }

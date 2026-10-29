@@ -59,7 +59,8 @@
     "brace-expansion": "^2.1.7",
     "js-yaml": "^4.3.2",
     "nanoid": "^3.3.18",
-    "minimatch": "^9.0.7"
+    "minimatch": "^9.0.7",
+    "sharp": "^0.35.5"
   },
   "resolutions": {
     "brace-expansion": "^2.1.7",

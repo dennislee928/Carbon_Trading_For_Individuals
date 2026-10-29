@@ -39,6 +39,7 @@
     "nanoid": "^3.3.18",
     "minimatch": "^9.0.7",
     "sharp": "^0.35.5",
-    "flatted": "^3.4.2"
+    "flatted": "^3.4.2",
+    "picomatch": "^4.0.4"
   }
 }

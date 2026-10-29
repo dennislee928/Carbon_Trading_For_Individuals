@@ -95,6 +95,7 @@
     "bn.js": "^5.2.3",
     "follow-redirects": "^1.16.0",
     "uuid": "^11.1.1",
-    "@babel/runtime": "^7.26.10"
+    "@babel/runtime": "^7.26.10",
+    "baseline-browser-mapping": "^2.11.0"
   }
 }

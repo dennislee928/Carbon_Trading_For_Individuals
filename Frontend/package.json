@@ -80,6 +80,7 @@
     "ws": "^8.21.0",
     "glob": "^10.5.0",
     "source-map-js": "^1.2.2",
-    "form-data": "^4.0.6"
+    "form-data": "^4.0.6",
+    "stream-json": "^3.6.0"
   }
 }

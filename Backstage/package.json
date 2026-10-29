@@ -32,5 +32,8 @@
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "14.0.4"
+  },
+  "overrides": {
+    "brace-expansion": "^2.1.7"
   }
 }

@@ -41,7 +41,7 @@
     "sharp": "^0.35.5",
     "flatted": "^3.4.2",
     "picomatch": "^4.0.4",
-    "glob": "^10.5.0",
+    "glob": "^14.0.2",
     "source-map-js": "^1.2.2",
     "lodash": "^4.18.0",
     "browserslist": "^4.28.7",

@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "14.2.35",
+    "next": "^16.4.1",
     "react": "^18",
     "react-dom": "^18",
     "@types/node": "^20.19.19",
@@ -18,7 +18,7 @@
     "typescript": "^5",
     "tailwindcss": "^3.4.18",
     "autoprefixer": "^10.0.1",
-    "postcss": "^8",
+    "postcss": "^8.5.23",
     "lucide-react": "^0.544.0",
     "recharts": "^2.8.0",
     "date-fns": "^2.30.0",
@@ -32,5 +32,21 @@
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "14.0.4"
+  },
+  "overrides": {
+    "brace-expansion": "^2.1.7",
+    "js-yaml": "^4.3.2",
+    "nanoid": "^3.3.18",
+    "minimatch": "^11.0.1",
+    "sharp": "^0.35.5",
+    "flatted": "^3.4.2",
+    "picomatch": "^4.0.4",
+    "glob": "^14.0.2",
+    "source-map-js": "^1.2.2",
+    "lodash": "^4.18.0",
+    "browserslist": "^4.28.7",
+    "postcss-selector-parser": "^6.1.5",
+    "ajv": "^6.14.0",
+    "yaml": "^2.8.3"
   }
 }
